@@ -1,0 +1,12 @@
+@charset "UTF-8";
+header {height: 120px;}
+.header1 {height: 25px;}
+.header2 {height: 95px;}
+nav {height: 50px;}
+.contents {min-height: 500px;}
+footer {height: 50px;}
+.text-nav-color {color: black;}
+.text-nav-color:hover {color: #F299C2;}
+.new-color {background-color: #F299C2;}
+#loginIdCheckBtn {background-color: #F299C2; color:white; height: 40px;}
+#signIn {width: 300px;}
