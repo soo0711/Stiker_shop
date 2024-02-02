@@ -70,7 +70,27 @@
 			
 			if (loginId.length < 4){
 				$("#checkLength").removeClass("d-none");
+				return;
 			}
+			
+			 $.ajax({
+				 type: "POST"
+				 , url: "/user/is-duplicated-id"
+				 , data: {"loginId" : loginId}
+			 
+			 	 , success: function(data){
+			 		 if (data.is_duplicated){
+			 			$("#checkDuplicated").removeClass("d-none");
+			 		 } else if (!data.is_duplicated){
+			 			$("#checkOk").removeClass("d-none"); 
+			 		 } else{
+			 			 alert(data.error_message);
+			 		 }
+			 	 }
+			 	 , error: function(request, status, error){
+			 		 alert("중복 확인에 실패했습니다. 관리자에게 문의 주세요.")
+			 	 }
+			 })
 			
 		}); // -login
 		
@@ -132,7 +152,7 @@
 			
 			$.ajax({
 				type: "POST"
-				, url: "/user/sign-in"
+				, url: "/user/sign-up"
 				, data: {"loginId": loginId, "password": password, "name": name, "phoneNumber": phoneNumber, "email": email}
 				
 				, success: function(data) {
