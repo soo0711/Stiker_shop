@@ -4,8 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hukahuka.user.entity.UserEntity;
-import com.hukahuka.user.entity.UserPrivateEntity;
-import com.hukahuka.user.repository.UserPrivateRepository;
 import com.hukahuka.user.repository.UserRepository;
 
 @Service
@@ -39,7 +37,7 @@ public class UserBO {
 	
 	// input: loginId, hasedpw		output: UserEntity
 	public UserEntity getUserEntityByLoginIdPassword(String loginId, String password) {
-		return userRepository.findbyLoginIdAndPassword(loginId, password);
+		return userRepository.findByLoginIdAndPassword(loginId, password);
 	}
 	
 }

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +15,9 @@ import com.hukahuka.common.EncryptUtils;
 import com.hukahuka.user.bo.UserBO;
 import com.hukahuka.user.bo.UserPrivateBO;
 import com.hukahuka.user.entity.UserEntity;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/user")
@@ -83,7 +87,8 @@ public class UserRestController {
 	@PostMapping("/sign-in")
 	public Map<String, Object> signIn(
 			@RequestParam("loginId") String loginId,
-			@RequestParam("password") String password){
+			@RequestParam("password") String password,
+			HttpServletRequest request){
 		
 		// user의 salt 가져오기
 		Integer userId = userBO.getUserEntityByLoginId(loginId).getId();
@@ -97,8 +102,15 @@ public class UserRestController {
 		
 		Map<String, Object> result = new HashMap<>();
 		if (user != null) {
+			// 로그인 세션 
+			HttpSession session = request.getSession();
+			session.setAttribute("userId", user.getId());
+			session.setAttribute("userLoginId", user.getLoginId());
+			session.setAttribute("userName", user.getName());
+			
 			result.put("code", 200);
 			result.put("result", "성공");
+			result.put("userName", user.getName());
 		} else {
 			result.put("code", 500);
 			result.put("error_message", "로그인에 실패했습니다.");
