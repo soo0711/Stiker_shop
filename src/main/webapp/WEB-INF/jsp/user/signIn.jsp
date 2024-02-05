@@ -16,8 +16,8 @@
 		<button type="button" class="btn btn-light btn-block my-3" id="btnSignIn">로그인</button>
 		
 		<div class="d-flex justify-content-around">
-			<small><a href="#" class="text-secondary">아이디 찾기</a></small>
-			<small><a href="#" class="text-secondary">비밀번호 찾기</a></small>
+			<small><a href="/user/find-id-view" class="text-secondary">아이디 찾기</a></small>
+			<small><a href="/user/find-pw-view" class="text-secondary">비밀번호 찾기</a></small>
 		</div>
 	</div>
 </div>
@@ -52,6 +52,7 @@
 						location.href = "/home-view"
 					} else {
 						alert(data.error_message);
+						location.reload(true);
 					}
 				}
 				

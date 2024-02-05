@@ -37,4 +37,19 @@ public class UserController {
 		
 		return "redirect:/user/sign-in-view";
 	}
+	
+	@GetMapping("/find-id-view")
+	public String findIdView(
+			Model model) {
+		model.addAttribute("viewName", "user/findId");
+		return "template/layout";
+	}
+	
+ 
+	@GetMapping("/find-pw-view")
+	public String findPwView(
+			Model model) {
+		model.addAttribute("viewName", "user/findPw");
+		return "template/layout";
+	}
 }

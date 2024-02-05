@@ -40,4 +40,13 @@ public class UserBO {
 		return userRepository.findByLoginIdAndPassword(loginId, password);
 	}
 	
+	// input: name, phoneNumber, email 		output:UserEntity
+	public UserEntity getUserEntityByNamePhoneNumberEmail(String name, String phoneNumber, String email) {
+		return userRepository.findByNameAndPhoneNumberAndEmail(name, phoneNumber, email);
+	}
+	
+	// input: email			output:UserEntity
+	public UserEntity getUserEntityByEmail(String email) {
+		return userRepository.findByEmail(email);
+	}
 }
