@@ -93,15 +93,19 @@ public class UserRestController {
 			@RequestParam("password") String password,
 			HttpServletRequest request){
 		
+		if (password.length() != 10) {
+		
 		// user의 salt 가져오기
 		Integer userId = userBO.getUserEntityByLoginId(loginId).getId();
 		String salt = userPrivateBO.getUserPrivateEntityByUserId(userId);
 		
 		// hasedPassword로 로그인
-		String hasedPassword = encryptUtils.SHA256(password, salt);
+		password = encryptUtils.SHA256(password, salt);
+		
+		}
 		
 		// db select
-		UserEntity user = userBO.getUserEntityByLoginIdPassword(loginId, hasedPassword);
+		UserEntity user = userBO.getUserEntityByLoginIdPassword(loginId, password);
 		
 		Map<String, Object> result = new HashMap<>();
 		if (user != null) {

@@ -36,8 +36,8 @@ public class MailBO {
         UserMail mail = new UserMail();
         mail.setAddress(email);
         mail.setTitle("후카후카(스티커 샵) 임시비밀번호 안내 이메일 입니다.");
-        mail.setMessage("안녕하세요. 후카후카(스티커 샵) 임시비밀번호 안내 관련 이메일 입니다. \n" + "회원님의 임시 비밀번호는"
-                + str + " 입니다. \n" + "로그인 후에 비밀번호를 변경해주시길 바랍니다.");
+        mail.setMessage("안녕하세요. 후카후카(스티커 샵) 임시비밀번호 안내 관련 이메일 입니다. \n" + "회원님의 임시 비밀번호는 [ "
+                + str + " ] 입니다. \n" + "로그인 후에 비밀번호를 변경해주시길 바랍니다.");
         return mail;
     }
     
