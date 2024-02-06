@@ -27,4 +27,6 @@ public class UserPrivateBO {
 		return userPrivateRepository.findByUserId(userId).getSalt();
 	}
 	
+	
+	
 }

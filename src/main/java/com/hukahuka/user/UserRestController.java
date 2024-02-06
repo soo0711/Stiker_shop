@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hukahuka.common.EncryptUtils;
+import com.hukahuka.mail.bo.MailBO;
+import com.hukahuka.mail.domain.UserMail;
 import com.hukahuka.user.bo.UserBO;
 import com.hukahuka.user.bo.UserPrivateBO;
 import com.hukahuka.user.entity.UserEntity;
@@ -31,6 +33,7 @@ public class UserRestController {
 	
 	@Autowired
 	private UserPrivateBO userPrivateBO;
+	
 
 	/**
 	 * 아이디 중복확인 API
@@ -143,7 +146,8 @@ public class UserRestController {
 	}
 	
 	
-	@PostMapping("/fine-pw")
+	@Transactional
+	@PostMapping("/find-pw")
 	public Map<String, Object> findPw(
 			@RequestParam("email") String email){
 		
@@ -157,9 +161,13 @@ public class UserRestController {
 			return result;
 		}
 		
+		// send mail
+		userBO.sendMail(email);
+		
 		result.put("code", 200);
 		result.put("result", "성공");
 		return result;
 	}
+	
 	
 }
