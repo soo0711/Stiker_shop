@@ -34,9 +34,9 @@
 				<div class="d-flex align-items-center">
 					<select class="form-control" id="phoneStart">
 					  <option selected>010</option>
-					  <option value="1">016</option>
-					  <option value="2">017</option>
-					  <option value="3">018</option>
+					  <option>016</option>
+					  <option>017</option>
+					  <option>018</option>
 					</select>
 					<span class="mx-2"> - </span>
 					<input type="text" class="form-control my-2" id="phoneMiddle">
