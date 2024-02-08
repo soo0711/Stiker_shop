@@ -1,5 +1,7 @@
 package com.hukahuka.product.entity;
 
+import java.util.Date;
+
 import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.Column;
@@ -26,24 +28,27 @@ public class ProductEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	private int name;
+	private String name;
 	
 	private int count;
 	
-	private int introduce;
+	private String introduce;
 	
-	private int detail;
+	private String detail;
 	
-	private int category;
+	private String category;
 	
 	@Column(name="imagePath")
-	private int imagePath;
+	private String imagePath;
+	
+	@Column(name ="buyCount")
+	private int buyCount;
 	
 	@Column(name="createdAt", updatable = false)
 	@UpdateTimestamp
-	private int createdAt;
+	private Date createdAt;
 	
 	@Column(name="updatedAt")
 	@UpdateTimestamp
-	private int updatedAt;
+	private Date updatedAt;
 }

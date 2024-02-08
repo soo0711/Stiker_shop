@@ -48,8 +48,12 @@
 			
 				, success: function(data){
 					if (data.code == 200){
-						alert(data.userName + "님 환영합니다!")
-						location.href = "/home-view"
+						if (data.userLoginId == "suuuu"){
+							location.href="/manager/hukahuka-upload-view";
+						} else {
+							alert(data.userName + "님 환영합니다!" + data.userLoginId)
+							location.href = "/home-view"
+						}
 					} else {
 						alert(data.error_message);
 						location.reload(true);

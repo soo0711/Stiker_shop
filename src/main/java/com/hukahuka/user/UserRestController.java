@@ -118,6 +118,7 @@ public class UserRestController {
 			result.put("code", 200);
 			result.put("result", "성공");
 			result.put("userName", user.getName());
+			result.put("userLoginId", user.getLoginId());
 		} else {
 			result.put("code", 500);
 			result.put("error_message", "로그인에 실패했습니다.");

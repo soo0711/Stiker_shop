@@ -36,7 +36,7 @@
 			<div>상품 이미지</div>
 			<div id="file-list">
 				<div class="d-flex justify-content-between">
-					<input type="file" id="file" class="my-2" accept=".jpg, .png, .gif, .jpeg">
+					<input type="file" class="my-2 file" accept=".jpg, .png, .gif, .jpeg">
 					<a href="#" class="my-2 deleteFile text-secondary">x</a>
 				</div>
 			</div>
@@ -52,6 +52,13 @@
 	$(document).ready(function() {
 		// alert("준비");
 		
+		let file= [];
+		
+		$(".file").on("change", function() {
+			let fileName = $(this).val();
+			file.push(fileName);  
+		});
+		
 		$("#btnUpload").on("click", function(){
 			//alert("클릭");
 			
@@ -61,7 +68,6 @@
 			let detailProduct = $("#detailProduct").val().trim();
 			let introduceProduct = $("#introduceProduct").val().trim();
 			let category = $("#category").val();
-			let fileName = $("#file").val(); //C:\fakepath\gg.jpg
 			
 			if (!name){
 				alert("상품 이름 입력");
@@ -83,13 +89,14 @@
 				return false;
 			}
 			
-			if (fileName){
-				// alert(fileName);
+			if (file){
+				// alert(file);
 				// 확장자만 뽑은 후 소문자로 변경해서 검사한다.
 				let extension = fileName.split(".").pop().toLowerCase();
+				// alert(extension);
 				if ($.inArray(extension, ['jpg', 'png', 'gif', 'jpeg']) == -1){
 					alert("이미지 파일만 업로드 할 수 있습니다.");
-					$("#file").val(""); // 파일을 비운다.
+					$(".file").val(""); // 파일을 비운다.
 					return;
 				}
 			}
@@ -102,35 +109,13 @@
 			formData.append("detailProduct", detailProduct);
 			formData.append("introduceProduct", introduceProduct);
 			formData.append("category", category);
-			formData.append("file", $("#file")[0].files[0]); // 파일 한개만 받는다.
+			formData.append("file", file); // 파일 여러개
 			
 			alert("이름: " + name +"\n재고: " + count + "\n상품 상세: " + detailProduct
-					+"\n상품 소개: " + introduceProduct + "\n카테고리: "  + category + "\n이미지:" + fileName);
+					+"\n상품 소개: " + introduceProduct + "\n카테고리: "  + category + "\n이미지:" + file);
 			
 			// AJAX
-			$.ajax({
-				// request
-				type: "POST"
-				, url: "/manager/upload"
-				, data: formData
-				, enctype: "multipart/form-data" // 파일 업로드를 위한 필수 설정 - 이미지가 들어가는걸 알려준다.
-				, processData: false // 파일 업로드를 위한 필수 설정 - String이 아니라 객체로 보내고 있다는걸 알려준다.
-				, contentType: false // 파일 업로드를 위한 필수 설정
-				
-				// response
-				, success: function(data){
-					if (data.code == 200){
-						alert("상품이 저장되었습니다.");
-						location.href = "/manager/hukahuka-storage-view";
-					} else {
-						alert(data.error_message);
-					}
-				}
-				, error: function(request, status, error){
-					alert("상품 등록하는데 실패했습니다. 관리자에게 문의 주세요.")
-				}
-				
-			}); // - ajax
+			
 			
 		}); // btn
 		
@@ -138,19 +123,65 @@
 		// 파일 추가
 		$("#fileAdd").on("click", function(e) {
 			e.preventDefault();
-			let str = "<div class='d-flex justify-content-between'><input type='file' id='file' class='my-2' accept='.jpg, .png, .gif, .jpeg'><a href='#' class='my-2 deleteFile text-secondary'>x</a></div>";
+			let str = "<div class='d-flex justify-content-between'><input type='file' class='my-2 file' accept='.jpg, .png, .gif, .jpeg'><a href='#' class='my-2 deleteFile text-secondary'>x</a></div>";
 			$("#file-list").append(str);
+			
 			$(".deleteFile").on("click", function(e) {
 				e.preventDefault();
+				let fileName = $(".file").val();
+				alert(fileName);
 				$(this).parent().remove();
+			});
+			
+			$(".file").on("change", function() {
+				let fileName = $(this).val();
+				if (fileName){
+					// alert(fileName);
+					// 확장자만 뽑은 후 소문자로 변경해서 검사한다.
+					let extension = fileName.split(".").pop().toLowerCase();
+					if ($.inArray(extension, ['jpg', 'png', 'gif', 'jpeg']) == -1){
+						alert("이미지 파일만 업로드 할 수 있습니다.");
+						$("#file").val(""); // 파일을 비운다.
+						return;
+					}
+				}
+				file.push(fileName);  
 			});
 		}); // add file
 		
 		// 파일 삭제
 		$(".deleteFile").on("click", function(e) {
 			e.preventDefault();
+			let fileName = $(".file").val();
+			alert(fileName);
 			$(".deleteFile").parent().remove();
 		}); // delete file
+		
+		/*
+		$.ajax({
+			// request
+			type: "POST"
+			, url: "/manager/upload"
+			, data: formData
+			, enctype: "multipart/form-data" // 파일 업로드를 위한 필수 설정 - 이미지가 들어가는걸 알려준다.
+			, processData: false // 파일 업로드를 위한 필수 설정 - String이 아니라 객체로 보내고 있다는걸 알려준다.
+			, contentType: false // 파일 업로드를 위한 필수 설정
+			
+			// response
+			, success: function(data){
+				if (data.code == 200){
+					alert("상품이 저장되었습니다.");
+					location.href = "/manager/hukahuka-storage-view";
+				} else {
+					alert(data.error_message);
+				}
+			}
+			, error: function(request, status, error){
+				alert("상품 등록하는데 실패했습니다. 관리자에게 문의 주세요.")
+			}
+			
+		}); // - ajax
+		*/
 		
 	}); // doc
 </script>
