@@ -14,33 +14,28 @@
 			<input type="text" class="form-control my-2" id="count" name="count">
 		</div>
 		<div>
-			<span>상품 설명</span>
-			<input type="text" class="form-control my-2" id="detailProduct" name="detailProduct">
+			<span>상품 소개</span>
+			<input type="text" class="form-control my-2" id="introduce" name="introduce">
 		</div>
 		<div>
-			<span>상품 소개</span>
-			<input type="text" class="form-control my-2" id="introduceProduct" name="introduceProduct">
+			<span>상세 설명</span>
+			<input type="text" class="form-control my-2" id="detail" name="detail">
 		</div>
 		<div>
 			<span>카테고리</span>
 			<div class="d-flex align-items-center my-2">
 				<select class="form-control" id="category">
-				  <option selected>키링</option>
-				  <option>스티커</option>
-				  <option>메모</option>
-				  <option>디지털 악세사리</option>
+					<option selected>--선택--</option>
+					<option>키링</option>
+					<option>스티커</option>
+					<option>메모</option>
+					<option>디지털 악세사리</option>
 				</select>
 			</div>
 		</div>
 		<div>
 			<div>상품 이미지</div>
-			<div id="file-list">
-				<div class="d-flex justify-content-between">
-					<input type="file" class="my-2 file" accept=".jpg, .png, .gif, .jpeg">
-					<a href="#" class="my-2 deleteFile text-secondary">x</a>
-				</div>
-			</div>
-			<a href="#" class="my-2 text-secondary float-right" id="fileAdd">파일 추가</a>
+			<input type="file" class="my-2" name="images" multiple="multiple" accept=".png, .jpg, .jpeg">
 		</div>
 		
 		<button type="submit" class="btn btn-secondary btn-block my-2" id="btnUpload">등록</button>
@@ -51,111 +46,81 @@
 <script>
 	$(document).ready(function() {
 		// alert("준비");
+		// 업로드 
 		
-		let file= [];
+		var inputFileList = new Array(); // 이미지 파일 넣을 배열
 		
-		$(".file").on("change", function() {
-			let fileName = $(this).val();
-			file.push(fileName);  
-		});
+		// 파일 선택
+		$("input[name=images]").on("change", function(e) {
+			// alert("파일 선택");
+			var files = e.target.files;
+			var fileArray = Array.prototype.slice.call(files);
+			
+			if (fileArray.length > 3){
+				alert("이미지는 최대 3개까지 업로드 가능합니다.");
+				$("input[name=images]").val("");
+				return;
+			}
+			
+			fileArray.forEach(function(f) {
+				inputFileList.push(f);
+			});
+			
+		}); // - btn select
 		
-		$("#btnUpload").on("click", function(){
-			//alert("클릭");
+		$("#btnUpload").on("click", function() {
+			// alert("업로드");
 			
 			// vaildation
-			let name = $("#name").val().trim();
-			let count = $("#count").val().trim();
-			let detailProduct = $("#detailProduct").val().trim();
-			let introduceProduct = $("#introduceProduct").val().trim();
+			let name = $("#name").val();
+			let count = $("#count").val();
+			let introduce= $("#introduce").val();
+			let detail = $("#detail").val();
 			let category = $("#category").val();
+			let inputFile = $("input[name=images]");
 			
-			if (!name){
-				alert("상품 이름 입력");
-				return false;
-			}
-			
-			if (!count){
-				alert("재고 입력");
-				return false;
-			}
-			
-			if (!detailProduct){
-				alert("상품 상세 입력");
-				return false;
-			}
-			
-			if(!introduceProduct){
-				alert("상품 소개 입력");
-				return false;
-			}
-			
-			if (file){
-				// alert(file);
-				// 확장자만 뽑은 후 소문자로 변경해서 검사한다.
-				let extension = fileName.split(".").pop().toLowerCase();
-				// alert(extension);
+			// 확장자 검사
+			inputFileList.forEach(function(f) {
+				let extension = f.name.split(".").pop().toLowerCase();
+				console.log(f.name + " "+ extension);
 				if ($.inArray(extension, ['jpg', 'png', 'gif', 'jpeg']) == -1){
 					alert("이미지 파일만 업로드 할 수 있습니다.");
-					$(".file").val(""); // 파일을 비운다.
+					inputFileList.pop();
+					inputFileList.pop();
+					inputFileList.pop();
+					$("input[name=images]").val("");
 					return;
 				}
+			});
+			
+			
+			if (!name) {
+				alert("상품 이름을 입력해주세요.");
+				return false;
 			}
 			
-			// form 태그를 js에서 만든다.
-			// 이미지를 업로드 할 때는 반드시 form 태그가 있어야한다.
-			let formData = new FormData();
-			formData.append("name", name ); // key는 name 속성과 같다. Request Parameter명
-			formData.append("count", count);
-			formData.append("detailProduct", detailProduct);
-			formData.append("introduceProduct", introduceProduct);
-			formData.append("category", category);
-			formData.append("file", file); // 파일 여러개
+			if (!count) {
+				alert("개수를 입력해주세요.");
+				return false;
+			}
 			
-			alert("이름: " + name +"\n재고: " + count + "\n상품 상세: " + detailProduct
-					+"\n상품 소개: " + introduceProduct + "\n카테고리: "  + category + "\n이미지:" + file);
+			if (!introduce) {
+				alert("상품 소개를 입력해주세요.");
+				return false;
+			}
 			
-			// AJAX
+			if (!detail) {
+				alert("상세 설명을 입력해주세요.");
+				return false;
+			}
 			
+			if (category == "--선택--"){
+				alert("카테고리를 선택해주세요.");
+				return false;
+			}
 			
-		}); // btn
-		
-		
-		// 파일 추가
-		$("#fileAdd").on("click", function(e) {
-			e.preventDefault();
-			let str = "<div class='d-flex justify-content-between'><input type='file' class='my-2 file' accept='.jpg, .png, .gif, .jpeg'><a href='#' class='my-2 deleteFile text-secondary'>x</a></div>";
-			$("#file-list").append(str);
-			
-			$(".deleteFile").on("click", function(e) {
-				e.preventDefault();
-				let fileName = $(".file").val();
-				alert(fileName);
-				$(this).parent().remove();
-			});
-			
-			$(".file").on("change", function() {
-				let fileName = $(this).val();
-				if (fileName){
-					// alert(fileName);
-					// 확장자만 뽑은 후 소문자로 변경해서 검사한다.
-					let extension = fileName.split(".").pop().toLowerCase();
-					if ($.inArray(extension, ['jpg', 'png', 'gif', 'jpeg']) == -1){
-						alert("이미지 파일만 업로드 할 수 있습니다.");
-						$("#file").val(""); // 파일을 비운다.
-						return;
-					}
-				}
-				file.push(fileName);  
-			});
-		}); // add file
-		
-		// 파일 삭제
-		$(".deleteFile").on("click", function(e) {
-			e.preventDefault();
-			let fileName = $(".file").val();
-			alert(fileName);
-			$(".deleteFile").parent().remove();
-		}); // delete file
+
+		}); // -  btn upload
 		
 		/*
 		$.ajax({
