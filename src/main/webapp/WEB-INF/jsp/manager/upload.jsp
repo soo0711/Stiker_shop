@@ -123,12 +123,12 @@
 			formData.append("introduce", introduce);
 			formData.append("detail", detail);
 			formData.append("category", category);
-			/*
+			
 			for (let i = 0; i < inputFileList.length; i++) {
 　　　　			formData.append("images", inputFileList[i]);  // 배열에서 이미지들을 꺼내 폼 객체에 담는다.
 　　　　			console.log(inputFileList[i]);
 		　　}
-			*/
+
 			console.log(name);
 			console.log(count);
 			console.log(introduce);

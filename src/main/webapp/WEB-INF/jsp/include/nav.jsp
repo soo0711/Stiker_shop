@@ -16,12 +16,47 @@
 
 <c:if test="${fn:contains(viewName, 'manager') eq true}">
 <ul class="nav nav-fill w-100">
-	<li class="nav-item"><a href="/manager/hukahuka-upload-view" class="nav-link text-nav-color font-weight-bold">등록</a></li>
-	<li class="nav-item"><a href=# class="nav-link text-nav-color font-weight-bold">재고</a></li>
-	<li class="nav-item"><a href=# class="nav-link text-nav-color font-weight-bold">배송현황</a></li>
+	<li class="nav-item"><a href="/manager/hukahuka-upload-view" class="nav-link text-nav-color font-weight-bold" id="upload">등록</a></li>
+	<li class="nav-item"><a href=# class="nav-link text-nav-color font-weight-bold" id="storage">재고</a></li>
+	<li class="nav-item"><a href=# class="nav-link text-nav-color font-weight-bold" id="status">배송현황</a></li>
 	<li class="nav-item"><a href=# class="nav-link text-nav-color font-weight-bold">x</a></li>
 	<li class="nav-item"><a href=# class="nav-link text-nav-color font-weight-bold">x</a></li>
 	<li class="nav-item"><a href=# class="nav-link text-nav-color font-weight-bold">x</a></li>
 	<li class="nav-item"><a href=# class="nav-link text-nav-color font-weight-bold">x</a></li>
 </ul>
 </c:if>
+
+<script>
+	
+	$(document).ready(function() {
+		
+		$("#upload").on("click", function(e) {
+			e.preventDefault();
+	
+			$.ajax({
+				url: "/manager/upload-view"
+				
+				,success: function(data){
+					$("#content1").html(data);
+					console.log(data);
+				}
+				
+			}); // - upload ajax
+			
+		}); // - upload
+		
+		$("#storage").on("click", function(e) {
+			e.preventDefault();
+			alert("재고");
+			
+		}); // - storage
+		
+		$("#status").on("click", function(e) {
+			e.preventDefault();
+			alert("배송현황");
+			
+		}); // - status
+		
+	}); // - doc
+
+</script>

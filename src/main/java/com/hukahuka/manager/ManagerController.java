@@ -15,4 +15,9 @@ public class ManagerController {
 		return "template/layout";
 	}
 	
+	@RequestMapping("/upload-view")
+	public String hukahukaUploadView() {
+		return "manager/managerMenu";
+	}
+	
 }

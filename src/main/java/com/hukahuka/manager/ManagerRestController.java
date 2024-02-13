@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.hukahuka.manager.bo.ManagerBO;
+import com.hukahuka.product.domain.Product;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -26,16 +28,16 @@ public class ManagerRestController {
 	public Map<String, Object> upload(
 			@RequestParam("name") String name,
 			@RequestParam("count") int count,
-			@RequestParam("detailProduct") String detail,
-			@RequestParam("introduceProduct") String introduce,
+			@RequestParam("detail") String detail,
+			@RequestParam("introduce") String introduce,
 			@RequestParam("category") String category,
-			//@RequestParam("images") List<MultipartFile> files,
+			@RequestParam("images") List<MultipartFile> files,
 			HttpSession session){
 		
 		String userIoginId = (String)session.getAttribute("userLoginId");
 		
 		// db insert
-		// managerBO.addProductManager(userIoginId, name, count, detail, introduce, category, files);
+		managerBO.addProductManager(userIoginId, name, count, detail, introduce, category, files);
 		
 		// 응답값
 		Map<String, Object> result = new HashMap<>();

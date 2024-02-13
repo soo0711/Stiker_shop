@@ -1,29 +1,26 @@
 package com.hukahuka.product.bo;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.hukahuka.product.entity.ProductEntity;
-import com.hukahuka.product.repository.ProductRepository;
+import com.hukahuka.product.mapper.ProductMapper;
 
 @Service
 public class ProductBO {
 
 	@Autowired
-	private ProductRepository productRepository;
+	private ProductMapper productMapper;
 	
-	// input: params	output: X
-	public void addProduct(String name, int count, String detail, 
-			String introduce, String category, String imagePath) {
-		 productRepository.save(
-				ProductEntity.builder()
-				.name(name)
-				.count(count)
-				.detail(detail)
-				.introduce(introduce)
-				.category(category)
-				.imagePath(imagePath)
-				.build()
-				);
+	// input: params	output: Product
+	public void addProduct(Map<String, Object> map) {
+		 productMapper.insertProduct(map);
+	}
+	
+	// input: productId, imagePath		output: void
+	public void addProductImage(int productId, List<String> imagePath) {
+		productMapper.insertProductImage(productId, imagePath);
 	}
 }

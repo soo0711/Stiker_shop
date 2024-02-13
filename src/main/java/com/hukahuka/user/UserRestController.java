@@ -151,7 +151,7 @@ public class UserRestController {
 	}
 	
 	
-	@Transactional
+	// @Transactional
 	@PostMapping("/find-pw")
 	public Map<String, Object> findPw(
 			@RequestParam("email") String email){

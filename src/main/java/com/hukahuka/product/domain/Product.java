@@ -1,4 +1,4 @@
-package com.hukahuka.product.entity;
+package com.hukahuka.product.domain;
 
 import java.util.Date;
 
@@ -12,20 +12,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@ToString
-@Entity
-@Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@Table(name="product")
-public class ProductEntity {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+@ToString 
+@Data // getters / setters 두개 다 있다.
+public class Product {
+
 	private int id;
 	
 	private String name;
@@ -38,17 +33,9 @@ public class ProductEntity {
 	
 	private String category;
 	
-	@Column(name="imagePath")
-	private String imagePath;
-	
-	@Column(name ="buyCount")
 	private int buyCount;
 	
-	@Column(name="createdAt", updatable = false)
-	@UpdateTimestamp
 	private Date createdAt;
 	
-	@Column(name="updatedAt")
-	@UpdateTimestamp
 	private Date updatedAt;
 }

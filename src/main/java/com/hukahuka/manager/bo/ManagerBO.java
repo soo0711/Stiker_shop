@@ -1,5 +1,9 @@
 package com.hukahuka.manager.bo;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,15 +20,25 @@ public class ManagerBO {
 	@Autowired
 	private FileManagerService fileManagerService;
 	
-	public void addProductManager(String userloginId, String name, int count, String detail, 
-			String introduce, String category, MultipartFile fileName) {
-		
-		String imgPath = null;
-		
-		// 이미지 저장
-		imgPath = fileManagerService.saveFile(imgPath, fileName);
+	public void addProductManager(
+			String userloginId, String name, int count, String detail, 
+			String introduce, String category, List<MultipartFile> fileName) {
 		
 		// db insert 
-		productBO.addProduct(name, count, detail, introduce, category, imgPath);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("name", name);
+		map.put("count", count);
+		map.put("detail", detail);
+		map.put("introduce", introduce);
+		map.put("category", category);
+		productBO.addProduct(map);
+		
+		int productId = Integer.parseInt(map.get("id").toString());
+		
+		// 이미지 저장
+		List<String> imagePath = fileManagerService.saveFile(userloginId, fileName);
+		// 이미지 insert
+		productBO.addProductImage(productId, imagePath);
+		
 	}
 }
