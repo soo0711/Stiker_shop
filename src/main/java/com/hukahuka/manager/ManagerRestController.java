@@ -1,6 +1,7 @@
 package com.hukahuka.manager;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +29,13 @@ public class ManagerRestController {
 			@RequestParam("detailProduct") String detail,
 			@RequestParam("introduceProduct") String introduce,
 			@RequestParam("category") String category,
-			@RequestParam("file") MultipartFile fileName,
+			//@RequestParam("images") List<MultipartFile> files,
 			HttpSession session){
 		
 		String userIoginId = (String)session.getAttribute("userLoginId");
 		
 		// db insert
-		managerBO.addProductManager(userIoginId, name, count, detail, introduce, category, fileName);
+		// managerBO.addProductManager(userIoginId, name, count, detail, introduce, category, files);
 		
 		// 응답값
 		Map<String, Object> result = new HashMap<>();

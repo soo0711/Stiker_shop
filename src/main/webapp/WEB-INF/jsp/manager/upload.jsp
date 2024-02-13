@@ -35,10 +35,11 @@
 		</div>
 		<div>
 			<div>상품 이미지</div>
-			<input type="file" class="my-2" name="images" multiple="multiple" accept=".png, .jpg, .jpeg">
+				<input type="file" class="my-2" name="images" multiple="multiple" accept=".png, .jpg, .jpeg">
 		</div>
-		
+	
 		<button type="submit" class="btn btn-secondary btn-block my-2" id="btnUpload">등록</button>
+
 	</div>
 </div>
 </c:if>
@@ -62,6 +63,18 @@
 				return;
 			}
 			
+			// 확장자 검사
+			fileArray.forEach(function(f) {
+				let extension = f.name.split(".").pop().toLowerCase();
+				if ($.inArray(extension, ['jpg', 'png', 'gif', 'jpeg']) == -1){
+					alert("이미지 파일만 업로드 할 수 있습니다.");
+					$("input[name=images]").val("");
+					return;
+				}
+			});
+			
+			// 통과만 push
+			
 			fileArray.forEach(function(f) {
 				inputFileList.push(f);
 			});
@@ -77,23 +90,7 @@
 			let introduce= $("#introduce").val();
 			let detail = $("#detail").val();
 			let category = $("#category").val();
-			let inputFile = $("input[name=images]");
-			
-			// 확장자 검사
-			inputFileList.forEach(function(f) {
-				let extension = f.name.split(".").pop().toLowerCase();
-				console.log(f.name + " "+ extension);
-				if ($.inArray(extension, ['jpg', 'png', 'gif', 'jpeg']) == -1){
-					alert("이미지 파일만 업로드 할 수 있습니다.");
-					inputFileList.pop();
-					inputFileList.pop();
-					inputFileList.pop();
-					$("input[name=images]").val("");
-					return;
-				}
-			});
-			
-			
+
 			if (!name) {
 				alert("상품 이름을 입력해주세요.");
 				return false;
@@ -119,34 +116,53 @@
 				return false;
 			}
 			
+			// form 태그 만들기
+			let formData = new FormData();
+			formData.append("name", name ); // key는 name 속성과 같다. Request Parameter명
+			formData.append("count", count);
+			formData.append("introduce", introduce);
+			formData.append("detail", detail);
+			formData.append("category", category);
+			/*
+			for (let i = 0; i < inputFileList.length; i++) {
+　　　　			formData.append("images", inputFileList[i]);  // 배열에서 이미지들을 꺼내 폼 객체에 담는다.
+　　　　			console.log(inputFileList[i]);
+		　　}
+			*/
+			console.log(name);
+			console.log(count);
+			console.log(introduce);
+			console.log(detail);
+			console.log(category);
+			
+			$.ajax({
+				// request
+				type: "POST"
+				, url: "/manager/upload"
+				, data: formData
+				, enctype: "multipart/form-data" // 파일 업로드를 위한 필수 설정 - 이미지가 들어가는걸 알려준다.
+				, processData: false // 파일 업로드를 위한 필수 설정 - String이 아니라 객체로 보내고 있다는걸 알려준다.
+				, contentType: false // 파일 업로드를 위한 필수 설정
+				
+				// response
+				, success: function(data){
+					if (data.code == 200){
+						alert("상품이 저장되었습니다.");
+						location.href = "/manager/hukahuka-storage-view";
+					} else {
+						alert(data.error_message);
+					}
+				}
+				, error: function(request, status, error){
+					alert("상품 등록하는데 실패했습니다. 관리자에게 문의 주세요.")
+				}
+				
+			}); // - ajax
 
 		}); // -  btn upload
 		
-		/*
-		$.ajax({
-			// request
-			type: "POST"
-			, url: "/manager/upload"
-			, data: formData
-			, enctype: "multipart/form-data" // 파일 업로드를 위한 필수 설정 - 이미지가 들어가는걸 알려준다.
-			, processData: false // 파일 업로드를 위한 필수 설정 - String이 아니라 객체로 보내고 있다는걸 알려준다.
-			, contentType: false // 파일 업로드를 위한 필수 설정
-			
-			// response
-			, success: function(data){
-				if (data.code == 200){
-					alert("상품이 저장되었습니다.");
-					location.href = "/manager/hukahuka-storage-view";
-				} else {
-					alert(data.error_message);
-				}
-			}
-			, error: function(request, status, error){
-				alert("상품 등록하는데 실패했습니다. 관리자에게 문의 주세요.")
-			}
-			
-		}); // - ajax
-		*/
+		
+		
 		
 	}); // doc
 </script>
