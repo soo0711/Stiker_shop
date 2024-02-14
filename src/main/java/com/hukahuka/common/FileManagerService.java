@@ -18,10 +18,10 @@ import lombok.extern.slf4j.Slf4j;
 public class FileManagerService {
 
 	// 학원용
-	public static final String FILE_UPLOAD_PATH = "D:\\jeonsoohyun\\7_project\\new_stiker\\workspace\\images/";
+	// public static final String FILE_UPLOAD_PATH = "D:\\jeonsoohyun\\7_project\\new_stiker\\workspace\\images/";
 	
 	// 집
-	
+	public static final String FILE_UPLOAD_PATH = "C:\\Users\\수현\\Desktop\\학교\\web_project\\web_project\\workspace\\images/";
 	
 	// input: File 원본, userLoginId(폴더명)		output: 이미지 경로
 	public List<String> saveFile(String loginId, List<MultipartFile> files) {
@@ -50,6 +50,35 @@ public class FileManagerService {
 		
 		// http://localhost/images/aaaa_1234354/gg.png
 		return images;
+	}
+	
+	// input: imgPath 	output: X
+	public void deleteFile(List<String> imagePaths) {
+		for (String imagePath : imagePaths) {
+			Path path = Paths.get(FILE_UPLOAD_PATH + imagePath.replace("/images/", ""));
+			
+			// 삭제할 이미지 존재?
+			if (Files.exists(path)) {
+				try {
+					Files.delete(path);
+				} catch (IOException e) {
+					log.info("[파일 매니저 삭제] 이미지 삭제 실패. path():{}", path );
+					return;
+				}
+				
+			}
+		}
+
+		// 폴더 지우기
+		Path paths = Paths.get(FILE_UPLOAD_PATH + imagePaths.get(0).replace("/images/", "")).getParent();
+		if (Files.exists(paths)) {
+			try {
+				Files.delete(paths);
+			} catch (IOException e) {
+				log.info("[파일 매니저 삭제] 이미지 삭제 실패. paths():{}", paths );
+				return;
+			}
+		}
 	}
 	
 }

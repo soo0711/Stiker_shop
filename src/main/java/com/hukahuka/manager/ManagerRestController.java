@@ -69,10 +69,10 @@ public class ManagerRestController {
 	
 	@PostMapping("/delete")
 	public Map<String, Object> delete(
-			@RequestParam("name") String name){
+			@RequestParam("id") int productId){
 
 		// db update
-		managerBO.deleteProductManager(name);
+		managerBO.deleteProductManager(productId);
 		
 		// 응답값
 		Map<String, Object> result = new HashMap<>();

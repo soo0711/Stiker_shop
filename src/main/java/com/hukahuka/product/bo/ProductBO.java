@@ -36,7 +36,17 @@ public class ProductBO {
 	}
 	
 	// input: count		output: X
-	public void deleteProductManager(String name) {
-		productMapper.deleteProductManager(name);
+	public void deleteProductManager(int productId) {
+		
+		// 이미지 select - List<String>에 imgPath 넣기
+		
+		// 이미지 삭제
+		
+		
+		// product 테이블 삭제
+		productMapper.deleteProductManagerById(productId);
+		
+		// product_image 테이블 삭제
+		productMapper.deleteProductManagerByProductId(productId);
 	}
 }

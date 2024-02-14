@@ -48,8 +48,8 @@ public class ManagerBO {
 	}
 	
 	// input: name		output: X
-	public void deleteProductManager(String name) {
-		productBO.deleteProductManager(name);
+	public void deleteProductManager(int productId) {
+		productBO.deleteProductManager(productId);
 	}
 	
 	

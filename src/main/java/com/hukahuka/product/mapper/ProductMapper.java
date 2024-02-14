@@ -28,7 +28,12 @@ public interface ProductMapper {
 			@Param("count") int count, 
 			@Param("name") String name);
 	
-	// input: count		output: X
-	public void deleteProductManager(String name);
+	// input: productId		output: X
+	public void deleteProductManagerById(int id);
+	
+	// input: productId
+	public void deleteProductManagerByProductId(int productId);
+	
+	
 
 }

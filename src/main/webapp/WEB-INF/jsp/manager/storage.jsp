@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:if test="${userLoginId eq 'suuuu'}">
 <div class="d-flex justify-content-center align-items-center content1 w-100">
-	<div class="col-5">
+	<div class="col-7">
 		<h2 class="my-4 text-center">재고</h2>
 		<table class="table text-center">
 			<thead class="bg-light">
@@ -27,7 +27,7 @@
 							<a href="#" class="btnModify btn btn-light" data-product-name="${product.name }">수정</a>
 						</td>
 						<td>
-							<a href="#" class="btnDelete btn btn-light" data-product-name="${product.name }">삭제</a>
+							<a href="#" class="btnDelete btn btn-light" data-product-name="${product.id }">삭제</a>
 						</td>
 					</tr>
 				</c:forEach>
@@ -69,13 +69,13 @@ $(document).ready(function() {
 		e.preventDefault();
 		// alert("삭제");
 		
-		let name = $(this).data("product-name");
+		let name = $(this).data("product-id");
 		// console.log(name);
 		
 		$.ajax({
 			type: "POST"
 			,url: "/manager/delete"
-			, data: {"name" : name}
+			, data: {"id" : id}
 		
 			, success: function(data){
 				if (data.code == 200){
