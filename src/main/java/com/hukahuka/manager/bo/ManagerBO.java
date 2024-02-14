@@ -41,4 +41,16 @@ public class ManagerBO {
 		productBO.addProductImage(productId, imagePath);
 		
 	}
+	
+	// input: count, name		output: X
+	public void updateProductManager(int count, String name) {
+		productBO.updateProductByCount(count, name);
+	}
+	
+	// input: name		output: X
+	public void deleteProductManager(String name) {
+		productBO.deleteProductManager(name);
+	}
+	
+	
 }

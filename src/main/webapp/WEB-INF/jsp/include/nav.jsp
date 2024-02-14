@@ -35,10 +35,10 @@
 	
 			$.ajax({
 				url: "/manager/upload-view"
+				,data: {"menu" : 1} 
 				
 				,success: function(data){
-					$("#content1").html(data);
-					console.log(data);
+					$(".content1").html(data);
 				}
 				
 			}); // - upload ajax
@@ -47,14 +47,32 @@
 		
 		$("#storage").on("click", function(e) {
 			e.preventDefault();
-			alert("재고");
+			// alert("재고");
 			
+			$.ajax({
+				url: "/manager/upload-view"
+				,data: {"menu" : 2} 
+				
+				,success: function(data){
+					$(".content1").html(data);
+				}
+				
+			}); // - storage ajax
 		}); // - storage
 		
 		$("#status").on("click", function(e) {
 			e.preventDefault();
-			alert("배송현황");
+			// alert("배송현황");
 			
+			$.ajax({
+				url: "/manager/upload-view"
+				,data: {"menu" : 3} 
+				
+				,success: function(data){
+					$(".content1").html(data);
+				}
+				
+			}); // - storage ajax
 		}); // - status
 		
 	}); // - doc

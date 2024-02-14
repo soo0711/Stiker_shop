@@ -1,23 +1,52 @@
 package com.hukahuka.manager;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.hukahuka.product.bo.ProductBO;
+import com.hukahuka.product.domain.Product;
 
 @Controller
 @RequestMapping("/manager")
 public class ManagerController {
+	
+	@Autowired
+	private ProductBO productBO;
 
-	@RequestMapping("/hukahuka-upload-view")
+	@GetMapping("/hukahuka-upload-view")
 	public String hukahukaUploadView(
 			Model model) {
 		model.addAttribute("viewName", "manager/upload");
 		return "template/layout";
 	}
 	
-	@RequestMapping("/upload-view")
-	public String hukahukaUploadView() {
-		return "manager/managerMenu";
+	@GetMapping("/upload-view")
+	public String hukahukaUploadView(
+			@RequestParam("menu") int menu
+			, Model model) {
+		if (menu == 1) { // 상품등록
+			return "manager/upload";
+		}
+		
+		if (menu == 2) { // 재고현황
+			// db select
+			List<Product> products = productBO.getProductList();
+			model.addAttribute("products", products);
+			
+			return "manager/storage";
+		}
+		
+		if (menu == 3) { // 배송현황
+			return "manager/status";
+		}
+		
+		return "manager/upload";
 	}
 	
 }

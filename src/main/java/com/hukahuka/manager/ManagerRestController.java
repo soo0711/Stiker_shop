@@ -48,5 +48,42 @@ public class ManagerRestController {
 		return result;
 	}
 	
+	@PostMapping("/update")
+	public Map<String, Object> update(
+			@RequestParam("count") int count,
+			@RequestParam("name") String name){
+		
+		
+		// db update
+		managerBO.updateProductManager(count, name);
+		
+		// 응답값
+		Map<String, Object> result = new HashMap<>();
+		
+		result.put("code", 200);
+		result.put("result", "성공");
+		
+		return result;
+	}
+	
+	
+	@PostMapping("/delete")
+	public Map<String, Object> delete(
+			@RequestParam("name") String name){
+
+		// db update
+		managerBO.deleteProductManager(name);
+		
+		// 응답값
+		Map<String, Object> result = new HashMap<>();
+		
+		result.put("code", 200);
+		result.put("result", "성공");
+		
+		return result;
+	}
+	
+	
+	
 }
 

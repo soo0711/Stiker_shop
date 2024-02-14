@@ -44,4 +44,27 @@
 	    )
     	</foreach>
  	</insert>
+ 	
+ 	<select id="selectProductList" resultType="com.hukahuka.product.domain.Product">
+ 		SELECT 
+	 		`id`
+			,`name`
+			,`count`
+			,`introduce`
+			,`detail`
+			,`category`
+			,`buyCount`
+			,`createdAt`
+			,`updatedAt`
+ 		FROM
+ 		`product`
+ 	</select>
+ 	
+ 	<update id="updateProductByCount" parameterType="map">
+ 	 	UPDATE `product`
+ 	 	SET
+ 			`count` = #{count}
+ 		WHERE
+ 			`name` = #{name}
+ 	</update>
  </mapper>

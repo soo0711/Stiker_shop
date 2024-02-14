@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:if test="${userLoginId eq 'suuuu'}">
-<div class="d-flex justify-content-center align-items-center">
+<div class="d-flex justify-content-center align-items-center content1 w-100">
 	<div class="col-3">
 		<h2 class="my-4 text-center">등록</h2>
 		<div>
@@ -52,7 +52,7 @@
 		var inputFileList = new Array(); // 이미지 파일 넣을 배열
 		
 		// 파일 선택
-		$("input[name=images]").on("change", function(e) {
+		$(document).on("change", "input[name=images]", function(e) {
 			// alert("파일 선택");
 			var files = e.target.files;
 			var fileArray = Array.prototype.slice.call(files);
@@ -81,7 +81,7 @@
 			
 		}); // - btn select
 		
-		$("#btnUpload").on("click", function() {
+		$(document).on("click", "#btnUpload",function() {
 			// alert("업로드");
 			
 			// vaildation
@@ -148,7 +148,7 @@
 				, success: function(data){
 					if (data.code == 200){
 						alert("상품이 저장되었습니다.");
-						location.href = "/manager/hukahuka-storage-view";
+						location.reload();
 					} else {
 						alert(data.error_message);
 					}
@@ -160,8 +160,6 @@
 			}); // - ajax
 
 		}); // -  btn upload
-		
-		
 		
 		
 	}); // doc

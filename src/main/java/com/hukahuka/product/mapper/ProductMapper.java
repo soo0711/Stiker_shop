@@ -19,5 +19,16 @@ public interface ProductMapper {
 	public void insertProductImage(
 			@Param("productId") int productId, 
 			@Param("imagePath") List<String> imagePath);
+	
+	// input: X		output: List<Product>
+	public List<Product> selectProductList();
+	
+	// input: count		output: X
+	public void updateProductByCount(
+			@Param("count") int count, 
+			@Param("name") String name);
+	
+	// input: count		output: X
+	public void deleteProductManager(String name);
 
 }
