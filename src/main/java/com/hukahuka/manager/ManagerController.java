@@ -43,7 +43,7 @@ public class ManagerController {
 		}
 		
 		if (menu == 3) { // 배송현황
-			return "manager/status";
+			return "manager/delivery";
 		}
 		
 		return "manager/upload";

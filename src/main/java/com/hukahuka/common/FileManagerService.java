@@ -18,10 +18,10 @@ import lombok.extern.slf4j.Slf4j;
 public class FileManagerService {
 
 	// 학원용
-	// public static final String FILE_UPLOAD_PATH = "D:\\jeonsoohyun\\7_project\\new_stiker\\workspace\\images/";
+	public static final String FILE_UPLOAD_PATH = "D:\\jeonsoohyun\\7_project\\new_stiker\\workspace\\images/";
 	
 	// 집
-	public static final String FILE_UPLOAD_PATH = "C:\\Users\\수현\\Desktop\\학교\\web_project\\web_project\\workspace\\images/";
+	// public static final String FILE_UPLOAD_PATH = "C:\\Users\\수현\\Desktop\\학교\\web_project\\web_project\\workspace\\images/";
 	
 	// input: File 원본, userLoginId(폴더명)		output: 이미지 경로
 	public List<String> saveFile(String loginId, List<MultipartFile> files) {

@@ -1,5 +1,6 @@
 package com.hukahuka.manager.bo;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.hukahuka.common.FileManagerService;
 import com.hukahuka.product.bo.ProductBO;
+import com.hukahuka.product.domain.ProductImage;
 
 @Service
 public class ManagerBO {
@@ -49,6 +51,18 @@ public class ManagerBO {
 	
 	// input: name		output: X
 	public void deleteProductManager(int productId) {
+		// 이미지 select - List<String>에 imgPath 넣기
+		List<ProductImage> productImage = productBO.getProductImageByProductId(productId);
+		List<String> imagePath = new ArrayList<>();
+		
+		for (int i = 0 ; i < productImage.size(); i++) {
+			imagePath.add(productImage.get(i).getImagePath());
+		}
+		
+		// 이미지 삭제
+		fileManagerService.deleteFile(imagePath);
+				
+		
 		productBO.deleteProductManager(productId);
 	}
 	

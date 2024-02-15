@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:if test="${userLoginId eq 'suuuu'}">
 <div class="d-flex justify-content-center align-items-center content1 w-100">
-	<div class="col-7">
+	<div class="col-6">
 		<h2 class="my-4 text-center">재고</h2>
 		<table class="table text-center">
 			<thead class="bg-light">
@@ -20,14 +20,14 @@
 					<tr>
 						<td>${status.count }</td>
 						<td>${product.name }</td>
-						<td>
+						<td class="col-2">
 							<input type="text" class="count form-control" value=${product.count }>
 						</td>
 						<td>
 							<a href="#" class="btnModify btn btn-light" data-product-name="${product.name }">수정</a>
 						</td>
 						<td>
-							<a href="#" class="btnDelete btn btn-light" data-product-name="${product.id }">삭제</a>
+							<a href="#" class="btnDelete btn btn-light" data-product-id="${product.id }">삭제</a>
 						</td>
 					</tr>
 				</c:forEach>
@@ -69,7 +69,7 @@ $(document).ready(function() {
 		e.preventDefault();
 		// alert("삭제");
 		
-		let name = $(this).data("product-id");
+		let id = $(this).data("product-id");
 		// console.log(name);
 		
 		$.ajax({

@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.hukahuka.product.domain.Product;
+import com.hukahuka.product.domain.ProductImage;
 
 @Mapper
 public interface ProductMapper {
@@ -34,6 +35,7 @@ public interface ProductMapper {
 	// input: productId
 	public void deleteProductManagerByProductId(int productId);
 	
-	
+	// input: productId		output: List<Prodcut>
+	public List<ProductImage> selectProductImageByProductId(int productId);
 
 }

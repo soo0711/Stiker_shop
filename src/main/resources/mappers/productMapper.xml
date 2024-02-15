@@ -80,4 +80,16 @@
  		WHERE `productId` = #{productId}
  	</delete>
  	
+ 	<select id="selectProductImageByProductId" parameterType="int" resultType="com.hukahuka.product.domain.ProductImage">
+ 		SELECT 
+	 		`id`
+			,`productId`
+			,`imagePath`
+			,`createdAt`
+ 		FROM
+ 			`product_image`
+ 		WHERE
+ 			`productId` = #{productId}
+ 	</select>
+ 	
  </mapper>
