@@ -31,13 +31,14 @@ public class ManagerRestController {
 			@RequestParam("detail") String detail,
 			@RequestParam("introduce") String introduce,
 			@RequestParam("category") String category,
+			@RequestParam("price") int price,
 			@RequestParam("images") List<MultipartFile> files,
 			HttpSession session){
 		
 		String userIoginId = (String)session.getAttribute("userLoginId");
 		
 		// db insert
-		managerBO.addProductManager(userIoginId, name, count, detail, introduce, category, files);
+		managerBO.addProductManager(userIoginId, name, count, detail, introduce, category, price, files);
 		
 		// 응답값
 		Map<String, Object> result = new HashMap<>();

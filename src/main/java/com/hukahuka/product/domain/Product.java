@@ -35,6 +35,8 @@ public class Product {
 	
 	private int buyCount;
 	
+	private int price;
+	
 	private Date createdAt;
 	
 	private Date updatedAt;

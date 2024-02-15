@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<div class="d-flex justify-content-center align-items-center">
+<div class="d-flex justify-content-center align-items-center content1">
 	<img src="/static/img/home_img.png" alt="홈 캐릭터 이미지" class="col-5" id="bannerImage">
 </div>
 

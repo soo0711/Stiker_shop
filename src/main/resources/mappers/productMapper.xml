@@ -13,6 +13,7 @@
 			,`introduce`
 			,`detail`
 			,`category`
+			, `price`
 			,`createdAt`
 			,`updatedAt`
  		)
@@ -23,6 +24,7 @@
 			,#{introduce}
 			,#{detail}
 			,#{category}
+			, #{price}
 			,NOW()
 			,NOW()
  		)

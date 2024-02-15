@@ -24,7 +24,7 @@ public class ManagerBO {
 	
 	public void addProductManager(
 			String userloginId, String name, int count, String detail, 
-			String introduce, String category, List<MultipartFile> fileName) {
+			String introduce, String category, int price, List<MultipartFile> fileName) {
 		
 		// db insert 
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -33,6 +33,8 @@ public class ManagerBO {
 		map.put("detail", detail);
 		map.put("introduce", introduce);
 		map.put("category", category);
+		map.put("price", price);
+		
 		productBO.addProduct(map);
 		
 		int productId = Integer.parseInt(map.get("id").toString());

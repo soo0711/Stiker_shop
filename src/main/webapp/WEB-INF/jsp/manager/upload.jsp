@@ -22,6 +22,10 @@
 			<input type="text" class="form-control my-2" id="detail" name="detail">
 		</div>
 		<div>
+			<span>가격</span>
+			<input type="text" class="form-control my-2" id="price" name="price">
+		</div>
+		<div>
 			<span>카테고리</span>
 			<div class="d-flex align-items-center my-2">
 				<select class="form-control" id="category">
@@ -90,6 +94,7 @@
 			let introduce= $("#introduce").val();
 			let detail = $("#detail").val();
 			let category = $("#category").val();
+			let price = $("#price").val();
 
 			if (!name) {
 				alert("상품 이름을 입력해주세요.");
@@ -116,6 +121,11 @@
 				return false;
 			}
 			
+			if (!price){
+				alert("가격을 입력해주세요.");
+				return false;
+			}
+			
 			// form 태그 만들기
 			let formData = new FormData();
 			formData.append("name", name ); // key는 name 속성과 같다. Request Parameter명
@@ -123,6 +133,7 @@
 			formData.append("introduce", introduce);
 			formData.append("detail", detail);
 			formData.append("category", category);
+			formData.append("price", price);
 			
 			for (let i = 0; i < inputFileList.length; i++) {
 　　　　			formData.append("images", inputFileList[i]);  // 배열에서 이미지들을 꺼내 폼 객체에 담는다.
@@ -134,6 +145,7 @@
 			console.log(introduce);
 			console.log(detail);
 			console.log(category);
+			console.log(price);
 			
 			$.ajax({
 				// request
