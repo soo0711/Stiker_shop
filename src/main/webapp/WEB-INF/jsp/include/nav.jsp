@@ -119,7 +119,8 @@
 			
 		$("#keyring").on("click", function(e) {
 			e.preventDefault();
-	
+			// alert("키링");
+			
 			$.ajax({
 				url: "/menu-view"
 				,data: {"menu" : "keyring"} 

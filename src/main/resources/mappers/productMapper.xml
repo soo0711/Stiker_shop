@@ -55,11 +55,30 @@
 			,`introduce`
 			,`detail`
 			,`category`
+			,`price`
 			,`buyCount`
 			,`createdAt`
 			,`updatedAt`
  		FROM
  		`product`
+ 	</select>
+ 	
+ 	<select id="selectProductListByCategory" resultType="com.hukahuka.product.domain.Product">
+ 		SELECT 
+	 		`id`
+			,`name`
+			,`count`
+			,`introduce`
+			,`detail`
+			,`category`
+			,`price`
+			,`buyCount`
+			,`createdAt`
+			,`updatedAt`
+ 		FROM
+ 			`product`
+		WHERE
+			`category` = #{category}
  	</select>
  	
  	<update id="updateProductByCount" parameterType="map">
@@ -94,4 +113,21 @@
  			`productId` = #{productId}
  	</select>
  	
+ 	<select id="selectProductById" parameterType="int"  resultType="com.hukahuka.product.domain.Product">
+ 		SELECT 
+	 		`id`
+			,`name`
+			,`count`
+			,`introduce`
+			,`detail`
+			,`category`
+			,`price`
+			,`buyCount`
+			,`createdAt`
+			,`updatedAt`
+ 		FROM
+ 			`product`
+ 		WHERE
+ 			`id` = #{productId}
+ 	</select>
  </mapper>

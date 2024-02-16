@@ -31,6 +31,11 @@ public class ProductBO {
 		return productMapper.selectProductList();
 	}
 	
+	// input: String		output: List<Product>
+	public List<Product> getProductListByCategory(String category){
+		return productMapper.selectProductListByCategory(category);
+	}
+	
 	// input: count		output: X
 	public void updateProductByCount(int count, String name) {
 		productMapper.updateProductByCount(count, name);
@@ -49,5 +54,11 @@ public class ProductBO {
 	public List<ProductImage> getProductImageByProductId(int productId){
 		return productMapper.selectProductImageByProductId(productId);
 	}
+	
+	// input: int 		output: Product
+	public Product getProductById(int productId) {
+		return productMapper.selectProductById(productId);
+	}
+	
 	
 }

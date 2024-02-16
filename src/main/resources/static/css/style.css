@@ -10,3 +10,5 @@ footer {height: 50px;}
 .new-color {background-color: #F299C2;}
 #loginIdCheckBtn {background-color: #F299C2; color:white; height: 40px;}
 #signIn {width: 300px;}
+.product-size {width: 350px;}
+.productList-size {margin-left: 250px; min-width: 1600px;}
