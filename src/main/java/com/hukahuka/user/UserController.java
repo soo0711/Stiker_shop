@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.hukahuka.aop.TimeTrace;
 import com.hukahuka.mail.bo.MailBO;
 import com.hukahuka.mail.domain.UserMail;
 
@@ -18,6 +19,11 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/user")
 public class UserController {
 	
+	/**
+	 * 회원가입 화면
+	 * @param model
+	 * @return
+	 */
 	@GetMapping("/sign-up-view")
 	public String signUpView(
 			Model model) {
@@ -25,6 +31,12 @@ public class UserController {
 		return "template/layout";
 	}
 	
+	/**
+	 * 로그인 화면
+	 * @param model
+	 * @return
+	 */
+	@TimeTrace
 	@GetMapping("/sign-in-view")
 	public String signInView(
 			Model model) {

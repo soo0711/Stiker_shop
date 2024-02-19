@@ -30,7 +30,7 @@
 	
 	$(document).ready(function() {
 		
-		$("#upload").on("click", function(e) {
+		$(document).on("click", "#upload", function(e) {
 			e.preventDefault();
 	
 			$.ajax({
@@ -45,7 +45,7 @@
 			
 		}); // - upload
 		
-		$("#storage").on("click", function(e) {
+		$(document).on("click", "#storage", function(e) {
 			e.preventDefault();
 			// alert("재고");
 			
@@ -60,7 +60,7 @@
 			}); // - storage ajax
 		}); // - storage
 		
-		$("#status").on("click", function(e) {
+		$(document).on("click", "#status", function(e) {
 			e.preventDefault();
 			// alert("배송현황");
 			
@@ -75,7 +75,7 @@
 			}); // - storage ajax
 		}); // - status
 		
-		$("#all").on("click", function(e) {
+		$(document).on("click", "#all", function(e) {
 			e.preventDefault();
 
 			$.ajax({
@@ -89,7 +89,7 @@
 			}); // - all ajax
 		}); // - all
 			
-		$("#best").on("click", function(e) {
+		$(document).on("click", "#best", function(e) {
 			e.preventDefault();
 	
 			$.ajax({
@@ -103,7 +103,7 @@
 			}); // - best ajax
 		}); // - best
 			
-		$("#new").on("click", function(e) {
+		$(document).on("click", "#new", function(e) {
 			e.preventDefault();
 	
 			$.ajax({
@@ -117,7 +117,7 @@
 			}); // - new ajax
 		}); // - new
 			
-		$("#keyring").on("click", function(e) {
+		$(document).on("click", "#keyring", function(e) {
 			e.preventDefault();
 			// alert("키링");
 			
@@ -132,7 +132,7 @@
 			}); // - keyring ajax
 		}); // - keyring
 			
-		$("#stiker").on("click", function(e) {
+		$(document).on("click", "#stiker", function(e) {
 			e.preventDefault();
 	
 			$.ajax({
@@ -146,7 +146,7 @@
 			}); // - stiker ajax
 		}); // - stiker
 		
-		$("#memo").on("click", function(e) {
+		$(document).on("click", "#memo", function(e) {
 			e.preventDefault();
 	
 			$.ajax({
@@ -160,7 +160,7 @@
 			}); // - memo ajax
 		}); // - memo
 			
-		$("#acc").on("click", function(e) {
+		$(document).on("click", "#acc", function(e) {
 			e.preventDefault();
 	
 			$.ajax({
