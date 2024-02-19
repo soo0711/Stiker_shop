@@ -12,6 +12,9 @@ public class CartController {
 	@GetMapping("/cart-list-view")
 	public String CartListView(
 			Model model) {
+		
+		// db select
+		
 		model.addAttribute("viewName", "cart/cartList");
 		
 		return "template/layout";

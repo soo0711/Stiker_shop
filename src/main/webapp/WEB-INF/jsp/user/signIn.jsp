@@ -51,7 +51,7 @@
 						if (data.userLoginId == "suuuu"){
 							location.href="/manager/hukahuka-upload-view";
 						} else {
-							alert(data.userName + "님 환영합니다!" + data.userLoginId)
+							alert(data.userName + "님 환영합니다!")
 							location.href = "/home-view"
 						}
 					} else {

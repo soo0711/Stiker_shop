@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <div class="d-flex justify-content-center my-3 content1">
-	<img id ="productImg" src="${menuCard.productImage[0].imagePath }" data-img-path1="${menuCard.productImage[0].imagePath }" data-img-path2="${menuCard.productImage[1].imagePath }" data-img-path3="${menuCard.productImage[2].imagePath }" class="col-4 w-100" height="605" alt="${menuCard.product.name }">
+	<img id ="productImg" src="${menuCard.productImage[0].imagePath }" data-img-path1="${menuCard.productImage[0].imagePath }" data-img-path2="${menuCard.productImage[1].imagePath }" data-img-path3="${menuCard.productImage[2].imagePath }" class="col-5 w-100" height="605" alt="${menuCard.product.name }">
 	<div class="col-4 my-2">
 		<h3 class="font-weight-bold text-center">${menuCard.product.name }</h3>
 		<div class="d-flex justify-content-center my-3 align-items-center">
