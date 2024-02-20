@@ -42,25 +42,33 @@ public class MenuCardController {
 			List<MenuCard> menuCard = menuCardBO.generateMenuCardList();
 			model.addAttribute("menuCard", menuCard);
 			
-			return "menu/all";
+			model.addAttribute("viewName", "menu/all");
+			
+			return "template/layout";
 		}
 		
 		if (menu.equals("best")) {
 			
-			return "menu/best";
+			model.addAttribute("viewName", "menu/category");
+			
+			
+			return "template/layout";
 		}
 		
 		if (menu.equals("new")) {
 			
-			return "menu/new";
+			model.addAttribute("viewName", "menu/category");
+			
+			return "template/layout";
 		}
 		
 		if (menu.equals("keyring")) {
 			// db select
 			List<MenuCard> menuCard = menuCardBO.generateMenuCardListByCategory("키링");
 			model.addAttribute("menuCard", menuCard);
-						
-			return "menu/category";
+			model.addAttribute("viewName", "menu/category");
+			
+			return "template/layout";
 		}
 		
 		if (menu.equals("stiker")) {
@@ -68,14 +76,19 @@ public class MenuCardController {
 			List<MenuCard> menuCard = menuCardBO.generateMenuCardListByCategory("스티커");
 			model.addAttribute("menuCard", menuCard);
 			
-			return "menu/category";
+			model.addAttribute("viewName", "menu/category");
+			
+			return "template/layout";
 		}
 		
 		if (menu.equals("memo")) {
 			// db select
 			List<MenuCard> menuCard = menuCardBO.generateMenuCardListByCategory("메모");
 			model.addAttribute("menuCard", menuCard);
-			return "menu/category";
+			
+			model.addAttribute("viewName", "menu/category");
+			
+			return "template/layout";
 		}
 		
 		if (menu.equals("acc")) {
@@ -83,7 +96,9 @@ public class MenuCardController {
 			List<MenuCard> menuCard = menuCardBO.generateMenuCardListByCategory("디지털 악세사리");
 			model.addAttribute("menuCard", menuCard);
 			
-			return "menu/category";
+			model.addAttribute("viewName", "menu/category");
+			
+			return "template/layout";
 		}
 		
 		return "menu/all";

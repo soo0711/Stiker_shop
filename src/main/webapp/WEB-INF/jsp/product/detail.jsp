@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <div class="d-flex justify-content-center my-3 content1">
-	<img id ="productImg" src="${menuCard.productImage[0].imagePath }" data-img-path1="${menuCard.productImage[0].imagePath }" data-img-path2="${menuCard.productImage[1].imagePath }" data-img-path3="${menuCard.productImage[2].imagePath }" class="col-5 w-100" height="605" alt="${menuCard.product.name }">
+	<img id ="productImg" src="${menuCard.productImage[0].imagePath }" data-img-path1="${menuCard.productImage[0].imagePath }" data-img-path2="${menuCard.productImage[1].imagePath }" data-img-path3="${menuCard.productImage[2].imagePath }" class="col-4 w-100" height="605" alt="${menuCard.product.name }">
 	<div class="col-4 my-2">
 		<h3 class="font-weight-bold text-center">${menuCard.product.name }</h3>
 		<div class="d-flex justify-content-center my-3 align-items-center">
@@ -28,7 +28,7 @@
 		<div class="mt-5">
 			<a href="#" class="btn btn-dark btn-block" id="btnOrder">주문하기</a>
 			<button class="btn btn-light btn-block my-3" id="btnCart" data-toggle="modal" data-target="#modalCart" data-product-id="${menuCard.product.id }">장바구니 담기</button>
-			<button class="btn btn-light btn-block" id="btnWish" data-toggle="modal" data-target="#modalWish">위시리스트에 담기</button>
+			<button class="btn btn-light btn-block" id="btnWish" data-toggle="modal" data-target="#modalWish" data-product-id="${menuCard.product.id }">위시리스트에 담기</button>
 		</div>
 	</div>
 </div>
@@ -48,7 +48,7 @@
 			</div>
 			<div class="my-3">
 				<button class="btn btn-light" data-dismiss="modal">취소하기</button>
-				<a href="/cart/cart-list-view" class="btn btn-secondary" id="btnCartGo">장바구니 담기</a>
+				<a href="/cart/cart-list-view" class="btn btn-secondary" id="btnCartGo">장바구니로 이동</a>
 			</div>
 		</div>
 	</div>
@@ -68,7 +68,7 @@
 			</div>
 			<div class="my-3">
 				<button class="btn btn-light" data-dismiss="modal">취소하기</button>
-				<a href="#" class="btn btn-secondary" id="btnWishGo">위시리스트에 담기</a>
+				<a href="/wish/wish-list-view" class="btn btn-secondary" id="btnWishGo">위시리스트로 이동</a>
 			</div>
 		</div>
 	</div>
@@ -94,18 +94,42 @@
 					}
 					else {
 						alert(data.error_message);
+						location.reload();
 					}
 				}
 				
 				, error: function(request, status, error) {
 					alert("장바구니에 담지 못했습니다. 관리자에게 문의주세요.")
+					location.reload();
 				}
 			});
 			
 		});
 		
 		$("#btnWish").on("click", function(){
-			alert("btnWish");
+			// alert("btnWish");
+			let productId = $("#btnWish").data("product-id");
+			
+			$.ajax({
+				url: "/wish/wish-list"
+				, type: "POST"
+				, data: {"productId": productId}
+			
+				, success: function(data){
+					if (data.code == 200){
+						console.log("위시리스트에 담았습니다.")
+					}
+					else {
+						alert(data.error_message);
+						location.reload();
+					}
+				}
+				
+				, error: function(request, status, error) {
+					alert("위시리스트에 담지 못했습니다. 관리자에게 문의주세요.")
+					location.reload();
+				}
+			});
 		});
 		
 		$("#plus").on("click", function(){

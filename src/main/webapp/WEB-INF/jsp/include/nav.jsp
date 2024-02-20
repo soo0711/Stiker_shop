@@ -83,7 +83,7 @@
 				,data: {"menu" : "all"} 
 				
 				,success: function(data){
-					$(".content1").html(data);
+					location.href="/menu-view?menu=all"
 				}
 				
 			}); // - all ajax
@@ -97,7 +97,7 @@
 				,data: {"menu" : "best"} 
 				
 				,success: function(data){
-					$(".content1").html(data);
+					location.href="/menu-view?menu=best"
 				}
 				
 			}); // - best ajax
@@ -111,7 +111,7 @@
 				,data: {"menu" : "new"} 
 				
 				,success: function(data){
-					$(".content1").html(data);
+					location.href="/menu-view?menu=new"
 				}
 				
 			}); // - new ajax
@@ -126,7 +126,7 @@
 				,data: {"menu" : "keyring"} 
 				
 				,success: function(data){
-					$(".content1").html(data);
+					location.href="/menu-view?menu=keyring"
 				}
 				
 			}); // - keyring ajax
@@ -140,7 +140,7 @@
 				,data: {"menu" : "stiker"} 
 				
 				,success: function(data){
-					$(".content1").html(data);
+					location.href="/menu-view?menu=stiker"
 				}
 				
 			}); // - stiker ajax
@@ -154,7 +154,7 @@
 				,data: {"menu" : "memo"} 
 				
 				,success: function(data){
-					$(".content1").html(data);
+					location.href="/menu-view?menu=memo"
 				}
 				
 			}); // - memo ajax
@@ -168,7 +168,7 @@
 				,data: {"menu" : "acc"} 
 				
 				,success: function(data){
-					$(".content1").html(data);
+					location.href="/menu-view?menu=acc"
 				}
 				
 			}); // - acc ajax

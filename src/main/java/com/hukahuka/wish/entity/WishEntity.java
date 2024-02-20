@@ -1,8 +1,10 @@
-package com.hukahuka.cart.entity;
+package com.hukahuka.wish.entity;
 
 import java.util.Date;
 
 import org.hibernate.annotations.UpdateTimestamp;
+
+import com.hukahuka.cart.entity.CartEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,16 +16,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
-@Entity
 @ToString
+@Table(name = "wish")
 @Getter
-@Builder(toBuilder = true)
-@Table(name = "cart")
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CartEntity {
+@Entity
+public class WishEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
@@ -33,8 +36,6 @@ public class CartEntity {
 	
 	@Column(name = "productId")
 	private int productId;
-	
-	private int count;
 	
 	@UpdateTimestamp
 	@Column(name = "createdAt", updatable = false)

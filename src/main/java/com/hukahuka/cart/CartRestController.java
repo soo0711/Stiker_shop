@@ -27,8 +27,54 @@ public class CartRestController {
 			HttpSession session){
 		int userId = (int) session.getAttribute("userId");
 		
+		Map<String, Object> result = new HashMap<>();
+		
+		// 이미 장바구니에 있는지
+		if (cartBO.getCartEntityByUserIdAndProductId(userId, productId) != null) {
+			result.put("code", 500);
+			result.put("error_message", "이미 장바구니에 담겨있습니다.");
+			return result;
+		}
+		
 		// db insert
 		cartBO.addCartEntity(productId, userId, count);
+		
+		// 응답값
+		result.put("code", 200);
+		result.put("result", "성공");
+		
+		return result;
+	}
+	
+	@PostMapping("/delete")
+	public Map<String, Object> delete(
+			@RequestParam("productId") int productId,
+			HttpSession session){
+		
+		int userId = (int) session.getAttribute("userId");
+		
+		// db delete
+		cartBO.deleteCartEntityByUserIdAndProductId(userId, productId);
+		
+		// 응답값
+		Map<String, Object> result = new HashMap<>();
+		result.put("code", 200);
+		result.put("result", "성공");
+		
+		return result;
+	}
+	
+	
+	@PostMapping("/update")
+	public Map<String, Object> update(
+			@RequestParam("productId") int productId,
+			@RequestParam("count") int count,
+			HttpSession session){
+		
+		int userId = (int) session.getAttribute("userId");
+		
+		// db delete
+		cartBO.updateCartEntityByUserIdAndProductId(userId, productId, count);
 		
 		// 응답값
 		Map<String, Object> result = new HashMap<>();
