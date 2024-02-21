@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,29 +21,22 @@ public class WishRestController {
 	@Autowired
 	private WishBO wishBO;
 	
-	@PostMapping("/wish-list")
+	@RequestMapping("/{productId}")
 	public Map<String, Object> cartList(
-			@RequestParam("productId") int productId,
+			@PathVariable(name = "productId") int  productId,
 			HttpSession session){
 		int userId = (int) session.getAttribute("userId");
 		
 		Map<String, Object> result = new HashMap<>();
 		
-		// 이미 장바구니에 있는지
-		if (wishBO.getWishEntityByUserIdAndProductId(userId, productId) != null) {
-			result.put("code", 500);
-			result.put("error_message", "이미 위시리스트에 담겨있습니다.");
-			return result;
-		}
-		
-		// db insert
-		wishBO.addWishEntity(productId, userId);
-		
+		// wishToggle
+		wishBO.wishToggle(productId, userId);
+	
 		// 응답값
 		result.put("code", 200);
 		result.put("result", "성공");
-		
 		return result;
+
 	}
 	
 }

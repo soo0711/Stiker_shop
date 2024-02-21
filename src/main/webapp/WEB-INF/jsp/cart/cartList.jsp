@@ -10,9 +10,13 @@
 			<input type="checkbox" value="1">
 			<div class="mx-2 d-flex justify-content-between">
 				<div class="d-flex">
-					<img src="${cart.menuCard.productImage[0].imagePath }" id="plus" width="100" height="100" alt="상품이미지">
+					<a href="/product/detail?productId=${cart.menuCard.product.id }" class="text-dark">
+						<img src="${cart.menuCard.productImage[0].imagePath }" id="plus" width="100" height="100" alt="상품이미지">
+					</a>
 					<div class="ml-3 mb-2">
-						<div>${cart.menuCard.product.name }</div>
+						<a href="/product/detail?productId=${cart.menuCard.product.id }" class="text-dark">
+							<div>${cart.menuCard.product.name }</div>
+						</a>
 						<div class="d-flex align-items-center my-2">
 							<input type="text" class="buyCount form-control col-2 text-center" value="${cart.count }">
 							<img src="/static/img/plus.png" class="plusCart mx-2" width="25" height="25" alt="플러스 아이콘" data-product-id="${cart.menuCard.product.id }">

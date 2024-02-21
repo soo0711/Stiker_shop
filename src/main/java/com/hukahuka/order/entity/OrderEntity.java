@@ -1,8 +1,6 @@
-package com.hukahuka.wish.entity;
+package com.hukahuka.order.entity;
 
 import java.util.Date;
-
-import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,25 +14,45 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+@Entity
 @ToString
-@Table(name = "wish")
+@Table(name = "order")
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-public class WishEntity {
+public class OrderEntity {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@Column(name = "userId")
+	@Column(name="userId")
 	private int userId;
 	
-	@Column(name = "productId")
-	private int productId;
+	@Column(name="deliveryMessage")
+	private String deliveryMessage;
 	
-	@UpdateTimestamp
-	@Column(name = "createdAt", updatable = false)
+	private String name;
+	
+	@Column(name="phoneNumber")
+	private String phoneNumber;
+	
+	private String email;
+	
+	private String address;
+	
+	@Column(name="totalPay")
+	private int totalPay;
+	
+	@Column(name="payMethod")
+	private String payMethod;
+	
+	private String status;
+	
+	@Column(name="createdAt")
 	private Date createdAt;
+	
+	@Column(name="updatedAt")
+	private Date updatedAt;
 }

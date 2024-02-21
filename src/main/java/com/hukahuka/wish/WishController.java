@@ -1,5 +1,8 @@
 package com.hukahuka.wish;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,9 +27,9 @@ public class WishController {
 		int userId = (int) session.getAttribute("userId");
 		
 		// db select - user의 cart, product
-		//List<Map<String, Object>> menuList = wishBO.getMenuCardListByCartAndProduct(userId);
+		List<Map<String, Object>> wishList = wishBO.getMenuCardListByWishAndProduct(userId);
 		
-		//model.addAttribute("wishs", menuList);
+		model.addAttribute("wishs", wishList);
 		model.addAttribute("viewName", "wish/wishList");
 		
 		return "template/layout";

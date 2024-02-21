@@ -43,5 +43,8 @@ public interface ProductMapper {
 	
 	// input: int 		output: Product
 	public Product selectProductById(int productId);
+	
+	// input: X		output: List<Product>
+	public List<Product> selectProductListOrderByCreated();
 
 }

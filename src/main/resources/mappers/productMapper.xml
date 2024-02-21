@@ -130,4 +130,23 @@
  		WHERE
  			`id` = #{productId}
  	</select>
+ 	
+ 	<select id="selectProductListOrderByCreated" resultType="com.hukahuka.product.domain.Product">
+ 		SELECT 
+	 		`id`
+			,`name`
+			,`count`
+			,`introduce`
+			,`detail`
+			,`category`
+			,`price`
+			,`buyCount`
+			,`createdAt`
+			,`updatedAt`
+ 		FROM
+ 			`product`
+		ORDER BY
+			`createdAt` DESC
+		LIMIT 10;
+ 	</select>
  </mapper>

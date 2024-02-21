@@ -56,9 +56,11 @@ public class MenuCardController {
 		}
 		
 		if (menu.equals("new")) {
+			// db select
+			List<MenuCard> menuCard = menuCardBO.generateMenuCardListOrderByCreated();
 			
+			model.addAttribute("menuCard", menuCard);
 			model.addAttribute("viewName", "menu/category");
-			
 			return "template/layout";
 		}
 		

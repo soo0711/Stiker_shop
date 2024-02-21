@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <div class="d-flex justify-content-center my-3 content1">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 	<img id ="productImg" src="${menuCard.productImage[0].imagePath }" data-img-path1="${menuCard.productImage[0].imagePath }" data-img-path2="${menuCard.productImage[1].imagePath }" data-img-path3="${menuCard.productImage[2].imagePath }" class="col-4 w-100" height="605" alt="${menuCard.product.name }">
 	<div class="col-4 my-2">
 		<h3 class="font-weight-bold text-center">${menuCard.product.name }</h3>
@@ -28,7 +29,12 @@
 		<div class="mt-5">
 			<a href="#" class="btn btn-dark btn-block" id="btnOrder">주문하기</a>
 			<button class="btn btn-light btn-block my-3" id="btnCart" data-toggle="modal" data-target="#modalCart" data-product-id="${menuCard.product.id }">장바구니 담기</button>
-			<button class="btn btn-light btn-block" id="btnWish" data-toggle="modal" data-target="#modalWish" data-product-id="${menuCard.product.id }">위시리스트에 담기</button>
+			<c:if test="${isWish}">
+				<button class="btn btn-light btn-block btnWish" data-product-id="${menuCard.product.id }">위시리스트 <img src="/static/img/islike.png" alt="빈 하트" width="15" height="15"> </button>
+			</c:if>
+			<c:if test="${!isWish}">
+				<button class="btn btn-light btn-block btnWish text-center" data-product-id="${menuCard.product.id }">위시리스트 <img src="/static/img/islike2.png" alt="채워진 하트" width="15" height="15">  </button>
+			</c:if>
 		</div>
 	</div>
 </div>
@@ -53,27 +59,6 @@
 		</div>
 	</div>
 </div>
-
-<!-- 위시리스트 담기 -->
-<div class="modal fade" id="modalWish" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-post-id="">
-	<%-- 
-		modal-sm: 작은 모달창
-		modal-dialog-centerd: 수직 기준 가운데 위치
-	 --%>
-	<div class="modal-dialog modal-sm modal-dialog-centered">
-		<div class="modal-content text-center">
-			<div class="py-3 border-bottom">
-				<div>위시리스트에 담겼습니다. <br>
-				위시리스트로 이동하겠습니까?</div>
-			</div>
-			<div class="my-3">
-				<button class="btn btn-light" data-dismiss="modal">취소하기</button>
-				<a href="/wish/wish-list-view" class="btn btn-secondary" id="btnWishGo">위시리스트로 이동</a>
-			</div>
-		</div>
-	</div>
-</div>
-
 
 <script>
 
@@ -106,28 +91,23 @@
 			
 		});
 		
-		$("#btnWish").on("click", function(){
+		$(".btnWish").on("click", function(){
 			// alert("btnWish");
-			let productId = $("#btnWish").data("product-id");
+			let productId = $(this).data("product-id");
 			
 			$.ajax({
-				url: "/wish/wish-list"
-				, type: "POST"
-				, data: {"productId": productId}
+				url: "/wish/" + productId
 			
 				, success: function(data){
 					if (data.code == 200){
-						console.log("위시리스트에 담았습니다.")
-					}
-					else {
-						alert(data.error_message);
-						location.reload();
+						// 토글만 하는 곳
+						location.reload(true);
+					} else {
+						location.reload(true);
 					}
 				}
-				
-				, error: function(request, status, error) {
-					alert("위시리스트에 담지 못했습니다. 관리자에게 문의주세요.")
-					location.reload();
+				, error: function(request, status, error){
+					alert("위시리스트 담기에 실패했습니다. 관리자에게 문의해주세요.");
 				}
 			});
 		});

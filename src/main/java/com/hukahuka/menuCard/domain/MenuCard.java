@@ -2,7 +2,6 @@ package com.hukahuka.menuCard.domain;
 
 import java.util.List;
 
-import com.hukahuka.cart.entity.CartEntity;
 import com.hukahuka.product.domain.Product;
 import com.hukahuka.product.domain.ProductImage;
 
@@ -18,4 +17,5 @@ public class MenuCard {
 	// 상품 이미지 주소 
 	private List<ProductImage> productImage;
 	
+	private boolean isWish;
 }

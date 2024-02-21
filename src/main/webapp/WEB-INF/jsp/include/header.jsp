@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <div class="new-color text-center header1">
-	<small><a href="#" class="text-white font-weight-bold text-decoration-none">NEW!! 스티커</a></small>
+	<small><a href="/menu-view?menu=new" class="text-white font-weight-bold text-decoration-none">NEW!! 스티커</a></small>
 </div>
 <div class="d-flex header2">
 	<div class="col-4"></div>
@@ -17,8 +17,15 @@
 				<a href="/user/sign-up-view" class="text-dark my-3">회원가입</a>
 			</c:if>
 			<c:if test="${not empty userName}">
-				<span class="text-dark m-3">${userName }님</span>
-				<a href="/user/sign-out" class="text-dark my-3">로그아웃</a>
+				<div class="text-center my-3">
+					<span class="text-dark mx-3">${userName }님</span>
+					<a href="/user/sign-out" class="text-dark my-3">로그아웃</a>
+					<div>
+						<a href="#" class="text-dark"><small>마이페이지</small></a>
+						<a href="/cart/cart-list-view" class="text-dark mx-3"><small>장바구니</small></a>
+						<a href="/wish/wish-list-view" class="text-dark"><small>위시리스트</small></a>
+					</div>
+				</div>
 			</c:if>
 		</c:if>
 		<c:if test="${fn:contains(viewName, 'manager') eq true}">

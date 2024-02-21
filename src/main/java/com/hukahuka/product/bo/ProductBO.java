@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.hukahuka.product.domain.Product;
 import com.hukahuka.product.domain.ProductImage;
 import com.hukahuka.product.mapper.ProductMapper;
+import com.hukahuka.wish.bo.WishBO;
 
 @Service
 public class ProductBO {
@@ -60,5 +61,10 @@ public class ProductBO {
 		return productMapper.selectProductById(productId);
 	}
 	
+	// input: X		output: List<Product>
+	public List<Product> getProductListOrderByCreated(){
+		return productMapper.selectProductListOrderByCreated();
+	}
+
 	
 }
