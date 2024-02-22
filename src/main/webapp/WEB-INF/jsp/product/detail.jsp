@@ -27,7 +27,7 @@
 			<div>주문시부터 배송기간이 2-3일 소요됩니다.</div>
 		</div>
 		<div class="mt-5">
-			<a href="#" class="btn btn-dark btn-block" id="btnOrder">주문하기</a>
+			<a href="#" class="btn btn-dark btn-block" id="btnOrder" data-product-id="${menuCard.product.id }">주문하기</a>
 			<button class="btn btn-light btn-block my-3" id="btnCart" data-toggle="modal" data-target="#modalCart" data-product-id="${menuCard.product.id }">장바구니 담기</button>
 			<c:if test="${isWish}">
 				<button class="btn btn-light btn-block btnWish" data-product-id="${menuCard.product.id }">위시리스트 <img src="/static/img/islike.png" alt="빈 하트" width="15" height="15"> </button>
@@ -160,7 +160,24 @@
 			
 		}, 3000); // 3초마다 변환
 		
-		
+		$("#btnOrder").on("click", function() {
+			// alert("주문");
+			let productId = $(this).data("product-id");
+			let count = $("#buyCount").val();
+			
+			$.ajax({
+				url: "/order/order-list-view"
+				, type: "POST"
+				, data: {"productId" : productId, "count" : count}
+			
+				, success: function(data){
+					location.href="/order/order-list-view"
+				}
+				, error: function(request, status, error){
+					alert("주문하기에 실패했습니다. 관리자에게 문의주세요.")
+				}
+			});
+		});
 	});
 
 </script>
