@@ -8,7 +8,7 @@
 		<c:forEach items="${carts }" var="cart">
 			<div>
 				<hr>
-				<input type="checkbox" class="checkBox" name="product" value="${cart.menuCard.product.id },${cart.count } ">
+				<input type="checkbox" name="product" value="${cart.menuCard.product.id }">
 				<div class="mx-2 d-flex justify-content-between">
 					<div class="d-flex">
 						<a href="/product/detail?productId=${cart.menuCard.product.id }" class="text-dark">

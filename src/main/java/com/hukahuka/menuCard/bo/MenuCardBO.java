@@ -6,14 +6,18 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hukahuka.cart.bo.CartBO;
+import com.hukahuka.cart.entity.CartEntity;
 import com.hukahuka.menuCard.domain.MenuCard;
 import com.hukahuka.product.bo.ProductBO;
 import com.hukahuka.product.domain.Product;
 import com.hukahuka.product.domain.ProductImage;
-import com.hukahuka.wish.bo.WishBO;
 
 @Service
 public class MenuCardBO {
+	
+	@Autowired
+	private CartBO cartBO;
 	
 	@Autowired
 	private ProductBO productBO;
@@ -147,6 +151,36 @@ public class MenuCardBO {
 		menuCard.setProductImage(productImage);
 		
 		return menuCard;
+	}
+	
+	// input: int		output:MenuCard
+	// 가공하는 view를 사용할 때는 generate
+	public List<MenuCard> generateMenuCardListByProductId(int[] product){
+		
+		List<MenuCard> menu = new ArrayList<>();
+		
+		for (int productId : product) {
+			// 상품 목록 가져오기
+			Product productOne = productBO.getProductById(productId);
+			
+			MenuCard menuCard = new MenuCard();
+			
+			// 상품 목록
+			menuCard.setProduct(productOne);
+			
+			List<ProductImage> productImage = productBO.getProductImageByProductId(productId);
+			
+			// 그 상품의 이미지 목록
+			menuCard.setProductImage(productImage);
+			
+			// 장바구니 개수
+			CartEntity cart = cartBO.getCartEntityByProductId(productId);
+			
+			menuCard.setCart(cart);
+			menu.add(menuCard);
+		}
+		
+		return menu;
 	}
 
 }

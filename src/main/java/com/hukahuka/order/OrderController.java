@@ -1,5 +1,7 @@
 package com.hukahuka.order;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,13 +37,13 @@ public class OrderController {
 	
 	@PostMapping("/order-list-view")
 	public String orderView(
-		//@RequestParam("product") String[] product,
+		@RequestParam("product") int[] product,
 		Model model) {
 	
 		// db select
+		List<MenuCard> menuCard = orderBO.getMenuCardList(product);
 		
-		// model.addAttribute("orderCard", menuCard);
-		// model.addAttribute("count", count);
+		model.addAttribute("cartOrderCard", menuCard);
 		model.addAttribute("viewName", "order/orderList");
 		
 		return "template/layout";

@@ -19,9 +19,6 @@ public class CartBO {
 	
 	@Autowired
 	private CartRepository cartRepository;
-	
-	@Autowired
-	private MenuCardBO menuCardBO;
 
 
 	// input: productId, userId, count		output: X
@@ -35,27 +32,6 @@ public class CartBO {
 				);
 	}
 	
-	// input: userId	output: List<MenuCard>
-	public List<Map<String, Object>> getMenuCardListByCartAndProduct(int userId) {
-		List<CartEntity> cart = cartRepository.findByUserId(userId);;
-		
-		List<Map<String, Object>> menuList = new ArrayList<>();
-		
-		for (int i = 0;  i < cart.size(); i++) {
-			
-			MenuCard menuCard = menuCardBO.generateMenuCardByProductId(cart.get(i).getProductId());
-	
-			Map<String, Object> map = new HashMap<>();
-			map.put("productId", cart.get(i).getProductId());
-			map.put("count", cart.get(i).getCount());
-			map.put("menuCard", menuCard);
-			
-			menuList.add(map);
-		}
-		
-		
-		return menuList;
-	}
 	
 	// input:userId, productId		output:CartEntity
 	public CartEntity getCartEntityByUserIdAndProductId(int userId, int productId) {
@@ -78,4 +54,9 @@ public class CartBO {
                 .build();
         cartRepository.save(cart); 
 	}
+	
+	// input: productId		output: CartEntity
+		public CartEntity getCartEntityByProductId(int productId) {
+			return cartRepository.findByProductId(productId);
+		}
 }

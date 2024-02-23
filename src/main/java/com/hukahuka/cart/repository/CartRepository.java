@@ -14,4 +14,7 @@ public interface CartRepository extends JpaRepository<CartEntity, Integer>{
 	// input: userId	output: CartEntity
 	public CartEntity findByUserIdAndProductId(int userId, int productId);
 	
+	// input: productId	output: CartEntity
+	public CartEntity findByProductId(int productId);
+	
 }

@@ -28,7 +28,7 @@
 			<div>주문시부터 배송기간이 2-3일 소요됩니다.</div>
 		</div>
 		<div class="mt-5">
-			<input type="text" class="d-none" name="productId" value="${menuCard.product.id }">
+			<input type="hidden" name="productId" value="${menuCard.product.id }">
 			<button class="btn btn-dark btn-block" id="btnOrder" data-product-id="${menuCard.product.id }">주문하기</button>
 			<a href="#" class="btn btn-light btn-block my-3" id="btnCart" data-toggle="modal" data-target="#modalCart" data-product-id="${menuCard.product.id }">장바구니 담기</a>
 			<c:if test="${isWish}">

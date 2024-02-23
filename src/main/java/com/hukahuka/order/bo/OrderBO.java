@@ -1,5 +1,7 @@
 package com.hukahuka.order.bo;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,5 +17,10 @@ public class OrderBO {
 	// input: productId, count		output: MenuCard
 	public MenuCard getMenuCard(int productId) {
 		return menuCardBO.generateMenuCardById(productId);
+	}
+	
+	// input:[] product, [] count		output: List<MenuCard>
+	public List<MenuCard> getMenuCardList(int[] product) {
+		return menuCardBO.generateMenuCardListByProductId(product);
 	}
 }

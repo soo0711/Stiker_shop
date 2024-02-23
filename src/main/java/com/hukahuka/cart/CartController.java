@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.hukahuka.cart.bo.CartBO;
-import com.hukahuka.menuCard.bo.MenuCardBO;
-import com.hukahuka.menuCard.domain.MenuCard;
+import com.hukahuka.cart.bo.CartServiceBO;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -21,6 +20,9 @@ public class CartController {
 	
 	@Autowired
 	private CartBO cartBO;
+	
+	@Autowired
+	private CartServiceBO cartServiceBO;
 
 	@GetMapping("/cart-list-view")
 	public String CartListView(
@@ -30,7 +32,7 @@ public class CartController {
 		int userId = (int) session.getAttribute("userId");
 		
 		// db select - user의 cart, product
-		List<Map<String, Object>> menuList = cartBO.getMenuCardListByCartAndProduct(userId);
+		List<Map<String, Object>> menuList = cartServiceBO.getMenuCardListByCartAndProduct(userId);
 		
 		model.addAttribute("carts", menuList);
 		model.addAttribute("viewName", "cart/cartList");

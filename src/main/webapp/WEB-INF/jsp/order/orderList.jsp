@@ -23,23 +23,26 @@
 			</div>
 			<hr>
 			</c:if>
-			<c:if test="">
-			<hr>
-			<div class="mx-2 d-flex justify-content-between">
-				<div class="d-flex">
-					<a href="/product/detail?productId=${orderCard.product.id }" class="text-dark">
-						<img src="${orderCard.productImage[0].imagePath }" id="plus" width="100" height="100" alt="상품이미지">
-					</a>
-					<div class="ml-3 mb-2">
-						<a href="/product/detail?productId=${orderCard.product.id }" class="text-dark">
-							<div>${orderCard.product.name }</div>
+			<c:if test="${not empty cartOrderCard }">
+			<c:set var="result" value="0" />
+			<c:forEach items="${cartOrderCard }" var="cartOrder" varStatus="status">
+				<hr>
+				<div class="mx-2 d-flex justify-content-between">
+					<div class="d-flex">
+						<a href="/product/detail?productId=${cartOrder.product.id }" class="text-dark">
+							<img src="${cartOrder.productImage[0].imagePath }" id="plus" width="100" height="100" alt="상품이미지">
 						</a>
-						<small class="buyCount text-center text-secondary">주문수량: ${count }개</small>
-						<div><fmt:formatNumber type="number" value="${orderCard.product.price }"/> 원</div>
+						<div class="ml-3 mb-2">
+							<a href="/product/detail?productId=${cartOrder.product.id }" class="text-dark">
+								<div>${cartOrder.product.name }</div>
+							</a>
+							<small class="buyCount text-center text-secondary">주문수량: ${cartOrder.cart.count } 개</small>
+							<div><fmt:formatNumber type="number" value="${cartOrder.product.price }"/> 원</div>
+						</div>
 					</div>
 				</div>
-			</div>
-			<hr>
+				<hr>
+				</c:forEach>
 			</c:if>
 		</div>
 	</div>
@@ -102,19 +105,29 @@
 			<div class="col-5">
 				<hr>
 					<div class="p-3">
-						<div class="font-weight-bold d-flex align-items-center justify-content-between">
+						<div class="font-weight-bold d-flex align-items-center justify-content-between mb-3">
 							<div class="ml-2">주문 금액 </div>
 							<c:if test="${not empty orderCard }">
 								<div class="mr-2"><fmt:formatNumber type="number" value="${orderCard.product.price * count}"/> 원</div>
 							</c:if>
-							<c:if test="${empty orderCard }">
-								<div class="mr-2"><fmt:formatNumber type="number" value="${orderCard.product.price * count}"/> 원</div>
+							<c:if test="${empty cartOrderCard }">
+								<div class="mr-2"><fmt:formatNumber type="number" value="${orderCard.product.price * cartOrder.cart.count}"/> 원</div>
 							</c:if>
 						</div>
-						<div class="mt-3 font-weight-bold d-flex align-items-center justify-content-between">
-							<small class="text-secondary ml-4">상품 금액 </small>
+						<div>
 							<c:if test="${not empty orderCard }">
-								<small class="text-secondary mr-2"><fmt:formatNumber type="number" value="${orderCard.product.price * count}"/> 원</small>
+								<div class="d-flex font-weight-bold align-items-center justify-content-between">
+									<small class="text-secondary ml-4">상품 금액 </small>
+									<small class="text-secondary mr-2"><fmt:formatNumber type="number" value="${orderCard.product.price * count}"/> 원</small>
+								</div>
+							</c:if>
+							<c:if test="${not empty cartOrderCard }">
+							<c:forEach items="${cartOrderCard }" var="cartOrder" varStatus="status">
+								<div class="d-flex font-weight-bold align-items-center justify-content-between">
+									<small class="text-secondary ml-4">상품 금액 </small>
+									<small class="text-secondary mr-2"><fmt:formatNumber type="number" value="${cartOrder.product.price * cartOrder.cart.count}"/> 원</small>
+								</div>
+							</c:forEach>
 							</c:if>
 						</div>
 						<div class="font-weight-bold d-flex align-items-center justify-content-between">
@@ -128,7 +141,7 @@
 					<c:if test="${not empty orderCard }">
 						<h5 class="font-weight-bold mr-2"><fmt:formatNumber type="number" value="${orderCard.product.price * count + 3000}"/> 원</h5>
 					</c:if>
-					<c:if test="${empty orderCard }">
+					<c:if test="${not empty orderCard }">
 						<h5 class="font-weight-bold mr-2"><fmt:formatNumber type="number" value="${orderCard.product.price * count + 3000}"/> 원</h5>
 					</c:if>
 				</div>
