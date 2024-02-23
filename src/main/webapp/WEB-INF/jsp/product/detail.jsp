@@ -5,9 +5,10 @@
 	<img id ="productImg" src="${menuCard.productImage[0].imagePath }" data-img-path1="${menuCard.productImage[0].imagePath }" data-img-path2="${menuCard.productImage[1].imagePath }" data-img-path3="${menuCard.productImage[2].imagePath }" class="col-4 w-100" height="605" alt="${menuCard.product.name }">
 	<div class="col-4 my-2">
 		<h3 class="font-weight-bold text-center">${menuCard.product.name }</h3>
+		<form method="POST" action="/order/order-view">
 		<div class="d-flex justify-content-center my-3 align-items-center">
 			<img src="/static/img/minus.png" id="minus" width="25" height="25" alt="마이너스 아이콘">
-			<input type="text" id="buyCount" class="form-control col-1 text-center mx-2" value="1">
+			<input type="text" id="buyCount" class="form-control col-1 text-center mx-2" value="1" name="count">
 			<img src="/static/img/plus.png" id="plus" width="25" height="25" alt="플러스 아이콘">
 		</div>
 		<div class="my-4">
@@ -27,15 +28,17 @@
 			<div>주문시부터 배송기간이 2-3일 소요됩니다.</div>
 		</div>
 		<div class="mt-5">
-			<a href="#" class="btn btn-dark btn-block" id="btnOrder" data-product-id="${menuCard.product.id }">주문하기</a>
-			<button class="btn btn-light btn-block my-3" id="btnCart" data-toggle="modal" data-target="#modalCart" data-product-id="${menuCard.product.id }">장바구니 담기</button>
+			<input type="text" class="d-none" name="productId" value="${menuCard.product.id }">
+			<button class="btn btn-dark btn-block" id="btnOrder" data-product-id="${menuCard.product.id }">주문하기</button>
+			<a href="#" class="btn btn-light btn-block my-3" id="btnCart" data-toggle="modal" data-target="#modalCart" data-product-id="${menuCard.product.id }">장바구니 담기</a>
 			<c:if test="${isWish}">
-				<button class="btn btn-light btn-block btnWish" data-product-id="${menuCard.product.id }">위시리스트 <img src="/static/img/islike.png" alt="빈 하트" width="15" height="15"> </button>
+				<a href="#" class="btn btn-light btn-block btnWish" data-product-id="${menuCard.product.id }">위시리스트 <img src="/static/img/islike.png" alt="빈 하트" width="15" height="15"> </a>
 			</c:if>
 			<c:if test="${!isWish}">
-				<button class="btn btn-light btn-block btnWish text-center" data-product-id="${menuCard.product.id }">위시리스트 <img src="/static/img/islike2.png" alt="채워진 하트" width="15" height="15">  </button>
+				<a href="#" class="btn btn-light btn-block btnWish text-center" data-product-id="${menuCard.product.id }">위시리스트 <img src="/static/img/islike2.png" alt="채워진 하트" width="15" height="15"> </a>
 			</c:if>
 		</div>
+		</form>
 	</div>
 </div>
 
@@ -160,24 +163,6 @@
 			
 		}, 3000); // 3초마다 변환
 		
-		$("#btnOrder").on("click", function() {
-			// alert("주문");
-			let productId = $(this).data("product-id");
-			let count = $("#buyCount").val();
-			
-			$.ajax({
-				url: "/order/order-list-view"
-				, type: "POST"
-				, data: {"productId" : productId, "count" : count}
-			
-				, success: function(data){
-					location.href="/order/order-list-view"
-				}
-				, error: function(request, status, error){
-					alert("주문하기에 실패했습니다. 관리자에게 문의주세요.")
-				}
-			});
-		});
 	});
 
 </script>

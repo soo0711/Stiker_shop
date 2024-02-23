@@ -5,32 +5,48 @@
 <div>
 	<div class="d-flex justify-content-center">
 		<div class="col-7">
-			<c:if>
-			<c:forEach items="${orderCards}" var="orderCard">
+			<c:if test="${not empty orderCard }">
 			<hr>
 			<div class="mx-2 d-flex justify-content-between">
 				<div class="d-flex">
 					<a href="/product/detail?productId=${orderCard.product.id }" class="text-dark">
-						<img src="/static/img/home_img2.jpg" id="plus" width="100" height="100" alt="상품이미지">
+						<img src="${orderCard.productImage[0].imagePath }" id="plus" width="100" height="100" alt="상품이미지">
 					</a>
 					<div class="ml-3 mb-2">
 						<a href="/product/detail?productId=${orderCard.product.id }" class="text-dark">
 							<div>${orderCard.product.name }</div>
 						</a>
-						<small type="text" class="buyCount text-center text-secondary">주문수량: ${count }개</small>
-						<div>${orderCard.product.price} 원</div>
+						<small class="buyCount text-center text-secondary">주문수량: ${count }개</small>
+						<div><fmt:formatNumber type="number" value="${orderCard.product.price }"/> 원</div>
 					</div>
 				</div>
 			</div>
 			<hr>
-			</c:forEach>
+			</c:if>
+			<c:if test="">
+			<hr>
+			<div class="mx-2 d-flex justify-content-between">
+				<div class="d-flex">
+					<a href="/product/detail?productId=${orderCard.product.id }" class="text-dark">
+						<img src="${orderCard.productImage[0].imagePath }" id="plus" width="100" height="100" alt="상품이미지">
+					</a>
+					<div class="ml-3 mb-2">
+						<a href="/product/detail?productId=${orderCard.product.id }" class="text-dark">
+							<div>${orderCard.product.name }</div>
+						</a>
+						<small class="buyCount text-center text-secondary">주문수량: ${count }개</small>
+						<div><fmt:formatNumber type="number" value="${orderCard.product.price }"/> 원</div>
+					</div>
+				</div>
+			</div>
+			<hr>
 			</c:if>
 		</div>
 	</div>
 	<div class=" d-flex justify-content-center">	
 		<div class="col-7 d-flex justify-content-between">
 			<div>
-				<div>받으시는 분${orderCards}</div>
+				<div>받으시는 분</div>
 				<input type="text" class="form-control col-3 my-2" id="name">
 				<div>주소</div>
 				<div class="d-flex align-items-center">
@@ -88,21 +104,33 @@
 					<div class="p-3">
 						<div class="font-weight-bold d-flex align-items-center justify-content-between">
 							<div class="ml-2">주문 금액 </div>
-							<div class="mr-2"> 8500원 </div>
+							<c:if test="${not empty orderCard }">
+								<div class="mr-2"><fmt:formatNumber type="number" value="${orderCard.product.price * count}"/> 원</div>
+							</c:if>
+							<c:if test="${empty orderCard }">
+								<div class="mr-2"><fmt:formatNumber type="number" value="${orderCard.product.price * count}"/> 원</div>
+							</c:if>
 						</div>
 						<div class="mt-3 font-weight-bold d-flex align-items-center justify-content-between">
 							<small class="text-secondary ml-4">상품 금액 </small>
-							<small class="text-secondary mr-2"> 5500원 </small>
+							<c:if test="${not empty orderCard }">
+								<small class="text-secondary mr-2"><fmt:formatNumber type="number" value="${orderCard.product.price * count}"/> 원</small>
+							</c:if>
 						</div>
 						<div class="font-weight-bold d-flex align-items-center justify-content-between">
 							<small class="text-secondary ml-4">배송비 </small>
-							<small class="text-secondary mr-2"> + 3000원 </small>
+							<small class="text-secondary mr-2"> + 3,000 원 </small>
 						</div>
 					</div>
 				<hr>
 				<div class="d-flex align-items-center justify-content-between">
 					<h5 class="font-weight-bold ml-2">결제 최종액 </h5>
-					<h5 class="font-weight-bold mr-2"> 8500원</h5>
+					<c:if test="${not empty orderCard }">
+						<h5 class="font-weight-bold mr-2"><fmt:formatNumber type="number" value="${orderCard.product.price * count + 3000}"/> 원</h5>
+					</c:if>
+					<c:if test="${empty orderCard }">
+						<h5 class="font-weight-bold mr-2"><fmt:formatNumber type="number" value="${orderCard.product.price * count + 3000}"/> 원</h5>
+					</c:if>
 				</div>
 				<button class="btn btn-secondary btn-block my-4">결제하기</button>
 				<!-- 비회원이면 안보이게 하기-->

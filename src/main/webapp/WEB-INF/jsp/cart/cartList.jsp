@@ -4,35 +4,37 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <div class="cart-size d-flex justify-content-center">
 	<div class="col-7">
-	<c:forEach items="${carts }" var="cart">
-		<div>
-			<hr>
-			<input type="checkbox" value="1">
-			<div class="mx-2 d-flex justify-content-between">
-				<div class="d-flex">
-					<a href="/product/detail?productId=${cart.menuCard.product.id }" class="text-dark">
-						<img src="${cart.menuCard.productImage[0].imagePath }" id="plus" width="100" height="100" alt="상품이미지">
-					</a>
-					<div class="ml-3 mb-2">
+	<form method="POST" action="/order/order-list-view">
+		<c:forEach items="${carts }" var="cart">
+			<div>
+				<hr>
+				<input type="checkbox" class="checkBox" name="product" value="${cart.menuCard.product.id },${cart.count } ">
+				<div class="mx-2 d-flex justify-content-between">
+					<div class="d-flex">
 						<a href="/product/detail?productId=${cart.menuCard.product.id }" class="text-dark">
-							<div>${cart.menuCard.product.name }</div>
+							<img src="${cart.menuCard.productImage[0].imagePath }" id="plus" width="100" height="100" alt="상품이미지">
 						</a>
-						<div class="d-flex align-items-center my-2">
-							<input type="text" class="buyCount form-control col-2 text-center" value="${cart.count }">
-							<img src="/static/img/plus.png" class="plusCart mx-2" width="25" height="25" alt="플러스 아이콘" data-product-id="${cart.menuCard.product.id }">
-							<img src="/static/img/minus.png" class="minusCart" width="25" height="25" alt="마이너스 아이콘" data-product-id="${cart.menuCard.product.id }">
+						<div class="ml-3 mb-2">
+							<a href="/product/detail?productId=${cart.menuCard.product.id }" class="text-dark">
+								<div>${cart.menuCard.product.name }</div>
+							</a>
+							<div class="d-flex align-items-center my-2">
+								<input type="text" name="count" class="buyCount form-control col-2 text-center" value="${cart.count }">
+								<img src="/static/img/plus.png" class="plusCart mx-2" width="25" height="25" alt="플러스 아이콘" data-product-id="${cart.menuCard.product.id }">
+								<img src="/static/img/minus.png" class="minusCart" width="25" height="25" alt="마이너스 아이콘" data-product-id="${cart.menuCard.product.id }">
+							</div>
+							<div><fmt:formatNumber type="number" value="${cart.menuCard.product.price }"/> 원</div>
 						</div>
-						<div><fmt:formatNumber type="number" value="${cart.menuCard.product.price }"/> 원</div>
 					</div>
+					<a href="#" class="cartDelete text-secondary" data-product-id="${cart.menuCard.product.id }">X</a>
 				</div>
-				<a href="#" class="cartDelete text-secondary" data-product-id="${cart.menuCard.product.id }">X</a>
+				<hr>
 			</div>
-			<hr>
+		</c:forEach>
+		<div class="d-flex justify-content-end mt-5">
+			<button class="btn btn-dark" id="btnOrder">주문하기</button>
 		</div>
-	</c:forEach>
-	<div class="d-flex justify-content-end mt-5">
-		<button class="btn btn-dark" id="btnOrder">주문하기</button>
-	</div>
+	</form>
 	</div>
 </div>
 

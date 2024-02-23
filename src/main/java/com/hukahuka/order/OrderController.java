@@ -17,24 +17,34 @@ public class OrderController {
 	@Autowired
 	private OrderBO orderBO;
 
-	@RequestMapping("/order-list-view")
+	@PostMapping("/order-view")
 	public String orderListView(
-		@RequestParam(name = "productId", required = false) Integer productId,
-		@RequestParam(name = "productId", required = false) Integer count,
+		@RequestParam("productId") int productId,
+		@RequestParam("count") int count,
 		Model model) {
 	
-		if (productId != null) {
-			// db select
-			MenuCard menuCard = orderBO.getMenuCard(productId);
-			
-			model.addAttribute("orderCards", menuCard);
-			model.addAttribute("count", count);
-		}
+		// db select
+		MenuCard menuCard = orderBO.getMenuCard(productId);
 		
+		model.addAttribute("orderCard", menuCard);
+		model.addAttribute("count", count);
 		model.addAttribute("viewName", "order/orderList");
 		
 		return "template/layout";
 	}
 	
+	@PostMapping("/order-list-view")
+	public String orderView(
+		//@RequestParam("product") String[] product,
+		Model model) {
 	
+		// db select
+		
+		// model.addAttribute("orderCard", menuCard);
+		// model.addAttribute("count", count);
+		model.addAttribute("viewName", "order/orderList");
+		
+		return "template/layout";
+	}
+
 }
