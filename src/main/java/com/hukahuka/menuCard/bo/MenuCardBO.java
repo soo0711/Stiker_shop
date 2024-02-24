@@ -155,7 +155,7 @@ public class MenuCardBO {
 	
 	// input: int		output:MenuCard
 	// 가공하는 view를 사용할 때는 generate
-	public List<MenuCard> generateMenuCardListByProductId(int[] product){
+	public List<MenuCard> generateMenuCardListByProductId(int[] product, int userId){
 		
 		List<MenuCard> menu = new ArrayList<>();
 		
@@ -174,7 +174,7 @@ public class MenuCardBO {
 			menuCard.setProductImage(productImage);
 			
 			// 장바구니 개수
-			CartEntity cart = cartBO.getCartEntityByProductId(productId);
+			CartEntity cart = cartBO.getCartEntityByProductIdAndUserId(productId, userId);
 			
 			menuCard.setCart(cart);
 			menu.add(menuCard);

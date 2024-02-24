@@ -20,7 +20,7 @@ public class OrderBO {
 	}
 	
 	// input:[] product, [] count		output: List<MenuCard>
-	public List<MenuCard> getMenuCardList(int[] product) {
-		return menuCardBO.generateMenuCardListByProductId(product);
+	public List<MenuCard> getMenuCardList(int[] product, int userId) {
+		return menuCardBO.generateMenuCardListByProductId(product, userId);
 	}
 }

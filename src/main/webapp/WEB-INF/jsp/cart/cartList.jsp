@@ -8,7 +8,7 @@
 		<c:forEach items="${carts }" var="cart">
 			<div>
 				<hr>
-				<input type="checkbox" name="product" value="${cart.menuCard.product.id }">
+				<input type="checkbox" name="product" class="checkBox" value="${cart.menuCard.product.id }">
 				<div class="mx-2 d-flex justify-content-between">
 					<div class="d-flex">
 						<a href="/product/detail?productId=${cart.menuCard.product.id }" class="text-dark">
@@ -119,6 +119,15 @@
 					alert("장바구니 물품 삭제에 실패했습니다. 관리자에게 문의 주세요.")
 				}	
 			});
+		});
+		
+		$("form").on("submit", function(){
+			 let checkBox = $(".checkBox:checked").val();
+				if (!checkBox){
+					alert("물품을 선택해주세요.");
+					return false;
+				}
+				return true;
 		});
 	});
 

@@ -56,7 +56,7 @@ public class CartBO {
 	}
 	
 	// input: productId		output: CartEntity
-		public CartEntity getCartEntityByProductId(int productId) {
-			return cartRepository.findByProductId(productId);
+		public CartEntity getCartEntityByProductIdAndUserId(int productId, int userId) {
+			return cartRepository.findByProductIdAndUserId(productId, userId);
 		}
 }

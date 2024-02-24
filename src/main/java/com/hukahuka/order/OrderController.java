@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.hukahuka.menuCard.domain.MenuCard;
 import com.hukahuka.order.bo.OrderBO;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("/order")
 public class OrderController {
@@ -38,10 +40,13 @@ public class OrderController {
 	@PostMapping("/order-list-view")
 	public String orderView(
 		@RequestParam("product") int[] product,
+		HttpSession session,
 		Model model) {
 	
+		int userId = (int) session.getAttribute("userId");
+		
 		// db select
-		List<MenuCard> menuCard = orderBO.getMenuCardList(product);
+		List<MenuCard> menuCard = orderBO.getMenuCardList(product, userId);
 		
 		model.addAttribute("cartOrderCard", menuCard);
 		model.addAttribute("viewName", "order/orderList");
