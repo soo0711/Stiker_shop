@@ -2,10 +2,14 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
 <div>
 	<div class="d-flex justify-content-center">
 		<div class="col-7">
 			<c:if test="${not empty orderCard }">
+			<c:set value="${orderCard.product.price * count }" var="total" />
 			<hr>
 			<div class="mx-2 d-flex justify-content-between">
 				<div class="d-flex">
@@ -50,15 +54,15 @@
 	<div class=" d-flex justify-content-center">	
 		<div class="col-7 d-flex justify-content-between">
 			<div>
-				<div>받으시는 분</div>
+				<div>주문자 명</div>
 				<input type="text" class="form-control col-3 my-2" id="name">
 				<div>주소</div>
 				<div class="d-flex align-items-center">
-					<input type="text" class="form-control col-3 my-2" id="postNumber" placeholder="우편번호">
-					<a href="#" class="ml-2">우편번호 검색</a>
+					<input type="text" class="form-control col-3 my-2" id="postcode" placeholder="우편번호">
+					 <input type="button" class="btn btn-light ml-2" onclick="execDaumPostcode()" value="우편번호 찾기">
 				</div>
-				<input type="text" class="form-control col-8" id="address1" placeholder="기본 주소">
-				<input type="text" class="form-control col-8 my-2" id="address2" placeholder="나머지 주소">
+				<input type="text" class="form-control col-8" id="address" placeholder="주소">
+				<input type="text" class="form-control col-8 my-2" id="detailAddress" placeholder="상세주소">
 				<div>휴대전화</div>
 				<div class="d-flex align-items-center">
 					<select class="form-control col-2" id="phoneStart">
@@ -76,13 +80,14 @@
 				<div class="d-flex align-items-center">
 					<input type="text" class="form-control my-2 col-3" id="emailId">
 					<span class="mx-2"> @ </span>
-					<select class="form-control col-3" id="domain">
+					<select class="form-control col-3" id="domain1">
 					  <option selected>naver.com</option>
 					  <option>gmail.com</option>
 					  <option>daum.net</option>
 					  <option>kakao.com</option>
 					  <option>직접 입력</option>
 					</select> 
+					<input type="text" class="form-control my-2 col-3 d-none" id="domain2">
 				</div>
 				<div>배송 메시지</div>
 				<textarea class="form-control my-2 col-8" rows="4"></textarea>
@@ -109,7 +114,7 @@
 						<div class="font-weight-bold d-flex align-items-center justify-content-between mb-3">
 							<div class="ml-2">주문 금액 </div>
 							<c:if test="${not empty orderCard }">
-								<div class="mr-2"><fmt:formatNumber type="number" value="${orderCard.product.price * count}"/> 원</div>
+								<div class="mr-2"><fmt:formatNumber type="number" value="${total }"/> 원</div>
 							</c:if>
 							<c:if test="${not empty cartOrderCard }">
 								<div class="mr-2"><fmt:formatNumber type="number" value="${total }"/> 원</div>
@@ -119,7 +124,7 @@
 							<c:if test="${not empty orderCard }">
 								<div class="d-flex font-weight-bold align-items-center justify-content-between">
 									<small class="text-secondary ml-4">상품 금액 </small>
-									<small class="text-secondary mr-2"><fmt:formatNumber type="number" value="${orderCard.product.price * count}"/> 원</small>
+									<small class="text-secondary mr-2"><fmt:formatNumber type="number" value="${total }"/> 원</small>
 								</div>
 							</c:if>
 							<c:if test="${not empty cartOrderCard }">
@@ -140,13 +145,16 @@
 				<div class="d-flex align-items-center justify-content-between">
 					<h5 class="font-weight-bold ml-2">결제 최종액 </h5>
 					<c:if test="${not empty orderCard }">
-						<h5 class="font-weight-bold mr-2"><fmt:formatNumber type="number" value="${orderCard.product.price * count + 3000}"/> 원</h5>
+						<h5 class="font-weight-bold mr-2 total" data-total-price="${total + 3000}"><fmt:formatNumber type="number" value="${orderCard.product.price * count + 3000}"/> 원</h5>
 					</c:if>
 					<c:if test="${not empty cartOrderCard }">
-						<h5 class="font-weight-bold mr-2"><fmt:formatNumber type="number" value="${total + 3000}"/> 원</h5>
+						<h5 class="font-weight-bold mr-2 total" data-total-price="${total + 3000}"><fmt:formatNumber type="number" value="${total + 3000}"/> 원</h5>
 					</c:if>
 				</div>
-				<button class="btn btn-secondary btn-block my-4">결제하기</button>
+				<form action="/order/${total + 3000 }" method="POST" onSubmit='return requestPay()'>
+					<input type="hidden" value="${cartOrderCard }${orderCard}">
+					<button type="submit" class="btn btn-secondary btn-block my-4" id="payButton">결제하기</button>
+				</form>
 				<!-- 비회원이면 안보이게 하기-->
 				<div> 
 					<input type="checkbox" id="remember" value="remember">
@@ -158,8 +166,148 @@
 </div>
 
 <script>
+	// 우편번호 API
+	function execDaumPostcode() {
+	    new daum.Postcode({
+	        oncomplete: function(data) {
+	            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+	            // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+	            // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+	            var addr = ''; // 주소 변수
+	            var extraAddr = ''; // 참고항목 변수
+
+	            //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+	            if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+	                addr = data.roadAddress;
+	            } else { // 사용자가 지번 주소를 선택했을 경우(J)
+	                addr = data.jibunAddress;
+	            }
+
+	            // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+	            if(data.userSelectedType === 'R'){
+	                // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+	                // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+	                if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+	                    extraAddr += data.bname;
+	                }
+	                // 건물명이 있고, 공동주택일 경우 추가한다.
+	                if(data.buildingName !== '' && data.apartment === 'Y'){
+	                    extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+	                }
+	                // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+	                if(extraAddr !== ''){
+	                    extraAddr = ' (' + extraAddr + ')';
+	                }
+	                // 조합된 참고항목을 해당 필드에 넣는다.
+	                //document.getElementById("extraAddress").value = extraAddr;
+	            
+	            } else {
+	                //document.getElementById("extraAddress").value = '';
+	            }
+
+	            // 우편번호와 주소 정보를 해당 필드에 넣는다.
+	            document.getElementById('postcode').value = data.zonecode;
+	            document.getElementById("address").value = addr;
+	            // 커서를 상세주소 필드로 이동한다.
+	            document.getElementById("detailAddress").focus();
+	        }
+	    }).open();
+	}
+	
+	// 결제 API
+	function requestPay() {
+		let name = $("#name").val().trim();
+		let postcode = $("#postcode").val().trim();
+		let address = $("#address").val().trim();
+		let detailAddress = $("#detailAddress").val().trim();
+		let totalAddress = address + " " + detailAddress;
+		let phoneStart = $("#phoneStart").val();
+		let phoneMiddle = $("#phoneMiddle").val().trim();
+		let phoneEnd = $("#phoneEnd").val().trim();
+		let phoneNumber = phoneStart + phoneMiddle + phoneEnd;
+		let emailId = $("#emailId").val().trim();
+		let domain1 = $("#domain1").val();
+		let domain2 = $("#domain2").val().trim();
+		let email = emailId + "@" + "domain1";
+		let deilverMessage = $("deilverMessage").val();
+		let payMethod = $('input[name="orderPay"]:checked').val();
+		let total = $(".total").data("total-price");
+		
+		if (!name){
+			alert("주문자명을 입력해주세요.");
+			return false;
+		}
+		
+		if (!postcode){
+			alert("우편번호를 입력해주세요.");
+			return false;
+		}
+		
+		if (!address || !detailAddress){
+			alert("주소를 입력해주세요.");
+			return false;
+		}
+		
+		if(!phoneMiddle || !phoneEnd){
+			alert("전화번호를 입력해주세요.");
+			return false;
+		}
+		
+		if (!emailId){
+			alert("이메일을 입력해주세요.");
+			return false;
+		}
+		
+		if (domain1 == "직접 입력"){
+			if (!domain2){
+				alert("이메일을 입력해주세요.");
+				return false;
+			}
+			email = emailId + "@" + domain2;
+		}
+		
+		if (!payMethod){
+			alert("결제수단을 선택해주세요.");
+			return false;
+		}
+	
+		//가맹점 식별코드
+		IMP.init('imp34871301');
+		IMP.request_pay({
+		    pg: 'html5_inicis',
+		    pay_method: 'card',
+		    merchant_uid: 'merchant_' + new Date().getTime(),
+		    name: name , //결제창에서 보여질 이름
+		    amount: total, //실제 결제되는 가격
+		    buyer_email: email,
+		    buyer_name: name,
+		    buyer_tel: phoneNumber,
+		    buyer_addr: totalAddress,
+		    buyer_postcode: postcode
+		}, function(rsp) {
+			console.log(rsp);
+		    if ( rsp.success ) {
+		    	var msg = ' 결제가 완료되었습니다.';
+		        msg += '고유ID : ' + rsp.imp_uid;
+		        msg += '상점 거래ID : ' + rsp.merchant_uid;
+		        msg += '결제 금액 : ' + rsp.paid_amount;
+		        msg += '카드 승인번호 : ' + rsp.apply_num;
+		    } else {
+		    	 var msg = '결제에 실패하였습니다.';
+		         msg += ' 에러내용 : ' + rsp.error_msg;
+		    }
+		    alert(msg);
+		});
+	}
+	
 	$(document).ready(function() {
-		let productPrice = $("small[name = product-price]").data("product-price");
-		//alert(num);
+		$("#domain1").on("change", function() {
+			let domain = $("#domain1").val();
+			if (domain == '직접 입력'){
+				$("#domain2").removeClass("d-none");
+				$("#domain1").addClass("d-none");
+			};
+		});
 	});
 </script>
