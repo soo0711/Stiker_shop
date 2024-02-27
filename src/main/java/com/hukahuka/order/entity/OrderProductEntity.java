@@ -2,6 +2,8 @@ package com.hukahuka.order.entity;
 
 import java.util.Date;
 
+import org.hibernate.annotations.UpdateTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,45 +16,33 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+
 @Entity
 @ToString
-@Table(name = "order")
+@Table(name = "order_product")
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderEntity {
-	
+public class OrderProductEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+
+	@Column(name="orderId")
+	private int orderId;
 	
-	@Column(name="userId")
-	private int userId;
+	@Column(name="productId")
+	private int productId;
 	
-	@Column(name="deliveryMessage")
-	private String deliveryMessage;
+	@Column(name="count")
+	private int count;
 	
-	private String name;
-	
-	@Column(name="phoneNumber")
-	private String phoneNumber;
-	
-	private String email;
-	
-	private String address;
-	
-	@Column(name="totalPay")
-	private int totalPay;
-	
-	@Column(name="payMethod")
-	private String payMethod;
-	
-	private String status;
-	
-	@Column(name="createdAt")
+	@Column(name="createdAt", updatable = false)
+	@UpdateTimestamp
 	private Date createdAt;
 	
 	@Column(name="updatedAt")
+	@UpdateTimestamp
 	private Date updatedAt;
 }

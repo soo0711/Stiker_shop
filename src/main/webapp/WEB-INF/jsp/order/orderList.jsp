@@ -273,37 +273,55 @@
 		    buyer_addr: totalAddress,
 		    buyer_postcode: postcode
 		}, function(rsp) {
-			console.log(rsp);
-		    if ( rsp.success ) {
-		    	var msg = ' 결제가 완료되었습니다.';
-		        msg += '고유ID : ' + rsp.imp_uid;
-		        msg += '상점 거래ID : ' + rsp.merchant_uid;
-		        msg += '결제 금액 : ' + rsp.paid_amount;
-		        msg += '카드 승인번호 : ' + rsp.apply_num;
-		    } else {
-		    	 var msg = '결제에 실패하였습니다.';
-		         msg += ' 에러내용 : ' + rsp.error_msg;
-		    }
-		    alert(msg);
-		});
-		
-		$.ajax({
-			url: "/order/order-list"
-			, type: "POST"
-			, data: {"name" : name, "postcode" : postcode, "totalAddress" : totalAddress, "phoneNumber" : phoneNumber
-				, "email" : email, "deilverMessage" : deilverMessage, "payMethod" : payMethod, "total" : total, "productId" : productId, "count" : count}
-			, dataType: "json"
-			, traditional: true
-			, success: function(data){
-				if (data.code == 200){
-					alert("성공");
-				} else {
-					alert(data.error_message);
+			if (rsp.success) {
+				var msg = ' 결제가 완료되었습니다.';
+				msg += '고유ID : ' + rsp.imp_uid;
+				msg += '상점 거래ID : ' + rsp.merchant_uid;
+				msg += '결제 금액 : ' + rsp.paid_amount;
+				msg += '카드 승인번호 : ' + rsp.apply_num;
+       			/*
+				$.ajax({
+					url: "/order/order-list"
+					, type: "POST"
+					, data: {"name" : name, "postcode" : postcode, "totalAddress" : totalAddress, "phoneNumber" : phoneNumber
+						, "email" : email, "deilverMessage" : deilverMessage, "payMethod" : payMethod, "total" : total, "productId" : productId, "count" : count}
+					, dataType: "json"
+					, traditional: true
+					, success: function(data){
+						if (data.code == 200){
+							alert("성공");
+						} else {
+							alert(data.error_message);
+						}
+					}
+					, error: function(request, status, error){
+						alert("결제에 실패했습니다. 관리자에게 문의주세요.")
+					}
+				});
+       			*/
+			} else {
+				var msg = '결제에 실패하였습니다.';
+				msg += ' 에러내용 : ' + rsp.error_msg;
+				alert(msg);
+			}
+			$.ajax({
+				url: "/order/order-list"
+				, type: "POST"
+				, data: {"name" : name, "postcode" : postcode, "totalAddress" : totalAddress, "phoneNumber" : phoneNumber
+					, "email" : email, "deilverMessage" : deilverMessage, "payMethod" : payMethod, "total" : total, "productId" : productId, "count" : count}
+				, dataType: "json"
+				, traditional: true
+				, success: function(data){
+					if (data.code == 200){
+						alert("성공");
+					} else {
+						alert(data.error_message);
+					}
 				}
-			}
-			, error: function(request, status, error){
-				alert("결제에 실패했습니다. 관리자에게 문의주세요.")
-			}
+				, error: function(request, status, error){
+					alert("결제에 실패했습니다. 관리자에게 문의주세요.")
+				}
+			});
 		});
 	}
 	

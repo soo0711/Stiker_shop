@@ -9,14 +9,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.hukahuka.order.bo.OrderBO;
+import com.hukahuka.order.bo.OrdersBO;
+import com.hukahuka.order.bo.OrderProductBO;
+
+import jakarta.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/order")
 public class OrderRestController {
 
 	@Autowired
-	private OrderBO orderBO;
+	private OrdersBO orderBO;
+
 	
 	@PostMapping("/order-list")
 	public Map<String, Object> orderList(
@@ -29,15 +33,17 @@ public class OrderRestController {
 				@RequestParam("payMethod") String payMethod,
 				@RequestParam("total") int total ,
 				@RequestParam(value = "productId") int[] productId,
-				@RequestParam(value = "count") int[] count
-				){
+				@RequestParam(value = "count") int[] count,
+				HttpSession session){
+		int userId = (int) session.getAttribute("userId");
 		
 		Map<String, Object> result = new HashMap<>();
 		
 		// db insert - order
+		int orderId = orderBO.addOrder(name, postcode, address, phoneNumber, email, deilverMessage, payMethod, total, userId);
 		
 		// db insert - order_product
-		
+		orderBO.addOrderProduct(orderId, productId, count);
 		
 		// 응답값
 		result.put("code", 200);

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.hukahuka.menuCard.domain.MenuCard;
-import com.hukahuka.order.bo.OrderBO;
+import com.hukahuka.order.bo.OrdersBO;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -20,7 +20,7 @@ import jakarta.servlet.http.HttpSession;
 public class OrderController {
 	
 	@Autowired
-	private OrderBO orderBO;
+	private OrdersBO orderBO;
 
 	@PostMapping("/order-view")
 	public String orderListView(
