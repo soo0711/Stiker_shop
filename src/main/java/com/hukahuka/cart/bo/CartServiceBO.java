@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hukahuka.cart.entity.CartEntity;
-import com.hukahuka.cart.repository.CartRepository;
 import com.hukahuka.menuCard.bo.MenuCardBO;
 import com.hukahuka.menuCard.domain.MenuCard;
 
@@ -17,14 +16,14 @@ import com.hukahuka.menuCard.domain.MenuCard;
 public class CartServiceBO {
 	
 	@Autowired
-	private CartRepository cartRepository;
+	private CartBO cartBO;
 	
 	@Autowired
 	private MenuCardBO menuCardBO;
 	
 	// input: userId	output: List<MenuCard>
 	public List<Map<String, Object>> getMenuCardListByCartAndProduct(int userId) {
-		List<CartEntity> cart = cartRepository.findByUserId(userId);;
+		List<CartEntity> cart = cartBO.getCartEntityByUserId(userId);
 		
 		List<Map<String, Object>> menuList = new ArrayList<>();
 		

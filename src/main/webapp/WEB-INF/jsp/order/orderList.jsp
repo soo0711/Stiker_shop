@@ -8,26 +8,6 @@
 <div>
 	<div class="d-flex justify-content-center">
 		<div class="col-7">
-			<c:if test="${not empty orderCard }">
-			<c:set value="${orderCard.product.price * count }" var="total" />
-			<hr>
-			<div class="mx-2 d-flex justify-content-between">
-				<div class="d-flex">
-					<a href="/product/detail?productId=${orderCard.product.id }" class="text-dark">
-						<img src="${orderCard.productImage[0].imagePath }" id="plus" width="100" height="100" alt="상품이미지">
-					</a>
-					<div class="ml-3 mb-2">
-						<a href="/product/detail?productId=${orderCard.product.id }" class="text-dark">
-							<div>${orderCard.product.name }</div>
-						</a>
-						<small class="buyCount text-center text-secondary">주문수량: ${count }개</small>
-						<div><fmt:formatNumber type="number" value="${orderCard.product.price }"/> 원</div>
-					</div>
-				</div>
-			</div>
-			<hr>
-			</c:if>
-			<c:if test="${not empty cartOrderCard }">
 			<c:set var="total" value="0" />
 			<c:forEach items="${cartOrderCard }" var="cartOrder" varStatus="status">
 			<c:set value="${total + cartOrder.product.price * cartOrder.cart.count}" var="total" />
@@ -39,16 +19,24 @@
 						</a>
 						<div class="ml-3 mb-2">
 							<a href="/product/detail?productId=${cartOrder.product.id }" class="text-dark">
+								<input type="hidden" class="productList" value="${cartOrder.product.id }">
 								<div>${cartOrder.product.name }</div>
 							</a>
-							<small class="buyCount text-center text-secondary">주문수량: ${cartOrder.cart.count } 개</small>
+							<c:if test="${empty cartOrder.cart.count }">
+								<c:set value="${total + cartOrder.product.price * count}" var="total" />
+								<input type="hidden" class="countList" value="${count }">
+								<small class="buyCount text-center text-secondary" id="count" data-count="${count }">주문수량: ${count } 개</small>
+							</c:if>
+							<c:if test="${not empty cartOrder.cart.count }">
+								<input type="hidden" class="countList" value="${cartOrder.cart.count }">
+								<small class="buyCount text-center text-secondary">주문수량: ${cartOrder.cart.count } 개</small>
+							</c:if>
 							<div><fmt:formatNumber type="number" value="${cartOrder.product.price }"/> 원</div>
 						</div>
 					</div>
 				</div>
 				<hr>
 				</c:forEach>
-			</c:if>
 		</div>
 	</div>
 	<div class=" d-flex justify-content-center">	
@@ -113,28 +101,23 @@
 					<div class="p-3">
 						<div class="font-weight-bold d-flex align-items-center justify-content-between mb-3">
 							<div class="ml-2">주문 금액 </div>
-							<c:if test="${not empty orderCard }">
-								<div class="mr-2"><fmt:formatNumber type="number" value="${total }"/> 원</div>
-							</c:if>
-							<c:if test="${not empty cartOrderCard }">
-								<div class="mr-2"><fmt:formatNumber type="number" value="${total }"/> 원</div>
-							</c:if>
+							<div class="mr-2"><fmt:formatNumber type="number" value="${total }"/> 원</div>
 						</div>
 						<div>
-							<c:if test="${not empty orderCard }">
+							<c:forEach items="${cartOrderCard }" var="cartOrder" varStatus="status">
+								<c:if test="${empty cartOrder.cart.count }">
 								<div class="d-flex font-weight-bold align-items-center justify-content-between">
 									<small class="text-secondary ml-4">상품 금액 </small>
-									<small class="text-secondary mr-2"><fmt:formatNumber type="number" value="${total }"/> 원</small>
+									<small name="product-price" class="text-secondary mr-2"><fmt:formatNumber type="number" value="${total }"/> 원</small>
 								</div>
-							</c:if>
-							<c:if test="${not empty cartOrderCard }">
-							<c:forEach items="${cartOrderCard }" var="cartOrder" varStatus="status">
+								</c:if>
+								<c:if test="${not empty cartOrder.cart.count }">
 								<div class="d-flex font-weight-bold align-items-center justify-content-between">
 									<small class="text-secondary ml-4">상품 금액 </small>
 									<small name="product-price" class="text-secondary mr-2"><fmt:formatNumber type="number" value="${cartOrder.product.price * cartOrder.cart.count}"/> 원</small>
 								</div>
+								</c:if>
 							</c:forEach>
-							</c:if>
 						</div>
 						<div class="font-weight-bold d-flex align-items-center justify-content-between mt-2">
 							<small class="text-secondary ml-4">배송비 </small>
@@ -144,17 +127,11 @@
 				<hr>
 				<div class="d-flex align-items-center justify-content-between">
 					<h5 class="font-weight-bold ml-2">결제 최종액 </h5>
-					<c:if test="${not empty orderCard }">
-						<h5 class="font-weight-bold mr-2 total" data-total-price="${total + 3000}"><fmt:formatNumber type="number" value="${orderCard.product.price * count + 3000}"/> 원</h5>
-					</c:if>
-					<c:if test="${not empty cartOrderCard }">
-						<h5 class="font-weight-bold mr-2 total" data-total-price="${total + 3000}"><fmt:formatNumber type="number" value="${total + 3000}"/> 원</h5>
-					</c:if>
+					<h5 class="font-weight-bold mr-2 total" data-total-price="${total + 3000}"><fmt:formatNumber type="number" value="${total + 3000}"/> 원</h5>
 				</div>
-				<form action="/order/${total + 3000 }" method="POST" onSubmit='return requestPay()'>
-					<input type="hidden" value="${cartOrderCard }${orderCard}">
-					<button type="submit" class="btn btn-secondary btn-block my-4" id="payButton">결제하기</button>
-				</form>
+
+				<input type="hidden" value="${cartOrderCard }${orderCard}">
+				<button type="submit" class="btn btn-secondary btn-block my-4" onclick="requestPay()"id="payButton">결제하기</button>
 				<!-- 비회원이면 안보이게 하기-->
 				<div> 
 					<input type="checkbox" id="remember" value="remember">
@@ -229,10 +206,20 @@
 		let emailId = $("#emailId").val().trim();
 		let domain1 = $("#domain1").val();
 		let domain2 = $("#domain2").val().trim();
-		let email = emailId + "@" + "domain1";
+		let email = emailId + "@" + domain1;
 		let deilverMessage = $("deilverMessage").val();
 		let payMethod = $('input[name="orderPay"]:checked').val();
 		let total = $(".total").data("total-price");
+		let productList = document.getElementsByClassName("productList");
+		let productId = [];
+		let countList = document.getElementsByClassName("countList");
+		let count = [];
+		for (let i = 0; i < productList.length; i++){
+			productId.push(productList[i].value);
+		}
+		for (let i = 0; i < countList.length; i++){
+			count.push(countList[i].value);
+		}
 		
 		if (!name){
 			alert("주문자명을 입력해주세요.");
@@ -298,6 +285,25 @@
 		         msg += ' 에러내용 : ' + rsp.error_msg;
 		    }
 		    alert(msg);
+		});
+		
+		$.ajax({
+			url: "/order/order-list"
+			, type: "POST"
+			, data: {"name" : name, "postcode" : postcode, "totalAddress" : totalAddress, "phoneNumber" : phoneNumber
+				, "email" : email, "deilverMessage" : deilverMessage, "payMethod" : payMethod, "total" : total, "productId" : productId, "count" : count}
+			, dataType: "json"
+			, traditional: true
+			, success: function(data){
+				if (data.code == 200){
+					alert("성공");
+				} else {
+					alert(data.error_message);
+				}
+			}
+			, error: function(request, status, error){
+				alert("결제에 실패했습니다. 관리자에게 문의주세요.")
+			}
 		});
 	}
 	

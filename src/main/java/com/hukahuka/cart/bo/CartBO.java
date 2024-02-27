@@ -1,25 +1,19 @@
 package com.hukahuka.cart.bo;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hukahuka.cart.entity.CartEntity;
 import com.hukahuka.cart.repository.CartRepository;
-import com.hukahuka.menuCard.bo.MenuCardBO;
-import com.hukahuka.menuCard.domain.MenuCard;
 
 @Service
 public class CartBO {
 	
 	@Autowired
 	private CartRepository cartRepository;
-
 
 	// input: productId, userId, count		output: X
 	public void addCartEntity(int productId, int userId, int count) {
@@ -56,7 +50,12 @@ public class CartBO {
 	}
 	
 	// input: productId		output: CartEntity
-		public CartEntity getCartEntityByProductIdAndUserId(int productId, int userId) {
-			return cartRepository.findByProductIdAndUserId(productId, userId);
-		}
+	public CartEntity getCartEntityByProductIdAndUserId(int productId, int userId) {
+		return cartRepository.findByProductIdAndUserId(productId, userId);
+	}
+		
+	// input: userId	output: CartEntity
+	public List<CartEntity> getCartEntityByUserId(int userId) {
+		return cartRepository.findByUserId(userId);
+	}
 }

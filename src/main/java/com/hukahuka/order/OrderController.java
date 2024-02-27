@@ -1,5 +1,6 @@
 package com.hukahuka.order;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,10 @@ public class OrderController {
 	
 		// db select
 		MenuCard menuCard = orderBO.getMenuCard(productId);
+		List<MenuCard> menu = new ArrayList<>();
+		menu.add(menuCard);
 		
-		model.addAttribute("orderCard", menuCard);
+		model.addAttribute("cartOrderCard", menu);
 		model.addAttribute("count", count);
 		model.addAttribute("viewName", "order/orderList");
 		
