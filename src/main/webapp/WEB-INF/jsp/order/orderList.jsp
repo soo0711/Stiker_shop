@@ -42,6 +42,10 @@
 	<div class=" d-flex justify-content-center">	
 		<div class="col-7 d-flex justify-content-between">
 			<div>
+				<div> 
+					<input type="checkbox" id="call" value="call">
+					<label for="call"><small>입력정보 불러오기</small></label>
+				</div>
 				<div>주문자 명</div>
 				<input type="text" class="form-control col-3 my-2" id="name">
 				<div>주소</div>
@@ -86,14 +90,13 @@
 						<input type="radio" id="card" value="card" name="orderPay">
 						<label for="card"><small>카드 결제</small></label>
 					</div>
-					<div class="mx-2">
-						<input type="radio" id="now" value="now" name="orderPay">
-						<label for="now"><small>실시간 계좌이체</small></label>
-					</div>
 					<div>
-						<input type="radio" id="input" value="input" name="orderPay">
+						<input type="radio" id="input" value="cash" name="orderPay" class="ml-2">
 						<label for="input"><small>무통장 입금</small></label>
 					</div>
+				</div>
+				<div class="d-none" id="income">
+					<small>은행: 111-0000-0000-00 (스티커샵)</small>
 				</div>
 			</div>
 			<div class="col-5">
@@ -131,11 +134,12 @@
 				</div>
 
 				<input type="hidden" value="${cartOrderCard }${orderCard}">
-				<button type="submit" class="btn btn-secondary btn-block my-4" onclick="requestPay()"id="payButton">결제하기</button>
+				<button class="btn btn-secondary btn-block my-4" onclick="requestPay()"id="payButton">결제하기</button>
+				<button class="btn btn-secondary btn-block my-4 d-none" id="payCash">결제하기</button>
 				<!-- 비회원이면 안보이게 하기-->
 				<div> 
-					<input type="checkbox" id="remember" value="remember">
-					<label for="remember"><small>결제수단과 입력정보를 다음에도 사용</small></label>
+					<input type="checkbox" id="remember" value="check">
+					<label for="remember"><small>입력정보를 다음에도 사용</small></label>
 				</div>
 			</div>
 		</div> 
@@ -198,7 +202,6 @@
 		let postcode = $("#postcode").val().trim();
 		let address = $("#address").val().trim();
 		let detailAddress = $("#detailAddress").val().trim();
-		let totalAddress = address + " " + detailAddress;
 		let phoneStart = $("#phoneStart").val();
 		let phoneMiddle = $("#phoneMiddle").val().trim();
 		let phoneEnd = $("#phoneEnd").val().trim();
@@ -214,6 +217,7 @@
 		let productId = [];
 		let countList = document.getElementsByClassName("countList");
 		let count = [];
+		let check = $("#remember:checked").val()
 		for (let i = 0; i < productList.length; i++){
 			productId.push(productList[i].value);
 		}
@@ -270,7 +274,7 @@
 		    buyer_email: email,
 		    buyer_name: name,
 		    buyer_tel: phoneNumber,
-		    buyer_addr: totalAddress,
+		    buyer_addr: address + " " + detailAddress,
 		    buyer_postcode: postcode
 		}, function(rsp) {
 			if (rsp.success) {
@@ -279,17 +283,18 @@
 				msg += '상점 거래ID : ' + rsp.merchant_uid;
 				msg += '결제 금액 : ' + rsp.paid_amount;
 				msg += '카드 승인번호 : ' + rsp.apply_num;
-       			/*
+				
 				$.ajax({
 					url: "/order/order-list"
 					, type: "POST"
-					, data: {"name" : name, "postcode" : postcode, "totalAddress" : totalAddress, "phoneNumber" : phoneNumber
-						, "email" : email, "deilverMessage" : deilverMessage, "payMethod" : payMethod, "total" : total, "productId" : productId, "count" : count}
+					, data: {"name" : name, "postcode" : postcode, "address" : address, "detailAddress" : detailAddress, "phoneNumber" : phoneNumber
+						, "email" : email, "deilverMessage" : deilverMessage, "payMethod" : payMethod, "total" : total, "productId" : productId, "count" : count
+						, "check" : check}
 					, dataType: "json"
 					, traditional: true
 					, success: function(data){
 						if (data.code == 200){
-							alert("성공");
+							location.href="/order/order-done";
 						} else {
 							alert(data.error_message);
 						}
@@ -298,30 +303,12 @@
 						alert("결제에 실패했습니다. 관리자에게 문의주세요.")
 					}
 				});
-       			*/
+				
 			} else {
 				var msg = '결제에 실패하였습니다.';
 				msg += ' 에러내용 : ' + rsp.error_msg;
 				alert(msg);
 			}
-			$.ajax({
-				url: "/order/order-list"
-				, type: "POST"
-				, data: {"name" : name, "postcode" : postcode, "totalAddress" : totalAddress, "phoneNumber" : phoneNumber
-					, "email" : email, "deilverMessage" : deilverMessage, "payMethod" : payMethod, "total" : total, "productId" : productId, "count" : count}
-				, dataType: "json"
-				, traditional: true
-				, success: function(data){
-					if (data.code == 200){
-						alert("성공");
-					} else {
-						alert(data.error_message);
-					}
-				}
-				, error: function(request, status, error){
-					alert("결제에 실패했습니다. 관리자에게 문의주세요.")
-				}
-			});
 		});
 	}
 	
@@ -333,5 +320,150 @@
 				$("#domain1").addClass("d-none");
 			};
 		});
+		
+		$("input[name=orderPay]").on("click", function(){
+			if ($(this).val() == 'card'){
+				$("#payButton").removeClass("d-none");
+				$("#payCash").addClass("d-none");
+				$("#income").addClass("d-none");
+			} else if($(this).val() == 'cash'){
+				$("#payButton").addClass("d-none");
+				$("#payCash").removeClass("d-none");
+				$("#income").removeClass("d-none");
+			}
+			
+		})
+		
+		$("#payCash").on("click", function(){
+			// alert("click");
+			let name = $("#name").val().trim();
+			let postcode = $("#postcode").val().trim();
+			let address = $("#address").val().trim();
+			let detailAddress = $("#detailAddress").val().trim();
+			let phoneStart = $("#phoneStart").val();
+			let phoneMiddle = $("#phoneMiddle").val().trim();
+			let phoneEnd = $("#phoneEnd").val().trim();
+			let phoneNumber = phoneStart + phoneMiddle + phoneEnd;
+			let emailId = $("#emailId").val().trim();
+			let domain1 = $("#domain1").val();
+			let domain2 = $("#domain2").val().trim();
+			let email = emailId + "@" + domain1;
+			let deilverMessage = $("deilverMessage").val();
+			let payMethod = $('input[name="orderPay"]:checked').val();
+			let total = $(".total").data("total-price");
+			let productList = document.getElementsByClassName("productList");
+			let productId = [];
+			let countList = document.getElementsByClassName("countList");
+			let count = [];
+			let check = $("#remember:checked").val()
+			for (let i = 0; i < productList.length; i++){
+				productId.push(productList[i].value);
+			}
+			for (let i = 0; i < countList.length; i++){
+				count.push(countList[i].value);
+			}
+			
+			if (!name){
+				alert("주문자명을 입력해주세요.");
+				return false;
+			}
+			
+			if (!postcode){
+				alert("우편번호를 입력해주세요.");
+				return false;
+			}
+			
+			if (!address || !detailAddress){
+				alert("주소를 입력해주세요.");
+				return false;
+			}
+			
+			if(!phoneMiddle || !phoneEnd){
+				alert("전화번호를 입력해주세요.");
+				return false;
+			}
+			
+			if (!emailId){
+				alert("이메일을 입력해주세요.");
+				return false;
+			}
+			
+			if (domain1 == "직접 입력"){
+				if (!domain2){
+					alert("이메일을 입력해주세요.");
+					return false;
+				}
+				email = emailId + "@" + domain2;
+			}
+			
+			if (!payMethod){
+				alert("결제수단을 선택해주세요.");
+				return false;
+			}
+			
+			$.ajax({
+				url: "/order/order-list"
+				, type: "POST"
+				, data: {"name" : name, "postcode" : postcode, "address" : address, "detailAddress" : detailAddress, "phoneNumber" : phoneNumber
+					, "email" : email, "deilverMessage" : deilverMessage, "payMethod" : payMethod, "total" : total, "productId" : productId, "count" : count
+					, "check" : check}
+				, dataType: "json"
+				, traditional: true
+				, success: function(data){
+					if (data.code == 200){
+						location.href="/order/order-done";
+					} else {
+						alert(data.error_message);
+					}
+				}
+				, error: function(request, status, error){
+					alert("결제에 실패했습니다. 관리자에게 문의주세요.")
+				}
+			});
+		});
+		
+		
+		$("#call").on("click", function() {
+			if ($("#call:checked").val() == 'call'){
+				// alert("plus");
+				$.ajax({
+					url: "/user/info"
+					, type: "POST"
+					, success: function(data){
+						if (data.code == 200){
+							let name = $("#name").val(data.name);
+							let postcode = $("#postcode").val(data.postcode);
+							let address = $("#address").val(data.address);
+							let detailAddress = $("#detailAddress").val(data.detail);
+							let phoneMiddle = $("#phoneMiddle").val(data.middle);
+							let phoneEnd = $("#phoneEnd").val(data.end);
+							let emailId = $("#emailId").val(data.email);
+						} else {
+							alert(data.error_message);
+						}
+					}
+					, error: function(request, status, error){
+						alert("입력 정보를 불러오는데 실패했습니다. 관리자에게 문의주세요.");
+					}
+					
+				});
+				
+			} else{
+				// alert("cancael")
+				// 초기화
+				let name = $("#name").val("");
+				let postcode = $("#postcode").val("");
+				let address = $("#address").val("");
+				let detailAddress = $("#detailAddress").val("");
+				let phoneStart = $("#phoneStart").val("010");
+				let phoneMiddle = $("#phoneMiddle").val("");
+				let phoneEnd = $("#phoneEnd").val("");
+				let emailId = $("#emailId").val("");
+				let domain1 = $("#domain1").val("naver.com");
+				let domain2 = $("#domain2").val("");
+				let email = emailId + "@" + domain1;
+			}
+		});
+		
 	});
 </script>

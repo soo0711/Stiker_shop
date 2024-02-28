@@ -149,4 +149,14 @@
 			`createdAt` DESC
 		LIMIT 10;
  	</select>
+ 	
+ 	<update id="updateBuyCount" parameterType="int">
+ 		UPDATE `product`
+ 		<foreach collection="imagePath" item="img" separator=",">
+ 	 	SET
+ 			`buyCount` = `buyCount` + 1;
+ 		WHERE
+ 			`id` = #{productId}
+    	</foreach>
+ 	</update>
  </mapper>

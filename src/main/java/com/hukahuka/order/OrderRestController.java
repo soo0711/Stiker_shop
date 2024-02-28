@@ -26,7 +26,8 @@ public class OrderRestController {
 	public Map<String, Object> orderList(
 				@RequestParam("name") String name,
 				@RequestParam("postcode") int postcode,
-				@RequestParam("totalAddress") String address, 
+				@RequestParam("address") String address, 
+				@RequestParam("detailAddress") String detailAddress, 
 				@RequestParam("phoneNumber") String phoneNumber,
 				@RequestParam("email") String email, 
 				@RequestParam(name = "deilverMessage", required = false) String deilverMessage,
@@ -34,16 +35,25 @@ public class OrderRestController {
 				@RequestParam("total") int total ,
 				@RequestParam(value = "productId") int[] productId,
 				@RequestParam(value = "count") int[] count,
+				@RequestParam(name = "check", required = false) String check,
 				HttpSession session){
 		int userId = (int) session.getAttribute("userId");
 		
 		Map<String, Object> result = new HashMap<>();
 		
 		// db insert - order
-		int orderId = orderBO.addOrder(name, postcode, address, phoneNumber, email, deilverMessage, payMethod, total, userId);
+		int orderId = orderBO.addOrder(name, postcode, address, detailAddress, phoneNumber, email, deilverMessage, payMethod, total, userId);
 		
 		// db insert - order_product
 		orderBO.addOrderProduct(orderId, productId, count);
+		
+		// db insert - prouduct buycount
+		orderBO.updateBuyCount(productId);
+		
+		// db insert - address
+		if (check != null) {
+			orderBO.addUserAddress(address, detailAddress, postcode, userId);
+		}
 		
 		// 응답값
 		result.put("code", 200);

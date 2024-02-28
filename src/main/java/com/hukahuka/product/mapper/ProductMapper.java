@@ -46,5 +46,8 @@ public interface ProductMapper {
 	
 	// input: X		output: List<Product>
 	public List<Product> selectProductListOrderByCreated();
+	
+	// input: count		output: X
+	public void updateBuyCount(int[] productId);
 
 }

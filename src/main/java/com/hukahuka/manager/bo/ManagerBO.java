@@ -10,7 +10,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.hukahuka.common.FileManagerService;
+import com.hukahuka.order.bo.OrderProductBO;
+import com.hukahuka.order.bo.OrdersBO;
+import com.hukahuka.order.entity.OrdersEntity;
 import com.hukahuka.product.bo.ProductBO;
+import com.hukahuka.product.domain.Product;
 import com.hukahuka.product.domain.ProductImage;
 
 @Service
@@ -18,6 +22,12 @@ public class ManagerBO {
 
 	@Autowired
 	private ProductBO productBO;
+	
+	@Autowired
+	private OrdersBO ordersBO;
+	
+	@Autowired
+	private OrderProductBO orderProductBO;
 	
 	@Autowired
 	private FileManagerService fileManagerService;
@@ -68,5 +78,26 @@ public class ManagerBO {
 		productBO.deleteProductManager(productId);
 	}
 	
+	// input: orderId		output: X
+	public void deleteOrdersManager(int orderId) {
+		// 이미지 select - List<String>에 imgPath 넣기
+		ordersBO.deleteOrdersById(orderId);
+		orderProductBO.deleteOrderProductByorderId(orderId);
+	}
+	
+	// input: X 	output: List<Product>
+	public List<Product> getProductList(){
+		return productBO.getProductList();
+	}
+	
+	// input: X 	output: List<OrdersEntity>
+	public List<OrdersEntity> getOrdersList(){
+		return ordersBO.getOrdersList();
+	}
+	
+	// input: orderId, status		output: X
+	public void updateOrdersManager(int orderId, String status) {
+		ordersBO.updateOrdersByStatus(orderId, status);
+	}	
 	
 }

@@ -7,9 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.hukahuka.menuCard.bo.MenuCardBO;
 import com.hukahuka.menuCard.domain.MenuCard;
-import com.hukahuka.order.OrderRestController;
 import com.hukahuka.order.entity.OrdersEntity;
 import com.hukahuka.order.repository.OrdersRepository;
+import com.hukahuka.product.bo.ProductBO;
+import com.hukahuka.user.bo.UserBO;
 
 @Service
 public class OrdersBO {
@@ -22,6 +23,12 @@ public class OrdersBO {
 	
 	@Autowired
 	private MenuCardBO menuCardBO;
+	
+	@Autowired
+	private UserBO userBO;
+	
+	@Autowired
+	private ProductBO productBO;
 
 	// input: productId, count		output: MenuCard
 	public MenuCard getMenuCard(int productId) {
@@ -34,26 +41,78 @@ public class OrdersBO {
 	}
 	
 	// input: params		output: int(orderId)
-	public int addOrder(String name, int postcode, String address, String phoneNumber,
+	public int addOrder(String name, int postcode, String address, String detailAddress,String phoneNumber,
 			String email, String deilverMessage, String payMethod, int total, int userId) {
 		// order insert
-		return ordersRepository.save(
-			OrdersEntity.builder()
-			.name(name)
-			.postcode(postcode)
-			.address(address)
-			.phoneNumber(phoneNumber)
-			.email(email)
-			.deliveryMessage(deilverMessage)
-			.payMethod(payMethod)
-			.totalPay(total)
-			.userId(userId)
-			.status("배송 준비 중")
-			.build()).getId();
+		if (payMethod.equals("card")) {
+			return ordersRepository.save(
+					OrdersEntity.builder()
+					.name(name)
+					.postcode(postcode)
+					.address(address)
+					.detailAddress(detailAddress)
+					.phoneNumber(phoneNumber)
+					.email(email)
+					.deliveryMessage(deilverMessage)
+					.payMethod(payMethod)
+					.totalPay(total)
+					.userId(userId)
+					.status("배송 준비 중")
+					.build()).getId();
+		} else {
+			return ordersRepository.save(
+					OrdersEntity.builder()
+					.name(name)
+					.postcode(postcode)
+					.address(address)
+					.detailAddress(detailAddress)
+					.phoneNumber(phoneNumber)
+					.email(email)
+					.deliveryMessage(deilverMessage)
+					.payMethod(payMethod)
+					.totalPay(total)
+					.userId(userId)
+					.status("입금 대기")
+					.build()).getId();
+		}
 	}
 	
 	// input: params		output: void
 	public void addOrderProduct(int orderId, int[] productId, int[] count) {
 		orderProductBO.addProductOrder(orderId, productId, count);;
+	}
+	
+	// input: check		output: void
+	public void addUserAddress(String address, String detailAddress, int postcode, int userId) {
+		userBO.addUserAddress(address, detailAddress, userId, userId);
+	}
+	
+	// input: X 	output: List<OrdersEntity>
+	public List<OrdersEntity> getOrdersList(){
+		return ordersRepository.findAll();
+	}
+	
+	// input: orderId, status		output: X
+	public void updateOrdersByStatus(int orderId, String status) {
+		OrdersEntity order = ordersRepository.findById(orderId).orElse(null);
+		
+		order = order.toBuilder()
+				.status(status)
+				.build();
+		
+		ordersRepository.save(order); // 데이터 있으면 수정
+	}	
+	
+	// input: orderId		output: X
+	public void deleteOrdersById(int orderId){
+		OrdersEntity orders = ordersRepository.findById(orderId).orElse(null);
+		if (orders != null) {
+			ordersRepository.delete(orders);
+		}
+	}
+	
+	// input: productId		output: X
+	public void updateBuyCount(int[] productId) {
+		productBO.updateBuyCount(productId);
 	}
 }

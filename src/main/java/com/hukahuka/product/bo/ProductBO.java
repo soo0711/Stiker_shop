@@ -66,5 +66,8 @@ public class ProductBO {
 		return productMapper.selectProductListOrderByCreated();
 	}
 
-	
+	// input: count		output: X
+	public void updateBuyCount(int[] productId) {
+		productMapper.updateBuyCount(productId);
+	}
 }

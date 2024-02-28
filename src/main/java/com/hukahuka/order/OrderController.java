@@ -56,6 +56,14 @@ public class OrderController {
 		
 		return "template/layout";
 	}
+	
+	@RequestMapping("/order-done")
+	public String orderDone(
+			Model model) {
+		
+		model.addAttribute("viewName", "order/done");
+		return "template/layout";
+	}
 
 
 }

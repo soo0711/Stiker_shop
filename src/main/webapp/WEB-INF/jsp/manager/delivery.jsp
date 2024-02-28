@@ -16,19 +16,23 @@
 				</tr>
 			</thead>
 			<tbody>
+				<c:forEach items="${orders }" var="order" varStatus="status">
 					<tr>
-						<td>1</td>
-						<td>수현-데일리키링</td>
+						<td>${status.count }</td>
+						<td>주문번호 ${order.id } - ${order.name}</td>
 						<td class="col-3">
-							<input type="text" class="count form-control" value="배송 준비 중">
+							<input type="text" class="count form-control" value="${order.status }">
 						</td>
 						<td>
-							<a href="#" class="btnModify btn btn-light" data-product-name="${product.name }">수정</a>
+							<a href="#" class="btnModify btn btn-light" data-order-id="${order.id }">수정</a>
 						</td>
 						<td>
-							<a href="#" class="btnDelete btn btn-light" data-product-id="${product.id }">삭제</a>
+							<c:if test="${order.status eq '배송 완료'}">
+							<a href="#" class="btnDelete btn btn-light" data-order-id="${order.id }">삭제</a>
+							</c:if>
 						</td>
 					</tr>
+				</c:forEach>
 			</tbody>
 		</table>
 	</div>
@@ -39,11 +43,48 @@
 	$(document).ready(function() {
 		$(document).on("click", ".btnModify", function() {
 			// alert("수정");
+			let orderId = $(this).data("order-id");
+			let status = $(this).parent().prev().children().val();
+			
+			$.ajax({
+				url: "/manager/order-update"
+				, type: "POST"
+				, data: {"orderId" : orderId, "status" : status}
+				, success: function(data){
+					if (data.code == 200){
+						alert("수정 완료!");
+						location.reload();
+					} else {
+						alert(data.error_message);
+					}
+				}
+				, error: function(request, status, error){
+					alert("수정에 실패했습니다. 관리자에게 문의주세요.");
+				}
+			});
 			
 		}); // btn modify
 		
 		$(document).on("click", ".btnDelete", function() {
 			// alert("삭제");
+			let orderId = $(this).data("order-id");
+			
+			$.ajax({
+				url: "/manager/order-delete"
+				, type: "POST"
+				, data: {"orderId" : orderId}
+				, success: function(data){
+					if (data.code == 200){
+						alert("삭제 완료!");
+						location.reload();
+					} else {
+						alert(data.error_message);
+					}
+				}
+				, error: function(request, status, error){
+					alert("삭제에 실패했습니다. 관리자에게 문의주세요.");
+				}
+			});
 			
 		}); // btn delete
 	}); // - doc

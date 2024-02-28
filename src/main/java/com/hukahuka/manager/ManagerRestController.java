@@ -72,7 +72,7 @@ public class ManagerRestController {
 	public Map<String, Object> delete(
 			@RequestParam("id") int productId){
 
-		// db update
+		// db delete
 		managerBO.deleteProductManager(productId);
 		
 		// 응답값
@@ -85,6 +85,39 @@ public class ManagerRestController {
 	}
 	
 	
+	@PostMapping("/order-update")
+	public Map<String, Object> orderUpdate(
+			@RequestParam("orderId") int orderId,
+			@RequestParam("status") String status){
+		
+		
+		// db update
+		managerBO.updateOrdersManager(orderId, status);
+		
+		// 응답값
+		Map<String, Object> result = new HashMap<>();
+		
+		result.put("code", 200);
+		result.put("result", "성공");
+		
+		return result;
+	}
+	
+	@PostMapping("/order-delete")
+	public Map<String, Object> orderDelete(
+			@RequestParam("orderId") int orderId){
+
+		// db delete
+		managerBO.deleteOrdersManager(orderId);
+		
+		// 응답값
+		Map<String, Object> result = new HashMap<>();
+		
+		result.put("code", 200);
+		result.put("result", "성공");
+		
+		return result;
+	}
 	
 }
 

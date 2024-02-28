@@ -5,15 +5,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hukahuka.common.EncryptUtils;
-import com.hukahuka.mail.bo.MailBO;
-import com.hukahuka.mail.domain.UserMail;
 import com.hukahuka.user.bo.UserBO;
 import com.hukahuka.user.bo.UserPrivateBO;
 import com.hukahuka.user.entity.UserEntity;
@@ -59,6 +56,16 @@ public class UserRestController {
 		return result;
 	}
 	
+	/**
+	 * 회원가입 API
+	 * @param loginId
+	 * @param password
+	 * @param name
+	 * @param phoneNumber
+	 * @param email
+	 * @return
+	 * @throws NoSuchAlgorithmException
+	 */
 	@PostMapping("/sign-up")
 	public Map<String, Object> signUp(
 			@RequestParam("loginId") String loginId,
@@ -87,6 +94,13 @@ public class UserRestController {
 		return result;
 	}
 	
+	/**
+	 * 로그인 API
+	 * @param loginId
+	 * @param password
+	 * @param request
+	 * @return
+	 */
 	@PostMapping("/sign-in")
 	public Map<String, Object> signIn(
 			@RequestParam("loginId") String loginId,
@@ -171,6 +185,33 @@ public class UserRestController {
 		
 		result.put("code", 200);
 		result.put("result", "성공");
+		return result;
+	}
+	
+	@PostMapping("/info")
+	public Map<String, Object> info(
+			HttpSession session){
+		String userLoginId = (String) session.getAttribute("userLoginId");
+		// db - select
+		UserEntity user = userBO.getUserEntityByLoginId(userLoginId);
+		Map<String, Object> result = new HashMap<>();
+		if (user.getAddress() == null) {
+			result.put("code", 300);
+			result.put("error_message", "추가하신 주소가 없습니다.");
+			return result;
+		}
+		
+		result.put("code", 200);
+		result.put("name", user.getName());
+		result.put("detail", user.getDetailAddress());
+		result.put("address", user.getAddress());
+		result.put("postcode", user.getPostcode());
+		result.put("middle", user.getPhoneNumber().substring(3, 7));
+		result.put("end", user.getPhoneNumber().substring(7));
+		result.put("email", user.getEmail().split("@")[0]);
+		
+		result.put("result", "성공");
+		
 		return result;
 	}
 	

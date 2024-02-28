@@ -76,4 +76,16 @@ public class UserBO {
         updatePassword(userId, str);
 	}
 	
+	// input: params	output: X
+	public void addUserAddress(String address, String detailAddress, int postcode, int userId) {
+		UserEntity user = userRepository.findById(userId).orElse(null);
+		
+		user = user.toBuilder()
+				.address(address)
+				.detailAddress(detailAddress)
+				.postcode(postcode)
+				.build();
+		
+		userRepository.save(user); // 데이터 있으면 수정
+	}
 }

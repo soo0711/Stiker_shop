@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hukahuka.order.entity.OrderProductEntity;
+import com.hukahuka.order.entity.OrdersEntity;
 import com.hukahuka.order.repository.OrderProductRepository;
 
 @Service
@@ -21,6 +22,14 @@ public class OrderProductBO {
 					.productId(productId[i])
 					.count(count[i])
 					.build());
+		}
+	}
+	
+	// input: orderId		output: X
+	public void deleteOrderProductByorderId(int orderId){
+		OrderProductEntity orders = orderProductRepository.findByorderId(orderId);
+		if (orders != null) {
+			orderProductRepository.delete(orders);
 		}
 	}
 }

@@ -42,6 +42,11 @@ public class UserEntity {
 	
 	private String address;
 	
+	@Column(name="detailAddress")
+	private String detailAddress;
+	
+	private Integer postcode;
+	
 	private String birth;
 	
 	@Column(name = "refundBank")

@@ -20,7 +20,7 @@ import lombok.ToString;
 @ToString
 @Table(name = "orders")
 @Getter
-@Builder
+@Builder(toBuilder = true) 
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrdersEntity {
@@ -45,6 +45,9 @@ public class OrdersEntity {
 	private int postcode;
 	
 	private String address;
+	
+	@Column(name="detailAddress")
+	private String detailAddress;
 	
 	@Column(name="totalPay")
 	private int totalPay;
