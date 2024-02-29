@@ -48,7 +48,7 @@ public class OrderRestController {
 		orderBO.addOrderProduct(orderId, productId, count);
 		
 		// db insert - prouduct buycount
-		orderBO.updateBuyCount(productId);
+		orderBO.updateCounts(productId, count);
 		
 		// db insert - address
 		if (check != null) {

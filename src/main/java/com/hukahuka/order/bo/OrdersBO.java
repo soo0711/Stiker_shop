@@ -9,12 +9,13 @@ import com.hukahuka.menuCard.bo.MenuCardBO;
 import com.hukahuka.menuCard.domain.MenuCard;
 import com.hukahuka.order.entity.OrdersEntity;
 import com.hukahuka.order.repository.OrdersRepository;
+import com.hukahuka.orderCard.bo.OrderCardServiceBO;
+import com.hukahuka.orderCard.domain.OrderCard;
 import com.hukahuka.product.bo.ProductBO;
 import com.hukahuka.user.bo.UserBO;
 
 @Service
 public class OrdersBO {
-	
 	@Autowired
 	private OrderProductBO orderProductBO;
 	
@@ -92,6 +93,11 @@ public class OrdersBO {
 		return ordersRepository.findAll();
 	}
 	
+	// input: X 	output: List<OrdersEntity>
+	public List<OrdersEntity> getOrdersListByUserId(int userId){
+		return ordersRepository.findByUserId(userId);
+	}
+	
 	// input: orderId, status		output: X
 	public void updateOrdersByStatus(int orderId, String status) {
 		OrdersEntity order = ordersRepository.findById(orderId).orElse(null);
@@ -112,7 +118,8 @@ public class OrdersBO {
 	}
 	
 	// input: productId		output: X
-	public void updateBuyCount(int[] productId) {
+	public void updateCounts(int[] productId, int[] count) {
 		productBO.updateBuyCount(productId);
+		productBO.updateCount(productId, count);
 	}
 }

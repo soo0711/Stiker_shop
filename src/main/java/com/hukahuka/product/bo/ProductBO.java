@@ -1,5 +1,7 @@
 package com.hukahuka.product.bo;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,7 +11,6 @@ import org.springframework.stereotype.Service;
 import com.hukahuka.product.domain.Product;
 import com.hukahuka.product.domain.ProductImage;
 import com.hukahuka.product.mapper.ProductMapper;
-import com.hukahuka.wish.bo.WishBO;
 
 @Service
 public class ProductBO {
@@ -65,9 +66,31 @@ public class ProductBO {
 	public List<Product> getProductListOrderByCreated(){
 		return productMapper.selectProductListOrderByCreated();
 	}
+	
+	// input: X		output: List<Product>
+	public List<Product> getProductListOrderByBuyCount(){
+		return productMapper.selectProductListOrderByBuyCount();
+	}
 
-	// input: count		output: X
+	// input: productId		output: X
 	public void updateBuyCount(int[] productId) {
 		productMapper.updateBuyCount(productId);
+	}
+	
+	// input: prouductId, count		output: X
+	public void updateCount(int[] productId, int[] count) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		for (int i = 0; i < productId.length; i++) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("productId", productId[i]);
+			map.put("count", count[i]);
+			list.add(map);
+		}
+		productMapper.updateCount(list);
+	}
+	
+	// input: productId		output: product
+	public Product getProductByProductId(int productId) {
+		return productMapper.selectProductById(productId);
 	}
 }

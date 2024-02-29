@@ -1,23 +1,25 @@
 package com.hukahuka.user;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.hukahuka.aop.TimeTrace;
-import com.hukahuka.mail.bo.MailBO;
-import com.hukahuka.mail.domain.UserMail;
+import com.hukahuka.orderCard.bo.OrderCardBO;
+import com.hukahuka.orderCard.domain.OrderCard;
 
 import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
+	
+	@Autowired
+	private OrderCardBO orderCardBO;
 	
 	/**
 	 * 회원가입 화면
@@ -68,6 +70,22 @@ public class UserController {
 		model.addAttribute("viewName", "user/findPw");
 		return "template/layout";
 	}
+	
+	@GetMapping("/order-list-view")
+	public String orderListView(
+			HttpSession session,
+			Model model) {
+		
+		int userId = (int) session.getAttribute("userId");
+		
+		// db select
+		List<OrderCard> orderList = orderCardBO.generateOrderCardList(userId);
+		
+		model.addAttribute("orderList", orderList);
+		model.addAttribute("viewName", "user/orderList");
+		return "template/layout";
+	}
+	
 	
 	
 }

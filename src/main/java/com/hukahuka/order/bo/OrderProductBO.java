@@ -1,10 +1,11 @@
 package com.hukahuka.order.bo;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hukahuka.order.entity.OrderProductEntity;
-import com.hukahuka.order.entity.OrdersEntity;
 import com.hukahuka.order.repository.OrderProductRepository;
 
 @Service
@@ -31,5 +32,10 @@ public class OrderProductBO {
 		if (orders != null) {
 			orderProductRepository.delete(orders);
 		}
+	}
+	
+	// input: productId		output: OrderProductEntity
+	public List<OrderProductEntity> getOrderProduct(int orderId) {
+		return orderProductRepository.findAllByorderId(orderId);
 	}
 }

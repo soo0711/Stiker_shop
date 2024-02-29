@@ -26,11 +26,6 @@
 						<td>
 							<a href="#" class="btnModify btn btn-light" data-order-id="${order.id }">수정</a>
 						</td>
-						<td>
-							<c:if test="${order.status eq '배송 완료'}">
-							<a href="#" class="btnDelete btn btn-light" data-order-id="${order.id }">삭제</a>
-							</c:if>
-						</td>
 					</tr>
 				</c:forEach>
 			</tbody>
@@ -65,27 +60,5 @@
 			
 		}); // btn modify
 		
-		$(document).on("click", ".btnDelete", function() {
-			// alert("삭제");
-			let orderId = $(this).data("order-id");
-			
-			$.ajax({
-				url: "/manager/order-delete"
-				, type: "POST"
-				, data: {"orderId" : orderId}
-				, success: function(data){
-					if (data.code == 200){
-						alert("삭제 완료!");
-						location.reload();
-					} else {
-						alert(data.error_message);
-					}
-				}
-				, error: function(request, status, error){
-					alert("삭제에 실패했습니다. 관리자에게 문의주세요.");
-				}
-			});
-			
-		}); // btn delete
 	}); // - doc
 </script>

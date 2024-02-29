@@ -1,10 +1,14 @@
 package com.hukahuka.user.bo;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hukahuka.mail.bo.MailBO;
 import com.hukahuka.mail.domain.UserMail;
+import com.hukahuka.orderCard.bo.OrderCardBO;
+import com.hukahuka.orderCard.domain.OrderCard;
 import com.hukahuka.user.entity.UserEntity;
 import com.hukahuka.user.repository.UserRepository;
 
@@ -16,6 +20,9 @@ public class UserBO {
 	
 	@Autowired
 	private MailBO mailBO;
+	
+	@Autowired
+	private OrderCardBO orderCardBO;
 
 	
 	// input: loginId	output: UserEntity
@@ -88,4 +95,5 @@ public class UserBO {
 		
 		userRepository.save(user); // 데이터 있으면 수정
 	}
+	
 }

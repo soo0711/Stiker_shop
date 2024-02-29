@@ -48,7 +48,10 @@ public class MenuCardController {
 		}
 		
 		if (menu.equals("best")) {
+			// db select
+			List<MenuCard> menuCard = menuCardBO.generateMenuCardListOrderByBuyCount();
 			
+			model.addAttribute("menuCard", menuCard);
 			model.addAttribute("viewName", "menu/category");
 			
 			

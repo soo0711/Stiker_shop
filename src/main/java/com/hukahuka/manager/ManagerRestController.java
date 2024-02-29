@@ -103,7 +103,8 @@ public class ManagerRestController {
 		return result;
 	}
 	
-	@PostMapping("/order-delete")
+
+	// @PostMapping("/order-delete")
 	public Map<String, Object> orderDelete(
 			@RequestParam("orderId") int orderId){
 
