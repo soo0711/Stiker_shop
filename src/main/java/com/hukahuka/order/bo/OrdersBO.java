@@ -9,7 +9,7 @@ import com.hukahuka.menuCard.bo.MenuCardBO;
 import com.hukahuka.menuCard.domain.MenuCard;
 import com.hukahuka.order.entity.OrdersEntity;
 import com.hukahuka.order.repository.OrdersRepository;
-import com.hukahuka.orderCard.bo.OrderCardServiceBO;
+import com.hukahuka.orderCard.bo.OrderCardBO;
 import com.hukahuka.orderCard.domain.OrderCard;
 import com.hukahuka.product.bo.ProductBO;
 import com.hukahuka.user.bo.UserBO;
@@ -30,6 +30,9 @@ public class OrdersBO {
 	
 	@Autowired
 	private ProductBO productBO;
+	
+	@Autowired
+	private OrderCardBO orderCardBO;
 
 	// input: productId, count		output: MenuCard
 	public MenuCard getMenuCard(int productId) {
@@ -85,7 +88,7 @@ public class OrdersBO {
 	
 	// input: check		output: void
 	public void addUserAddress(String address, String detailAddress, int postcode, int userId) {
-		userBO.addUserAddress(address, detailAddress, userId, userId);
+		userBO.addUserAddress(address, detailAddress, postcode, userId);
 	}
 	
 	// input: X 	output: List<OrdersEntity>
@@ -119,7 +122,10 @@ public class OrdersBO {
 	
 	// input: productId		output: X
 	public void updateCounts(int[] productId, int[] count) {
-		productBO.updateBuyCount(productId);
 		productBO.updateCount(productId, count);
+	}
+	
+	public List<OrderCard> generateOrderCardList(int orderId){
+		return orderCardBO.generateOrderCardList(orderId);
 	}
 }

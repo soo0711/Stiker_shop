@@ -21,7 +21,7 @@
 					<span class="text-dark mx-3">${userName }님</span>
 					<a href="/user/sign-out" class="text-dark my-3">로그아웃</a>
 					<div>
-						<a href="/user/order-list-view" class="text-dark"><small>마이페이지</small></a>
+						<a href="/order/list-view" class="text-dark"><small>마이페이지</small></a>
 						<a href="/cart/cart-list-view" class="text-dark mx-3"><small>장바구니</small></a>
 						<a href="/wish/wish-list-view" class="text-dark"><small>위시리스트</small></a>
 					</div>

@@ -147,7 +147,7 @@
  			`product`
 		ORDER BY
 			`createdAt` DESC
-		LIMIT 10;
+		LIMIT 10
  	</select>
  	
  	<select id="selectProductListOrderByBuyCount" resultType="com.hukahuka.product.domain.Product">
@@ -169,23 +169,23 @@
 		LIMIT 10;
  	</select>
  	
- 	<update id="updateBuyCount" parameterType="int">
- 		UPDATE `product`
- 		<foreach collection="productId" item="product" separator=",">
- 	 	SET
- 			`buyCount` = `buyCount` + 1
- 		WHERE
- 			`id` = #{product}
+ 	<update id="updateBuyCount" parameterType="java.util.List">
+ 		<foreach collection="list" item="list" separator=";">
+	 		UPDATE `product`
+	 	 	SET
+	 			`buyCount` = `buyCount` + #{list.count}
+	 		WHERE
+	 			`id` = #{list.productId}
     	</foreach>
  	</update>
  
  	<update id="updateCount" parameterType="java.util.List">
- 		UPDATE `product`
- 		<foreach collection="list" item="list" separator=",">
- 	 	SET
- 			`count` = `count` - #{list.count}
- 		WHERE
- 			`id` = #{list.productId}
+ 		<foreach collection="list" item="list" separator=";">
+	 		UPDATE `product`
+	 	 	SET
+	 			`count` = `count` - #{list.count}
+	 		WHERE
+	 			`id` = #{list.productId}
     	</foreach>
  	</update>
 

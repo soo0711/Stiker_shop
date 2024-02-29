@@ -71,11 +71,6 @@ public class ProductBO {
 	public List<Product> getProductListOrderByBuyCount(){
 		return productMapper.selectProductListOrderByBuyCount();
 	}
-
-	// input: productId		output: X
-	public void updateBuyCount(int[] productId) {
-		productMapper.updateBuyCount(productId);
-	}
 	
 	// input: prouductId, count		output: X
 	public void updateCount(int[] productId, int[] count) {
@@ -87,6 +82,7 @@ public class ProductBO {
 			list.add(map);
 		}
 		productMapper.updateCount(list);
+		productMapper.updateBuyCount(list);
 	}
 	
 	// input: productId		output: product

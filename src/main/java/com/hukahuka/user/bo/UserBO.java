@@ -20,9 +20,6 @@ public class UserBO {
 	
 	@Autowired
 	private MailBO mailBO;
-	
-	@Autowired
-	private OrderCardBO orderCardBO;
 
 	
 	// input: loginId	output: UserEntity

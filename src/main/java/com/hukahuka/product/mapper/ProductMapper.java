@@ -48,8 +48,7 @@ public interface ProductMapper {
 	public List<Product> selectProductListOrderByCreated();
 	
 	// input: count		output: X
-	public void updateBuyCount(
-			@Param("productId") int[] productId);
+	public void updateBuyCount(List<Map<String, Object>> list);
 	
 	// input: prouductId, count		output: X
 	public void updateCount(List<Map<String, Object>> list);

@@ -71,21 +71,5 @@ public class UserController {
 		return "template/layout";
 	}
 	
-	@GetMapping("/order-list-view")
-	public String orderListView(
-			HttpSession session,
-			Model model) {
-		
-		int userId = (int) session.getAttribute("userId");
-		
-		// db select
-		List<OrderCard> orderList = orderCardBO.generateOrderCardList(userId);
-		
-		model.addAttribute("orderList", orderList);
-		model.addAttribute("viewName", "user/orderList");
-		return "template/layout";
-	}
-	
-	
 	
 }

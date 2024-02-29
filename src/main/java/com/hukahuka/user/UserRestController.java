@@ -209,6 +209,7 @@ public class UserRestController {
 		result.put("middle", user.getPhoneNumber().substring(3, 7));
 		result.put("end", user.getPhoneNumber().substring(7));
 		result.put("email", user.getEmail().split("@")[0]);
+		result.put("domain", user.getEmail().split("@")[1]);
 		
 		result.put("result", "성공");
 		
