@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.hukahuka.menuCard.domain.MenuCard;
 import com.hukahuka.order.bo.OrdersBO;
-import com.hukahuka.order.bo.OrdersServiceBO;
 import com.hukahuka.order.entity.OrdersEntity;
 import com.hukahuka.orderCard.domain.OrderCard;
 
@@ -72,18 +71,32 @@ public class OrderController {
 
 	@GetMapping("/list-view")
 	public String ListView(
+			@RequestParam(name = "status", required = false) String status,
 			HttpSession session,
 			Model model) {
 		
 		int userId = (int) session.getAttribute("userId");
 		
-		// db select
-		// List<OrderCard> orderList = ordersServiceBO.generateOrderCardList(userId);
-		 List<OrdersEntity> orderList = orderBO.getOrdersListByUserId(userId);
+		List<OrdersEntity> orderList = new ArrayList<>();
 		
-		model.addAttribute("orderList", orderList);
-		model.addAttribute("viewName", "order/list");
-		return "template/layout";
+		if (status == null) {
+			// db select
+			orderList = orderBO.getOrdersListByUserId(userId);
+			model.addAttribute("orderList", orderList);
+			model.addAttribute("viewName", "order/list");
+			return "template/layout";
+		} else if (status.equals("all")) {
+			orderList = orderBO.getOrdersListByUserId(userId);
+			model.addAttribute("orderList", orderList);
+			model.addAttribute("viewName", "order/list");
+			return "order/list";
+		} else {
+			orderList = orderBO.getOrdersListByUserIdAndStatus(userId, status);
+			model.addAttribute("orderList", orderList);
+			model.addAttribute("viewName", "order/list");
+			return "order/list";
+		}
+		
 	}
 	
 	@PostMapping("/detail-list-view")
@@ -93,9 +106,9 @@ public class OrderController {
 			Model model) {
 		
 		// db select
-		List<OrderCard> orderCardList = orderBO.generateOrderCardList(orderId);
+		OrderCard orderCard = orderBO.generateOrderCardList(orderId);
 		
-		model.addAttribute("orderCardList", orderCardList);
+		model.addAttribute("orderCardList", orderCard);
 		model.addAttribute("viewName", "order/detailList");
 		return "template/layout";
 	}

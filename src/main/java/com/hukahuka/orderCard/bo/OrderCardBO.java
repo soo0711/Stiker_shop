@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hukahuka.order.bo.OrderProductBO;
-import com.hukahuka.order.bo.OrdersBO;
 import com.hukahuka.order.entity.OrderProductEntity;
-import com.hukahuka.order.entity.OrdersEntity;
 import com.hukahuka.orderCard.domain.OrderCard;
 import com.hukahuka.product.bo.ProductBO;
 import com.hukahuka.product.domain.Product;
@@ -24,9 +22,7 @@ public class OrderCardBO {
 	@Autowired
 	private ProductBO productBO;
 
-	public List<OrderCard> generateOrderCardList(int orderId){
-		
-		List<OrderCard> orderCardList = new ArrayList<>();
+	public OrderCard generateOrderCardList(int orderId){
 		
 		OrderCard orderCard = new OrderCard();
 		
@@ -54,10 +50,6 @@ public class OrderCardBO {
 		// 상품들의 이미지
 		orderCard.setProductImage(productImageList);
 		
-		// 리스트에 추가
-		orderCardList.add(orderCard);
-		
-		
-		return orderCardList;
+		return orderCard;
 	}
 }

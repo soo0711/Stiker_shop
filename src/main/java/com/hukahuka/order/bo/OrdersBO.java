@@ -101,6 +101,11 @@ public class OrdersBO {
 		return ordersRepository.findByUserId(userId);
 	}
 	
+	// input: X 	output: List<OrdersEntity>
+	public List<OrdersEntity> getOrdersListByUserIdAndStatus(int userId, String status){
+		return ordersRepository.findByUserIdAndStatus(userId, status);
+	}
+	
 	// input: orderId, status		output: X
 	public void updateOrdersByStatus(int orderId, String status) {
 		OrdersEntity order = ordersRepository.findById(orderId).orElse(null);
@@ -125,7 +130,7 @@ public class OrdersBO {
 		productBO.updateCount(productId, count);
 	}
 	
-	public List<OrderCard> generateOrderCardList(int orderId){
+	public OrderCard generateOrderCardList(int orderId){
 		return orderCardBO.generateOrderCardList(orderId);
 	}
 }

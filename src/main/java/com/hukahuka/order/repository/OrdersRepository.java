@@ -10,4 +10,7 @@ public interface OrdersRepository extends JpaRepository<OrdersEntity, Integer> {
 	
 	// input: userId		output: List<OrdersEntity>
 	public List<OrdersEntity> findByUserId(int userId);
+	
+	// input: userId, status		output: List<OrdersEntity>
+	public List<OrdersEntity> findByUserIdAndStatus(int userId, String status);
 }
