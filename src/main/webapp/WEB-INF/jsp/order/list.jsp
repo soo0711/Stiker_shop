@@ -40,7 +40,7 @@
 				</table>
 			</div>
 		<div class="d-flex justify-content-end mt-5">
-			<button class="btn btn-dark" id="btnProfile">프로필 수정</button>
+			<a href="/user/update" class="btn btn-dark" id="btnProfile">프로필 수정</a>
 		</div>
 	</div>
 </div>

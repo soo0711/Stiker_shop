@@ -52,6 +52,9 @@ public class OrderRestController {
 		// db insert - prouduct buycount
 		orderBO.updateCounts(productId, count);
 		
+		// db delete - cart
+		orderBO.deleteByProductId(productId, userId);
+		
 		// db insert - address
 		if (check != null) {
 			orderBO.addUserAddress(address, detailAddress, postcode, userId);

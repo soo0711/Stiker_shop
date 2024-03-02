@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hukahuka.cart.bo.CartBO;
 import com.hukahuka.menuCard.bo.MenuCardBO;
 import com.hukahuka.menuCard.domain.MenuCard;
 import com.hukahuka.order.entity.OrdersEntity;
@@ -33,6 +34,9 @@ public class OrdersBO {
 	
 	@Autowired
 	private OrderCardBO orderCardBO;
+	
+	@Autowired
+	private CartBO cartBO;
 
 	// input: productId, count		output: MenuCard
 	public MenuCard getMenuCard(int productId) {
@@ -132,5 +136,10 @@ public class OrdersBO {
 	
 	public OrderCard generateOrderCardList(int orderId){
 		return orderCardBO.generateOrderCardList(orderId);
+	}
+	
+	// input: productId		output: X
+	public void deleteByProductId(int[] productId, int userId) {
+		cartBO.deleteCartEntityByProductId(productId, userId);
 	}
 }

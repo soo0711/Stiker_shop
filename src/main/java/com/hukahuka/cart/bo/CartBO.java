@@ -51,11 +51,21 @@ public class CartBO {
 	
 	// input: productId		output: CartEntity
 	public CartEntity getCartEntityByProductIdAndUserId(int productId, int userId) {
-		return cartRepository.findByProductIdAndUserId(productId, userId);
+		return cartRepository.findByUserIdAndProductId(userId, productId);
 	}
 		
 	// input: userId	output: CartEntity
 	public List<CartEntity> getCartEntityByUserId(int userId) {
 		return cartRepository.findByUserId(userId);
+	}
+	
+	// input: productId 	output: X
+	public void deleteCartEntityByProductId(int[] productId, int userId) {
+		for (int i = 0; i < productId.length; i++) {
+			CartEntity cart = cartRepository.findByUserIdAndProductId(productId[i], userId);
+			if (cart != null) {
+			    cartRepository.delete(cart);
+			}
+		}
 	}
 }
