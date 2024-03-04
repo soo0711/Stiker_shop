@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hukahuka.common.EncryptUtils;
 import com.hukahuka.user.bo.UserBO;
-import com.hukahuka.user.bo.UserPrivateBO;
 import com.hukahuka.user.entity.UserEntity;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,9 +26,6 @@ public class UserRestController {
 	
 	@Autowired
 	private UserBO userBO;
-	
-	@Autowired
-	private UserPrivateBO userPrivateBO;
 	
 
 	/**
@@ -56,6 +52,7 @@ public class UserRestController {
 		return result;
 	}
 	
+
 	/**
 	 * 회원가입 API
 	 * @param loginId
@@ -82,10 +79,10 @@ public class UserRestController {
 		String hasedPassword = encryptUtils.SHA256(password, salt);
 		
 		// user db insert
-		Integer userId =userBO.addUser(loginId, hasedPassword, name, phoneNumber, email);
+		Integer userId = userBO.addUser(loginId, hasedPassword, name, phoneNumber, email);
 		
 		// userPrivate db insert - salt
-		userPrivateBO.addUserPrivate(userId, salt);
+		userBO.addUserPrivate(userId, salt);
 		
 		Map<String, Object> result = new HashMap<>();
 		result.put("code", 200);
@@ -94,6 +91,7 @@ public class UserRestController {
 		return result;
 	}
 	
+
 	/**
 	 * 로그인 API
 	 * @param loginId
@@ -107,21 +105,28 @@ public class UserRestController {
 			@RequestParam("password") String password,
 			HttpServletRequest request){
 		
-		if (password.length() != 10) {
-		
-		// user의 salt 가져오기
-		Integer userId = userBO.getUserEntityByLoginId(loginId).getId();
-		String salt = userPrivateBO.getUserPrivateEntityByUserId(userId);
-		
-		// hasedPassword로 로그인
-		password = encryptUtils.SHA256(password, salt);
-		
-		}
-		
-		// db select
-		UserEntity user = userBO.getUserEntityByLoginIdPassword(loginId, password);
+		// db select - id가 있는지
+		UserEntity user = userBO.getUserEntityByLoginId(loginId);
 		
 		Map<String, Object> result = new HashMap<>();
+		if (user == null) {
+			result.put("code", 500);
+			result.put("error_message", "로그인에 실패했습니다.");
+			return result;
+		}
+		
+		if (password.length() != 10) {
+			// user의 salt 가져오기
+			Integer userId = userBO.getUserEntityByLoginId(loginId).getId();
+			String salt = userBO.getUserPrivateByUserId(userId);
+			
+			// hasedPassword로 로그인
+			password = encryptUtils.SHA256(password, salt);
+		}
+		
+		// db select - id, pw 다 맞는지
+		user = userBO.getUserEntityByLoginIdPassword(loginId, password);
+		
 		if (user != null) {
 			// 로그인 세션 
 			HttpSession session = request.getSession();
@@ -141,7 +146,13 @@ public class UserRestController {
 		return result;
 	}
 	
-	
+	/**
+	 * 아이디 찾기 API
+	 * @param name
+	 * @param phoneNumber
+	 * @param email
+	 * @return
+	 */
 	@PostMapping("/find-id")
 	public Map<String, Object> findId(
 			@RequestParam("name") String name,
@@ -165,6 +176,11 @@ public class UserRestController {
 	}
 	
 	
+	/**
+	 * 비밀번호 찾기 API
+	 * @param email
+	 * @return
+	 */
 	// @Transactional
 	@PostMapping("/find-pw")
 	public Map<String, Object> findPw(
@@ -188,6 +204,11 @@ public class UserRestController {
 		return result;
 	}
 	
+	/**
+	 * 주문화면에서 내 정보 불러오기 API
+	 * @param session
+	 * @return
+	 */
 	@PostMapping("/info")
 	public Map<String, Object> info(
 			HttpSession session){
@@ -206,6 +227,7 @@ public class UserRestController {
 		result.put("detail", user.getDetailAddress());
 		result.put("address", user.getAddress());
 		result.put("postcode", user.getPostcode());
+		result.put("start", user.getPhoneNumber().substring(0,3));
 		result.put("middle", user.getPhoneNumber().substring(3, 7));
 		result.put("end", user.getPhoneNumber().substring(7));
 		result.put("email", user.getEmail().split("@")[0]);
@@ -215,6 +237,70 @@ public class UserRestController {
 		
 		return result;
 	}
+
+	/**
+	 * 프로필 수정 API
+	 * @param name
+	 * @param password
+	 * @param phoneNumber
+	 * @param email
+	 * @param birth
+	 * @param address
+	 * @param detailAddress
+	 * @param postcode
+	 * @param refundBank
+	 * @param refundAccount
+	 * @param session
+	 * @return
+	 */
+	@PostMapping("/update")
+	public  Map<String, Object> update(
+			@RequestParam("name") String name,
+			@RequestParam(name = "password", required = false) String password,
+			@RequestParam("phoneNumber") String phoneNumber,
+			@RequestParam("email") String email, 
+			@RequestParam(name = "birth", required = false) String birth,
+			@RequestParam(name = "address", required = false) String address, 
+			@RequestParam(name = "detailAddress", required = false) String detailAddress, 
+			@RequestParam(name = "postcode", required = false) Integer postcode,
+			@RequestParam(name = "refundBank", required = false) String refundBank,
+			@RequestParam(name = "refundAccount", required = false) String refundAccount,
+			HttpSession session){
+		int userId = (int) session.getAttribute("userId");
+		
+		
+		// 부가적인 정보 바꾸기
+		userBO.updateUserEntityPlus(userId, password, birth, postcode, address,
+				detailAddress, refundBank, refundAccount);
+		// 기본 정보 바꾸기
+		userBO.updateUserEntity(userId, name, phoneNumber, email);
+		
+		// 응답값
+		Map<String, Object> result = new HashMap<>();
+		result.put("code", 200);
+		result.put("result", "성공");
+		return result;
+	}
 	
+	@PostMapping("/delete")
+	public  Map<String, Object> delete(
+			HttpSession session){
+		int userId = (int) session.getAttribute("userId");
+		
+		
+		// db - delete
+		userBO.deleteUserEntityById(userId);
+		
+		session.removeAttribute("userId");
+		session.removeAttribute("userLoginId");
+		session.removeAttribute("userName");
+		
+		// 응답값
+		Map<String, Object> result = new HashMap<>();
+		result.put("code", 200);
+		result.put("result", "성공");
+		return result;
+	}
+		
 	
 }

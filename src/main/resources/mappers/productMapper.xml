@@ -85,6 +85,7 @@
  	 	UPDATE `product`
  	 	SET
  			`count` = #{count}
+ 			, `updatedAt` = NOW()
  		WHERE
  			`name` = #{name}
  	</update>
@@ -174,6 +175,7 @@
 	 		UPDATE `product`
 	 	 	SET
 	 			`buyCount` = `buyCount` + #{list.count}
+	 			, `updatedAt` = NOW()
 	 		WHERE
 	 			`id` = #{list.productId}
     	</foreach>
@@ -184,6 +186,7 @@
 	 		UPDATE `product`
 	 	 	SET
 	 			`count` = `count` - #{list.count}
+	 			, `updatedAt` = NOW()
 	 		WHERE
 	 			`id` = #{list.productId}
     	</foreach>

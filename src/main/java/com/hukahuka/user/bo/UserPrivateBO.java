@@ -27,6 +27,14 @@ public class UserPrivateBO {
 		return userPrivateRepository.findByUserId(userId).getSalt();
 	}
 	
+	// input: userId	output: String
+	public void deleteUserPrivateByUserId(int userId) {
+		UserPrivateEntity salt = userPrivateRepository.findByUserId(userId);
+		if (salt != null) {
+			userPrivateRepository.delete(salt);
+		}
+	}
+	
 	
 	
 }
