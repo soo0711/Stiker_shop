@@ -19,9 +19,6 @@ import jakarta.servlet.http.HttpSession;
 public class CartController {
 	
 	@Autowired
-	private CartBO cartBO;
-	
-	@Autowired
 	private CartServiceBO cartServiceBO;
 
 	@GetMapping("/cart-list-view")

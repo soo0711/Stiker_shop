@@ -16,9 +16,6 @@ import com.hukahuka.product.domain.Product;
 
 @Controller
 public class MenuCardController {
-
-	@Autowired
-	private ProductBO productBO;
 	
 	@Autowired
 	private MenuCardBO menuCardBO;
