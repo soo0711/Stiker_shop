@@ -1,5 +1,6 @@
 package com.hukahuka.order.bo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -141,5 +142,31 @@ public class OrdersBO {
 	// input: productId		output: X
 	public void deleteByProductId(int[] productId, int userId) {
 		cartBO.deleteCartEntityByProductId(productId, userId);
+	}
+	
+	// input: status	output: List<OrdersEntity>
+	public List<OrdersEntity> getOrdersEntityList(int userId, String status){
+		List<OrdersEntity> orderList = new ArrayList<>();
+		
+		if (status == null) {
+			// db select
+			orderList = getOrdersListByUserId(userId);
+		} else if (status.equals("all")) {
+			orderList = getOrdersListByUserId(userId);
+
+		} else {
+			orderList = getOrdersListByUserIdAndStatus(userId, status);
+		}
+		
+		return orderList;
+	}
+	
+	// input: status		output: String
+	public String getReturnName(String status) {
+		if (status == null) {
+			return "template/layout";
+		} else {
+			return "order/list";
+		}
 	}
 }

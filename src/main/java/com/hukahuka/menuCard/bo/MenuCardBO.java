@@ -212,5 +212,55 @@ public class MenuCardBO {
 		
 		return menu;
 	}
+	
+	// input: menu		output: X
+	public List<MenuCard> getMenuCardList(String menu){
+		
+		List<MenuCard> menuCard = new ArrayList<>();
+		
+		if (menu.equals("all")) {
+			// db select
+			menuCard = generateMenuCardList();
+		}
+		
+		if (menu.equals("best")) {
+			// db select
+			menuCard = generateMenuCardListOrderByBuyCount();
+		}
+		
+		if (menu.equals("new")) {
+			// db select
+			menuCard = generateMenuCardListOrderByCreated();
+		}
+		
+		if (menu.equals("keyring")) {
+			// db select
+			menuCard = generateMenuCardListByCategory("키링");
+		}
+		
+		if (menu.equals("stiker")) {
+			// db select
+			menuCard = generateMenuCardListByCategory("스티커");
+		}
+		
+		if (menu.equals("memo")) {
+			// db select
+			menuCard = generateMenuCardListByCategory("메모");
+		}
+		
+		if (menu.equals("acc")) {
+			// db select
+			menuCard = generateMenuCardListByCategory("디지털 악세사리");
+		}
+		
+		return menuCard;
+	}
 
+	public String getCallName(String menu) {
+		if (menu.equals("all")) {
+			return "menu/all";
+		} else {
+			return "menu/category";
+		}
+	}
 }

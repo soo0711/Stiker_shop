@@ -13,6 +13,8 @@
 						<li class="nav-item"><a href=# class="nav-link font-weight-bold text-dark text-start" id="done">배송 완료</a></li>
 					</ul>
 				</div>
+				
+				<div class="mx-2"><small>무통장 입금: 농협은행 111-0000-0000-00 (스티커샵)</small></div>
 
 				<table class="table mt-3 text-center">
 					<thead class="bg-secondary text-light">
@@ -22,6 +24,7 @@
 							<th>주문자</th>
 							<th>전화번호</th>
 							<th>주소</th>
+							<th>주문금액</th>
 							<th>배송현황</th>
 						</tr>
 					</thead>
@@ -33,6 +36,7 @@
 							<td><small>${order.name }</small></td>
 							<td><small>${order.phoneNumber }</small></td>
 							<td><small>${order.address } ${order.detailAddress }</small></td>
+							<td><small>${order.totalPay }</small></td>
 							<td><small>${order.status }</small></td>
 						</tr>
 						</c:forEach>

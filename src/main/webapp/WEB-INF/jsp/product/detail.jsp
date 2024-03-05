@@ -81,8 +81,8 @@
 						console.log("장바구니에 담았습니다.")
 					}
 					else {
-						alert(data.error_message);
-						location.reload();
+						alert("로그인이 필요한 서비스입니다.");
+						location.href="/user/sign-in-view"
 					}
 				}
 				
@@ -106,7 +106,8 @@
 						// 토글만 하는 곳
 						location.reload(true);
 					} else {
-						location.reload(true);
+						alert("로그인이 필요한 서비스입니다.");
+						location.href="/user/sign-in-view"
 					}
 				}
 				, error: function(request, status, error){

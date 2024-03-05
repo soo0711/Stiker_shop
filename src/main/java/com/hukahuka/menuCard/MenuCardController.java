@@ -33,77 +33,12 @@ public class MenuCardController {
 			@RequestParam("menu") String menu,
 			Model model) {
 		
+		List<MenuCard> menuCards = menuCardBO.getMenuCardList(menu);
+		String menuName = menuCardBO.getCallName(menu);
 		
-		if (menu.equals("all")) {
-			// db select
-			List<MenuCard> menuCard = menuCardBO.generateMenuCardList();
-			model.addAttribute("menuCard", menuCard);
-			
-			model.addAttribute("viewName", "menu/all");
-			
-			return "template/layout";
-		}
-		
-		if (menu.equals("best")) {
-			// db select
-			List<MenuCard> menuCard = menuCardBO.generateMenuCardListOrderByBuyCount();
-			
-			model.addAttribute("menuCard", menuCard);
-			model.addAttribute("viewName", "menu/category");
-			
-			
-			return "template/layout";
-		}
-		
-		if (menu.equals("new")) {
-			// db select
-			List<MenuCard> menuCard = menuCardBO.generateMenuCardListOrderByCreated();
-			
-			model.addAttribute("menuCard", menuCard);
-			model.addAttribute("viewName", "menu/category");
-			return "template/layout";
-		}
-		
-		if (menu.equals("keyring")) {
-			// db select
-			List<MenuCard> menuCard = menuCardBO.generateMenuCardListByCategory("키링");
-			model.addAttribute("menuCard", menuCard);
-			model.addAttribute("viewName", "menu/category");
-			
-			return "template/layout";
-		}
-		
-		if (menu.equals("stiker")) {
-			// db select
-			List<MenuCard> menuCard = menuCardBO.generateMenuCardListByCategory("스티커");
-			model.addAttribute("menuCard", menuCard);
-			
-			model.addAttribute("viewName", "menu/category");
-			
-			return "template/layout";
-		}
-		
-		if (menu.equals("memo")) {
-			// db select
-			List<MenuCard> menuCard = menuCardBO.generateMenuCardListByCategory("메모");
-			model.addAttribute("menuCard", menuCard);
-			
-			model.addAttribute("viewName", "menu/category");
-			
-			return "template/layout";
-		}
-		
-		if (menu.equals("acc")) {
-			// db select
-			List<MenuCard> menuCard = menuCardBO.generateMenuCardListByCategory("디지털 악세사리");
-			model.addAttribute("menuCard", menuCard);
-			
-			model.addAttribute("viewName", "menu/category");
-			
-			return "template/layout";
-		}
-		
-		return "menu/all";
+		model.addAttribute("menuCard", menuCards);
+		model.addAttribute("viewName", menuName);		
+		return "template/layout";
 		
 	}
 }

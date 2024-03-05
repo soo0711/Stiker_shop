@@ -77,25 +77,13 @@ public class OrderController {
 		
 		int userId = (int) session.getAttribute("userId");
 		
-		List<OrdersEntity> orderList = new ArrayList<>();
+		List<OrdersEntity> orderList = orderBO.getOrdersEntityList(userId, status);
+		String returnName = orderBO.getReturnName(status);
 		
-		if (status == null) {
-			// db select
-			orderList = orderBO.getOrdersListByUserId(userId);
-			model.addAttribute("orderList", orderList);
-			model.addAttribute("viewName", "order/list");
-			return "template/layout";
-		} else if (status.equals("all")) {
-			orderList = orderBO.getOrdersListByUserId(userId);
-			model.addAttribute("orderList", orderList);
-			model.addAttribute("viewName", "order/list");
-			return "order/list";
-		} else {
-			orderList = orderBO.getOrdersListByUserIdAndStatus(userId, status);
-			model.addAttribute("orderList", orderList);
-			model.addAttribute("viewName", "order/list");
-			return "order/list";
-		}
+		model.addAttribute("orderList", orderList);
+		model.addAttribute("viewName", "order/list");
+		
+		return returnName;
 		
 	}
 	

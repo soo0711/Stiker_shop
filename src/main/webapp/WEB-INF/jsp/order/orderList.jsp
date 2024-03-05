@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+]<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -96,7 +96,7 @@
 					</div>
 				</div>
 				<div class="d-none" id="income">
-					<small>은행: 111-0000-0000-00 (스티커샵)</small>
+					<small>농협 은행: 111-0000-0000-00 (스티커샵)</small>
 				</div>
 			</div>
 			<div class="col-5">

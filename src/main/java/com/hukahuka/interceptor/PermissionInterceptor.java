@@ -28,7 +28,7 @@ public class PermissionInterceptor implements HandlerInterceptor{
 		Integer userId = (Integer)session.getAttribute("userId");
 		
 		// 비로그인 => 로그인 페이지로 이동, 컨트롤러 수행 방지
-		if (userId == null && (uri.startsWith("/order") || uri.startsWith("/user/update"))) {
+		if (userId == null && (uri.startsWith("/order") || uri.startsWith("/user/update") || uri.startsWith("/cart") || uri.startsWith("/wish"))) {
 			response.sendRedirect("/user/sign-in-view");
 			return false; // 원래 요청에 대해서 컨트롤러 수행 X
 		}
