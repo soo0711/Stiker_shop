@@ -62,7 +62,7 @@ public class CartBO {
 	// input: productId 	output: X
 	public void deleteCartEntityByProductId(int[] productId, int userId) {
 		for (int i = 0; i < productId.length; i++) {
-			CartEntity cart = cartRepository.findByUserIdAndProductId(productId[i], userId);
+			CartEntity cart = cartRepository.findByUserIdAndProductId(userId, productId[i]);
 			if (cart != null) {
 			    cartRepository.delete(cart);
 			}

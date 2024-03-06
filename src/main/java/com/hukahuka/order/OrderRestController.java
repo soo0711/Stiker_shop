@@ -66,4 +66,19 @@ public class OrderRestController {
 		return result;
 	}
 	
+	@PostMapping("/cancle")
+	public Map<String, Object> cancel(
+			@RequestParam("orderId") int orderId){
+		
+		Map<String, Object> result = new HashMap<>();
+		
+		// db update
+		orderBO.updateOrdersByStatus(orderId, "주문 취소");
+		
+		// 응답값
+		result.put("code", 200);
+		result.put("result", "성공");
+		return result;
+	}
+	
 }

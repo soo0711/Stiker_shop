@@ -26,6 +26,7 @@
 							<th>주소</th>
 							<th>주문금액</th>
 							<th>배송현황</th>
+							<th></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -38,6 +39,11 @@
 							<td><small>${order.address } ${order.detailAddress }</small></td>
 							<td><small>${order.totalPay }</small></td>
 							<td><small>${order.status }</small></td>
+							<td>
+								<c:if test="${'입금 대기' eq order.status || '주문 접수' eq order.status}">
+								<a href="#" class="cancle" data-status="${order.status }" data-id="${order.id }">주문 취소</a>
+								</c:if>
+							</td>
 						</tr>
 						</c:forEach>
 					</tbody>
@@ -109,6 +115,31 @@
 				}
 			});
 		});
+		$(".cancle").on("click", function() {
+			let status = $(this).data("status");
+			let orderId = $(this).data("id");
+			
+			if (status == "배송 준비") {
+				alert("주문 취소가 불가능합니다.");
+				return false;
+			} else {
+				$.ajax({
+					url: "/order/cancle"
+					, type:"POST"
+					, data: {"orderId" : orderId}
+					
+					, success: function(data){
+						if (data.code == 200){
+							alert("주문 취소 되었습니다.");
+							location.reload(true);
+						}
+					}
+					, error: function(request, status, error){
+						alert("주문 취소에 실패했습니다. 관리자에게 문의주세요.")
+					}
+				});
+			}
+		})
 	}); 
 
 </script>

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import com.hukahuka.cart.bo.CartBO;
@@ -66,7 +67,7 @@ public class OrdersBO {
 					.payMethod(payMethod)
 					.totalPay(total)
 					.userId(userId)
-					.status("배송 준비 중")
+					.status("주문 접수")
 					.build()).getId();
 		} else {
 			return ordersRepository.save(
@@ -167,6 +168,16 @@ public class OrdersBO {
 			return "template/layout";
 		} else {
 			return "order/list";
+		}
+	}
+	
+	// input: X		output: X
+	public void deleteOrderList() {
+		List<OrdersEntity> orders = ordersRepository.findList();
+		if (orders.size() != 0) {
+			for (OrdersEntity order: orders) {
+				ordersRepository.delete(order);
+			}
 		}
 	}
 }
