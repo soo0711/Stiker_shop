@@ -18,7 +18,7 @@ import lombok.ToString;
 
 @Entity
 @ToString
-@Table(name = "userPrivate")
+@Table(name = "userprivate")
 @Getter
 @Builder
 @NoArgsConstructor

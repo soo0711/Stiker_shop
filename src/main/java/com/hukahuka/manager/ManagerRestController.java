@@ -18,7 +18,7 @@ import com.hukahuka.product.domain.Product;
 import jakarta.servlet.http.HttpSession;
 
 @RestController
-@RequestMapping("/manager")
+@RequestMapping("/admin")
 public class ManagerRestController {
 	
 	@Autowired

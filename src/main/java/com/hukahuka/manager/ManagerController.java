@@ -11,11 +11,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.hukahuka.manager.bo.ManagerBO;
 import com.hukahuka.order.entity.OrdersEntity;
-import com.hukahuka.product.bo.ProductBO;
 import com.hukahuka.product.domain.Product;
 
 @Controller
-@RequestMapping("/manager")
+@RequestMapping("/admin")
 public class ManagerController {
 	
 	@Autowired
@@ -24,7 +23,7 @@ public class ManagerController {
 	@GetMapping("/hukahuka-upload-view")
 	public String hukahukaUploadView(
 			Model model) {
-		model.addAttribute("viewName", "manager/upload");
+		model.addAttribute("viewName", "admin/upload");
 		return "template/layout";
 	}
 	
@@ -33,7 +32,7 @@ public class ManagerController {
 			@RequestParam("menu") int menu
 			, Model model) {
 		if (menu == 1) { // 상품등록
-			return "manager/upload";
+			return "admin/upload";
 		}
 		
 		if (menu == 2) { // 재고현황
@@ -41,17 +40,17 @@ public class ManagerController {
 			List<Product> products = managerBO.getProductList();
 			model.addAttribute("products", products);
 			
-			return "manager/storage";
+			return "admin/storage";
 		}
 		
 		if (menu == 3) { // 배송현황
 			// db select
 			List<OrdersEntity> orders = managerBO.getOrdersList();
 			model.addAttribute("orders", orders);
-			return "manager/delivery";
+			return "admin/delivery";
 		}
 		
-		return "manager/upload";
+		return "admin/upload";
 	}
 	
 }

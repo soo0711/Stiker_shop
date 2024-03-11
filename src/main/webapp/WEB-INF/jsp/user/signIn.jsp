@@ -50,7 +50,7 @@
 				, success: function(data){
 					if (data.code == 200){
 						if (data.userLoginId == "suuuu"){
-							location.href="/manager/hukahuka-upload-view";
+							location.href="/admin/hukahuka-upload-view";
 						} else {
 							alert(data.userName + "님 환영합니다!")
 							location.href = "/home-view"

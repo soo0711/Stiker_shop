@@ -42,7 +42,7 @@
 			let status = $(this).parent().prev().children().val();
 			
 			$.ajax({
-				url: "/manager/order-update"
+				url: "/admin/order-update"
 				, type: "POST"
 				, data: {"orderId" : orderId, "status" : status}
 				, success: function(data){

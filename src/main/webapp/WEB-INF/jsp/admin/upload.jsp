@@ -150,7 +150,7 @@
 			$.ajax({
 				// request
 				type: "POST"
-				, url: "/manager/upload"
+				, url: "/admin/upload"
 				, data: formData
 				, enctype: "multipart/form-data" // 파일 업로드를 위한 필수 설정 - 이미지가 들어가는걸 알려준다.
 				, processData: false // 파일 업로드를 위한 필수 설정 - String이 아니라 객체로 보내고 있다는걸 알려준다.

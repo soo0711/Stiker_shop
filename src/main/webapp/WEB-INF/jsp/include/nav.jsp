@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<c:if test="${fn:contains(viewName, 'manager') eq false}">
+<c:if test="${fn:contains(viewName, 'admin') eq false}">
 <ul class="nav nav-fill w-100">
 	<li class="nav-item"><a href=# class="nav-link text-nav-color font-weight-bold" id="best">베스트</a></li>
 	<li class="nav-item"><a href=# class="nav-link text-nav-color font-weight-bold" id="new">NEW</a></li>
@@ -14,9 +14,9 @@
 </ul>
 </c:if>
 
-<c:if test="${fn:contains(viewName, 'manager') eq true}">
+<c:if test="${fn:contains(viewName, 'admin') eq true}">
 <ul class="nav nav-fill w-100">
-	<li class="nav-item"><a href="/manager/hukahuka-upload-view" class="nav-link text-nav-color font-weight-bold" id="upload">등록</a></li>
+	<li class="nav-item"><a href="/admin/hukahuka-upload-view" class="nav-link text-nav-color font-weight-bold" id="upload">등록</a></li>
 	<li class="nav-item"><a href=# class="nav-link text-nav-color font-weight-bold" id="storage">재고</a></li>
 	<li class="nav-item"><a href=# class="nav-link text-nav-color font-weight-bold" id="status">배송현황</a></li>
 	<li class="nav-item"><a href=# class="nav-link text-nav-color font-weight-bold">x</a></li>
@@ -34,7 +34,7 @@
 			e.preventDefault();
 	
 			$.ajax({
-				url: "/manager/upload-view"
+				url: "/admin/upload-view"
 				,data: {"menu" : 1} 
 				
 				,success: function(data){
@@ -50,7 +50,7 @@
 			// alert("재고");
 			
 			$.ajax({
-				url: "/manager/upload-view"
+				url: "/admin/upload-view"
 				,data: {"menu" : 2} 
 				
 				,success: function(data){
@@ -65,7 +65,7 @@
 			// alert("배송현황");
 			
 			$.ajax({
-				url: "/manager/upload-view"
+				url: "/admin/upload-view"
 				,data: {"menu" : 3} 
 				
 				,success: function(data){

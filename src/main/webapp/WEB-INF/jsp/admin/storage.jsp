@@ -47,7 +47,7 @@ $(document).ready(function() {
 		
 		$.ajax({
 			type: "POST"
-			,url: "/manager/update"
+			,url: "/admin/update"
 			, data: {"count" : count, "name" : name}
 		
 			, success: function(data){
@@ -74,7 +74,7 @@ $(document).ready(function() {
 		
 		$.ajax({
 			type: "POST"
-			,url: "/manager/delete"
+			,url: "/admin/delete"
 			, data: {"id" : id}
 		
 			, success: function(data){
